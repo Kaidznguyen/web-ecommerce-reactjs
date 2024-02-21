@@ -15,6 +15,29 @@ router.get("/getall", (req, res) => {
       }
     });
   });
+// api lấy ra 3 bài viết mới nhất
+// api lấy ra 8 sản phẩm nổi bật(có thể)
+router.get('/getNewpost', (req, res) => {
+  const query = `
+      SELECT *
+      FROM post where status = 1
+      LIMIT 3
+  `;
+
+  db.query(query, (err, results) => {
+      if (err) {
+          res.status(500).json({ error: 'Lỗi máy chủ nội bộ' });
+          return;
+      }
+
+      if (results.length === 0) {
+          res.status(404).json({ message: 'Không tìm thấy figure mới nào' });
+          return;
+      }
+
+      res.status(200).json(results);
+  });
+}); 
 // api tìm sp theo tên
 router.get('/getByName/:name', (req, res) => {
     const Name = req.params.name;

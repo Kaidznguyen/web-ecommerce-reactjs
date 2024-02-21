@@ -10,6 +10,7 @@ import sp1 from  '../assets/user-page/img/mô hình/luffy.png'
 import sp2 from  '../assets/user-page/img/mô hình/batman.png'
 import sp3 from  '../assets/user-page/img/mô hình/naruto.png'
 import nocart from '../assets/user-page/img/app/no_cart.png'
+// import { Link } from 'react-router-dom';
 
 export default function HeaderUser() {
   return (
@@ -125,7 +126,7 @@ export default function HeaderUser() {
                     </ul>
                 </nav>                 
             <div className="hd__logo hide-on-mobile">
-                <a href="/" className="hd__logo-link">
+                <a href='/' className="hd__logo-link">
                     <img src={logo} alt="logo" className="logo"/>
                 </a>                          
             </div>
