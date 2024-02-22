@@ -2,13 +2,13 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import '../assets/user-page/main.css';
-import '../assets/user-page/grid-system.css';
-import '../assets/user-page/reponsive.css';
-import slide1 from '../assets/user-page/img/slide & QC/slideshow_1.png';
-import slide2 from '../assets/user-page/img/slide & QC/slideshow_2.png';
-import slide3 from '../assets/user-page/img/slide & QC/slideshow_3.png';
-import slide4 from '../assets/user-page/img/slide & QC/slideshow_4.png';
+import '../../../assets/user-page/main.css';
+import '../../../assets/user-page/grid-system.css';
+import '../../../assets/user-page/reponsive.css';
+import slide1 from '../../../assets/user-page/img/slide & QC/slideshow_1.png';
+import slide2 from '../../../assets/user-page/img/slide & QC/slideshow_2.png';
+import slide3 from '../../../assets/user-page/img/slide & QC/slideshow_3.png';
+import slide4 from '../../..//assets/user-page/img/slide & QC/slideshow_4.png';
 
 export default function SlideShow() {
   // setting cho slide

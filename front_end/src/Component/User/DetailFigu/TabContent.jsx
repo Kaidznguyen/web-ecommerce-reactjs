@@ -1,15 +1,32 @@
-import React from "react";
-import "../assets/user-page/main.css";
-import "../assets/user-page/grid-system.css";
-import "../assets/user-page/reponsive.css";
-import "../assets/user-page/main.js";
-import img1 from "../assets/user-page/img/ctsp1/zoro-tam-long2.png";
-import img2 from "../assets/user-page/img/ctsp1/zoro-tam-long3.png";
-import img3 from "../assets/user-page/img/ctsp1/zoro-tam-long4.png";
-import img4 from "../assets/user-page/img/ctsp1/zoro-tam-long5.png";
-import img5 from "../assets/user-page/img/ctsp1/zoro-tam-long6.png";
-import img6 from "../assets/user-page/img/mô hình/zoro_tamlong.png";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "../../../assets/user-page/main.css";
+import "../../../assets/user-page/grid-system.css";
+import "../../../assets/user-page/reponsive.css";
+import "../../../assets/user-page/main.js";
+import img1 from "../../../assets/user-page/img/ctsp1/zoro-tam-long2.png";
+import img2 from "../../../assets/user-page/img/ctsp1/zoro-tam-long3.png";
+import img3 from "../../../assets/user-page/img/ctsp1/zoro-tam-long4.png";
+import img4 from "../../../assets/user-page/img/ctsp1/zoro-tam-long5.png";
+import img5 from "../../../assets/user-page/img/ctsp1/zoro-tam-long6.png";
+import img6 from "../../../assets/user-page/img/mô hình/zoro_tamlong.png";
+import FigureAPI from "../../../Service/FigureAPI.js";
 export default function TabContent() {
+  const { id } = useParams();
+  const [detail, setFigure] = useState({});
+
+  useEffect(() => {
+    // Gọi service getById với id từ params
+    FigureAPI.getById(id)
+      .then((data) => {
+        // Lưu dữ liệu của figure vào state
+        setFigure(data);
+
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [id]);
   return (
     <div className="tabs">
       <ul className="nav-tabs">
@@ -26,74 +43,43 @@ export default function TabContent() {
       <div className="tabs-content">
         <div className="tabs-content-item" id="tab1">
           <span className="title-tab">
-            Xin chào bạn, bạn đang tìm kiếm cho mình mô hình Zoro tam long. Một
+            Xin chào bạn, bạn đang tìm kiếm cho mình mô hình {detail.name}. Một
             mô hình chuẩn anime, giá cả hợp lý, kích thước đúng tỉ lệ và giúp
             hoàn thiện bộ sưu tập của bạn? Hãy tham khảo mô hình figure sau đây
             tại DShop nhé.
           </span>
           <h2 className="tabs-content-title-main">
-            MÔ HÌNH ZORO ONE PIECE TAM LONG
+            MÔ HÌNH {detail.name}
           </h2>
           <div className="tabs-content-summary">
             <h2 className="tabs-content-title">Tóm lược nhân vật</h2>
             <div className="tabs-content_subtit">
               <p>
-                Mô hình Zoro tam long được mô phỏng theo trang phục Zoro trong
-                phim “One Piece - Arc Đảo người cá” do tác giả Oda vẽ. Mô hình
-                được làm theo nguyên mẫu trong anime khi Zoro đánh nhau với một
-                trong các thuộc hạ của Hody Jones.
+                Mô hình {detail.name} được mô phỏng theo nhân vật trong
+                phim “{detail.name_cate}” do hãng {detail.name_brand} cung cấp. Mô hình
+                được làm theo hoàn toàn nguyên mẫu.
               </p>
-              <img src={img6} alt="" />
+              <img src={"http://localhost:8080/" + detail.img} alt="" />
               <span className="tabs-content-detail-subtit">
-                Mô hình Zoro tam long
+                Mô hình {detail.name}
               </span>
             </div>
             <div className="tabs-content-detail">
               <h2 className="tabs-content-title">Thông tin sản phẩm</h2>
               <ul className="tabs__list">
                 <li className="tabs__list-item">
-                  Tên sản phẩm: Zoro One Piece tam long
+                  Tên sản phẩm: {detail.name}
                 </li>
-                <li className="tabs__list-item">Phân loại: Figure One Piece</li>
+                <li className="tabs__list-item">Phân loại: {detail.name_cate}</li>
                 <li className="tabs__list-item">Nặng: 8,5 kg</li>
                 <li className="tabs__list-item">Size: 52 x 53 x 50 cm</li>
                 <li className="tabs__list-item">Chất liệu: PVC</li>
-                <li className="tabs__list-item">Sản xuất: China</li>
+                <li className="tabs__list-item">Hãng Sản xuất: {detail.name_brand}</li>
                 <li className="tabs__list-item">Đóng hộp: Fullbox</li>
                 <li className="tabs__list-item">Phụ kiện: Đầy đủ như hình Mô Tả</li>
+                <li className="tabs__list-item" dangerouslySetInnerHTML={{ __html: `Mô tả mô hình: ${detail.description}` }} />
+
               </ul>
-              <h2 className="tabs-content-title">Một số hình ảnh thực tế</h2>
-              <img src={img1} alt="" />
-              <span className="tabs-content-detail-subtit">
-                Góc nghiêng của mô hình
-              </span>
-              <img src={img2} alt="" />
-              <span className="tabs-content-detail-subtit">Cận mặt con rồng 1</span>
-              <img src={img3} alt="" />
-              <span className="tabs-content-detail-subtit">Cận mặt con rồng 2</span>
-              <img src={img4} alt="" />
-              <span className="tabs-content-detail-subtit">Cận mặt con rồng 3</span>
-              <img src={img5} alt="" />
-              <span className="tabs-content-detail-subtit">Cận mặt Zoro</span>
-              <span>
-                Tất cả ảnh có DShop đều được chụp trực tiếp tại shop để đảm bảo
-                độ chân thật màu sắc sơn và cho góc nhìn khách quan nhất về sản
-                phẩm.
-              </span>
-            </div>
-          </div>
-          <div className="tabs-content-video">
-            <h2 className="tabs-content-title">video review</h2>
-            <div className="video-review">
-              <iframe
-                width="70%"
-                height="450px"
-                src="https://www.youtube.com/embed/5S__BRt9mdg"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
             </div>
           </div>
           <div className="tabs-content-review">

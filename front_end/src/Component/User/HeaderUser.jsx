@@ -2,14 +2,15 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram }from '@fortawesome/free-brands-svg-icons';
 import {faBell, faCircleQuestion, faListUl, faXmark, faMagnifyingGlass, faCartShopping} from '@fortawesome/free-solid-svg-icons'
-import '../assets/user-page/main.css'
-import '../assets/user-page/grid-system.css' 
-import '../assets/user-page/reponsive.css'
-import logo from  '../assets/user-page/img/app/logo.png'
-import sp1 from  '../assets/user-page/img/mô hình/luffy.png'
-import sp2 from  '../assets/user-page/img/mô hình/batman.png'
-import sp3 from  '../assets/user-page/img/mô hình/naruto.png'
-import nocart from '../assets/user-page/img/app/no_cart.png'
+import '../../assets/user-page/main.css'
+import '../../assets/user-page/grid-system.css' 
+import '../../assets/user-page/reponsive.css'
+import logo from  '../../assets/user-page/img/app/logo.png'
+import sp1 from  '../../assets/user-page/img/mô hình/luffy.png'
+import sp2 from  '../../assets/user-page/img/mô hình/batman.png'
+import sp3 from  '../../assets/user-page/img/mô hình/naruto.png'
+import nocart from '../../assets/user-page/img/app/no_cart.png'
+import { Link } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 
 export default function HeaderUser() {
@@ -107,12 +108,12 @@ export default function HeaderUser() {
          {/* searrch */}
         <div className="hd-with-search">
             <input type="checkbox" hidden id="mobile-menu-checkbox" className="nav__input"/>
-            <label for="mobile-menu-checkbox" className="hd__mobile-menu show-on-mobile">
+            <label htmlFor="mobile-menu-checkbox" className="hd__mobile-menu show-on-mobile">
             <FontAwesomeIcon icon={faListUl} />
             </label>
-                <label for="mobile-menu-checkbox" className="nav--overplay"></label>
+                <label htmlFor="mobile-menu-checkbox" className="nav--overplay"></label>
                 <nav className="nav__mobile">
-                    <label for="mobile-menu-checkbox" className="nav__mobile-btn-close">
+                    <label htmlFor="mobile-menu-checkbox" className="nav__mobile-btn-close">
                     <FontAwesomeIcon icon={faXmark} />
                     </label>
                     <ul className="nav__mobile-list">
@@ -126,9 +127,9 @@ export default function HeaderUser() {
                     </ul>
                 </nav>                 
             <div className="hd__logo hide-on-mobile">
-                <a href='/' className="hd__logo-link">
+                <Link to='/' className="hd__logo-link">
                     <img src={logo} alt="logo" className="logo"/>
-                </a>                          
+                </Link>                          
             </div>
             <input type="checkbox" hidden id="mobile-search-checkbox" className="hd__search-checkbox"/>
             <div className="hd__search">

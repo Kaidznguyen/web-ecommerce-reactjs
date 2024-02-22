@@ -1,13 +1,13 @@
 import React from 'react'
-import "../assets/user-page/main.css";
-import "../assets/user-page/grid-system.css";
-import "../assets/user-page/reponsive.css";
+import "../../assets/user-page/main.css";
+import "../../assets/user-page/grid-system.css";
+import "../../assets/user-page/reponsive.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import img1 from "../assets/user-page/img/app/giao-hang-tiet-kiem.png";
-import img2 from "../assets/user-page/img/app/giaohangnhanh.png";
-import img3 from "../assets/user-page/img/app/vietnam-post.png";
-import img4 from "../assets/user-page/img/app/viettel-post.png";
+import { faHeart,faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import img1 from "../../assets/user-page/img/app/giao-hang-tiet-kiem.png";
+import img2 from "../../assets/user-page/img/app/giaohangnhanh.png";
+import img3 from "../../assets/user-page/img/app/vietnam-post.png";
+import img4 from "../../assets/user-page/img/app/viettel-post.png";
 export default function FooterUser() {
   return (
     <div>
@@ -60,6 +60,14 @@ export default function FooterUser() {
         <p className="footer__text">© - 2024 Bản quyển thuộc về Nguyễn Tiến Đạt <FontAwesomeIcon icon={faHeart}/> </p>
     </div>
 </div>
+<div className="backtop">
+
+<FontAwesomeIcon
+            icon={faChevronUp}
+            className="backtop-icon"
+          />
 </div>
+</div>
+
   )
 }

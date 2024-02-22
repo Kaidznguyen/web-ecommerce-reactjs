@@ -1,24 +1,43 @@
 import React, { useState, useEffect } from "react";
-import "../assets/user-page/main.css";
-import "../assets/user-page/grid-system.css";
-import "../assets/user-page/reponsive.css";
-import "../assets/user-page/main.js";
-import FigureAPI from "../Service/FigureAPI.js";
+import "../../../assets/user-page/main.css";
+import "../../../assets/user-page/grid-system.css";
+import "../../../assets/user-page/reponsive.css";
+import "../../../assets/user-page/main.js";
+import FigureAPI from "../../../Service/FigureAPI.js";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import numeral from "numeral";
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 export default function RandomFigure() {
+  const { id } = useParams();
+  const [detail, setFigure] = useState({});
+
+  useEffect(() => {
+    // Gọi service getById với id từ params
+    FigureAPI.getById(id)
+      .then((data) => {
+        // Lưu dữ liệu của figure vào state
+        setFigure(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [id]);
     const [figures, setFigures] = useState([]);
 
+    const navigate = useNavigate();
+    const handleClick = () => {
+      navigate(`/detail-figure/${id}`); // Thay đổi "/detail-figure/123" bằng đường dẫn cụ thể
+      window.scrollTo(0, 0);
+    };
     useEffect(() => {
       async function fetchFigures() {
         try {
           const data = await FigureAPI.getRandom();
           setFigures(data);
-          console.log(data);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -57,8 +76,8 @@ export default function RandomFigure() {
     <div className="slider-product">
     <Slider {...settings}>
       {figures.map((figure) => (
-        <div className="slider-product-item">
-          <Link className="home-product-item" to={`/Detail-Figure/${figure.id}`}>
+        <div className="slider-product-item" key={figure.id}>
+          <Link className="home-product-item" to={`/Detail-Figure/${figure.id}`} onClick={handleClick}>
             <img
               src={"http://localhost:8080/" + figure.img}
               alt={figure.name}
@@ -85,13 +104,13 @@ export default function RandomFigure() {
                 {numeral(figure.promotionprice).format("$0,0")}
               </span>
             </div>
-            <div class="home-product-item__origin">
-              <span class="home-product-item__brand">Phân loại</span>
-              <span class="home-product-item__origin-name">Xuất sứ</span>
+            <div className="home-product-item__origin">
+              <span className="home-product-item__brand">Phân loại</span>
+              <span className="home-product-item__origin-name">Xuất sứ</span>
             </div>
-            <div class="home-product-item__origin">
-              <span class="home-product-item__brand">{figure.name_cate}</span>
-              <span class="home-product-item__origin-name">{figure.name_brand}</span>
+            <div className="home-product-item__origin">
+              <span className="home-product-item__brand">{figure.name_cate}</span>
+              <span className="home-product-item__origin-name">{figure.name_brand}</span>
             </div>
             {/* sold-out khi het hang */}
             <div

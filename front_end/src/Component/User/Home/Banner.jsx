@@ -1,11 +1,11 @@
 import React from 'react'
-import "../assets/user-page/main.css";
-import "../assets/user-page/grid-system.css";
-import "../assets/user-page/reponsive.css";
-import "../assets/user-page/main.js";
-import banner1 from  '../assets/user-page/img/slide & QC/moc-kiem.png'
-import banner2 from  '../assets/user-page/img/slide & QC/sale.png'
-import banner3 from  '../assets/user-page/img/slide & QC/blog.png'
+import '../../../assets/user-page/main.css';
+import '../../../assets/user-page/grid-system.css';
+import '../../../assets/user-page/reponsive.css';
+import "../../../assets/user-page/main.js";
+import banner1 from  '../../../assets/user-page/img/slide & QC/moc-kiem.png'
+import banner2 from  '../../../assets/user-page/img/slide & QC/sale.png'
+import banner3 from  '../../../assets/user-page/img/slide & QC/blog.png'
 export default function Banner() {
   return (
     <div>

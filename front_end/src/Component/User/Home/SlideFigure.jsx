@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "../assets/user-page/main.css";
-import "../assets/user-page/grid-system.css";
-import "../assets/user-page/reponsive.css";
-import "../assets/user-page/main.js";
-import FigureAPI from "../Service/FigureAPI.js";
+import '../../../assets/user-page/main.css';
+import '../../../assets/user-page/grid-system.css';
+import '../../../assets/user-page/reponsive.css';
+import "../../../assets/user-page/main.js";
+import FigureAPI from "../../../Service/FigureAPI.js";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -17,7 +17,6 @@ export default function SlideFigure() {
       try {
         const data = await FigureAPI.getLatestFigures();
         setFigures(data);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -63,7 +62,7 @@ export default function SlideFigure() {
       <div className="slider-product">
         <Slider {...settings}>
           {figures.map((figure) => (
-            <div className="slider-product-item">
+            <div className="slider-product-item" key={figure.id}>
               <Link to={`/Detail-Figure/${figure.id}`} className="home-product-item">
                 <img
                   src={"http://localhost:8080/" + figure.img}
@@ -91,13 +90,13 @@ export default function SlideFigure() {
                     {numeral(figure.promotionprice).format("$0,0")}
                   </span>
                 </div>
-                <div class="home-product-item__origin">
-                  <span class="home-product-item__brand">Phân loại</span>
-                  <span class="home-product-item__origin-name">Xuất sứ</span>
+                <div className="home-product-item__origin">
+                  <span className="home-product-item__brand">Phân loại</span>
+                  <span className="home-product-item__origin-name">Xuất sứ</span>
                 </div>
-                <div class="home-product-item__origin">
-                  <span class="home-product-item__brand">{figure.name_cate}</span>
-                  <span class="home-product-item__origin-name">{figure.name_brand}</span>
+                <div className="home-product-item__origin">
+                  <span className="home-product-item__brand">{figure.name_cate}</span>
+                  <span className="home-product-item__origin-name">{figure.name_brand}</span>
                 </div>
                 {/* sold-out khi het hang */}
                 <div
