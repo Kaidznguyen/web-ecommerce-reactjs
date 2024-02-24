@@ -5,7 +5,7 @@ const db = require("../connection");
 
 // api lấy all sp
 router.get("/getall", (req, res) => {
-  var sql = "SELECT * FROM figure_category";
+  var sql = "SELECT * FROM figure_category where status = 1";
   db.query(sql, function (err, result) {
     if (err) {
       res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
@@ -80,9 +80,9 @@ router.get('/getByidcate/:id', (req, res) => {
   const idcate = req.params.id;
   const query = `
     SELECT *
-    FROM figure_category
-    JOIN figure ON figure_category.id_cate = figure.figure_category_id
-    WHERE figure_category.id_cate = ?`;
+    FROM figure_category fc
+    JOIN figure f ON fc.id_cate = f.figure_category_id
+    WHERE fc.id_cate = ? and f.status = 1`;
 
   db.query(query, [idcate], (err, results) => {
     if (err) {

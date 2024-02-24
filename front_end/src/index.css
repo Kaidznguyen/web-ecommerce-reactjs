@@ -209,7 +209,7 @@ body::-webkit-scrollbar-thumb:hover{
   background-color: var(--white-color);
   list-style: none;
   border-radius: 2px;
-  padding: 10x 13px;
+  padding: 10px 13px;
   display: none;
 }
 .select-input__link{
@@ -221,6 +221,7 @@ body::-webkit-scrollbar-thumb:hover{
 }
 .select-input__link:hover{
   color: var(--primary-color);
+  cursor: pointer;
 }
 /* pagination-item */
 .pagination{

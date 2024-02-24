@@ -117,7 +117,7 @@ export default function HeaderUser() {
                     <FontAwesomeIcon icon={faXmark} />
                     </label>
                     <ul className="nav__mobile-list">
-                        <li><a href="" className="nav__mobile-link">Trang chủ</a></li>
+                        <li><Link to={'/'} className="nav__mobile-link">Trang chủ</Link></li>
                         <li><a href="" className="nav__mobile-link login">Đăng nhập</a></li>
                         <li><a href="" className="nav__mobile-link register">Đăng ký</a></li>
                         <li><a href="" className="nav__mobile-link help">Trợ giúp</a></li>

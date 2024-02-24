@@ -78,6 +78,6 @@ $(document).ready(function () {
         $(id_tab_content).fadeIn();
         return false;
     });
-    // mặc định thẻ link lên đầu trang
+
   
 });

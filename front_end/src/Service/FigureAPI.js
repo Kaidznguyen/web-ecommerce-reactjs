@@ -4,6 +4,14 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8080';
 
 const FigureAPI = {
+  async getAll() {
+    try {
+      const response = await axios.get(`${API_URL}/figure/getallsp`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error fetching data from API: ${error.message}`);
+    }
+  },
     async getLatestFigures() {
       try {
         const response = await axios.get(`${API_URL}/figure/getLatestFigures`);

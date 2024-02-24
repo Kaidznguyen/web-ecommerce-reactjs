@@ -5,8 +5,12 @@ const multer = require('multer');
 const path = require('path');
 
 // api lấy all sp
-router.get("/getall", (req, res) => {
-  var sql = "SELECT * FROM figure where status = 1";
+router.get("/getallsp", (req, res) => {
+  var sql = 
+  `SELECT f.*, fc.name_cate, b.name_brand
+  FROM figure f 
+  JOIN figure_category fc ON f.figure_category_id = fc.id_cate
+  JOIN brand b ON f.brand_id = b.id_brand where f.status = 1`;
   db.query(sql, function (err, result) {
     if (err) {
       res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });

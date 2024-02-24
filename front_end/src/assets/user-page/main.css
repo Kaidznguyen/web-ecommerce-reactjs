@@ -793,7 +793,7 @@
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     user-select: none;
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -930,9 +930,26 @@
     margin: 8px 10px 0;
     align-items: baseline;
 }
+.home-product-item__like{
+    position: relative;
+}
 .icon-cart{
-    font-size: 1.3rem;
-    color: var(--text-color);
+    position: relative;
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    z-index: 15;
+}
+.icon-cart:hover {
+    opacity: .5;
+}
+.hiden_text{
+    position: absolute;
+    font-size: 1.2rem;
+    top: -12px;
+    color: var(--primary-color);
+    left: 30px;
+    width: 55px;
+    display: none;
 }
 .home-product-item__ratting{
     font-size: 0.8rem;
@@ -2076,7 +2093,7 @@
     font-size: 3rem;
     color: var(--text-color);
     font-weight: bold;
-    line-height: 2rem;
+    line-height: 4rem !important;
     margin: 20px 0;
 }
 .blog-detail-author,.blog-detail-author a,.blog-link{
@@ -2097,7 +2114,7 @@
 .blog-text{
     font-size: 1.8rem;
     color: var(--text-color);
-    line-height: 2rem;
+    line-height: 3rem !important;
 }
 .blog-detail-title-main{
     font-size: 2.6rem;
@@ -3364,4 +3381,32 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; /* Thêm dấu ... cho nội dung quá dài */
+  }
+  .SearchIcon{
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 1.5rem;
+    color: #3d3d3d;
+    opacity: .7;
+  }
+  .SearchInput{
+    position: relative;
+  }
+  .button_arrange{
+    border: none;
+    margin: -10px 0 -10px -13px;
+    text-align: center;
+    padding: 10px;
+    width: 200px;
+    background-color: var(--white-color);
+  }
+  .button_arrange:hover{
+    cursor: pointer;
+  }
+  .not_found{
+    font-size: 4rem;
+    color: var(--primary-color);
+    line-height: 4rem;
+    text-align: center;
   }

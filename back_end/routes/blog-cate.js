@@ -79,10 +79,10 @@ router.delete('/delete/:id', (req, res) => {
 router.get('/getByidcate/:id', (req, res) => {
   const idcate = req.params.id;
   const query = `
-    SELECT *
-    FROM post_category
-    JOIN post p ON post_category.id_cate = p.post_category_id
-    WHERE post_category.id_cate = ?`;
+  SELECT *
+  FROM post_category pc
+  JOIN post p ON pc.id_cate = p.post_category_id
+  WHERE pc.id_cate = ? and p.status = 1`;
 
   db.query(query, [idcate], (err, results) => {
     if (err) {

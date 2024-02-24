@@ -17,9 +17,9 @@ export default function PostCatePage() {
       <div className="blog__img">
         <img src={banner} alt="" />
       </div>
-      <div className="grid wide">
+      <div className="grid wide" >
             <div className="row sm-gutter">
-                <ContentLeft /> 
+                <ContentLeft />
                 <ContentRight />
             </div> 
       </div>

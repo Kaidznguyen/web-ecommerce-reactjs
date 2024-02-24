@@ -6,7 +6,7 @@ const path = require('path');
 
 // api lấy all sp
 router.get("/getall", (req, res) => {
-  var sql = "SELECT * FROM brand";
+  var sql = "SELECT * FROM brand where status = 1";
   db.query(sql, function (err, result) {
     if (err) {
       res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
@@ -142,10 +142,10 @@ router.delete('/delete/:id', (req, res) => {
 router.get('/getByidcate/:id', (req, res) => {
   const idcate = req.params.id;
   const query = `
-    SELECT *
-    FROM brand
-    JOIN figure  ON brand.id_brand = figure.brand_id
-    WHERE brand.id_brand = ?`;
+SELECT *
+FROM brand b
+JOIN figure f  ON b.id_brand = f.brand_id
+WHERE b.id_brand = ? and f.status=1`;
 
   db.query(query, [idcate], (err, results) => {
     if (err) {

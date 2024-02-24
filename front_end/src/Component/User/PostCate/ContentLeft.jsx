@@ -3,9 +3,6 @@ import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
-import img1 from "../../../assets/user-page/img/blog/asuna-and-yui.png";
-import img2 from "../../../assets/user-page/img/blog/deadpool.png";
-import img3 from "../../../assets/user-page/img/blog/black-clover.png";
 import PostCateAPI from "../../../Service/PostCateAPI.js";
 import { Link } from "react-router-dom";
 export default function ContentLeft() {
@@ -27,6 +24,13 @@ export default function ContentLeft() {
     <div className="col l-4 c-0 m-0">
       <div className="new-content-blog blog2">
         <h2 className="title-new-blog title-blog2">Danh mục blog</h2>
+        <div className="blog-directory-item">
+          <h1>
+            <Link to={'/Blog'} className="blog-directory-link">
+              Tất cả bài viết
+            </Link>
+          </h1>
+        </div>
         {Array.isArray(postcates) &&
           postcates.map((postcate) => (
             <div className="blog-directory-item" key={postcate.id_cate}>
@@ -43,34 +47,14 @@ export default function ContentLeft() {
 
         <div className="blog-directory-item">
           <h1>
-            <a href="/" className="blog-directory-link">
+            <Link to={'/Blog-Detail/3'} className="blog-directory-link">
               Giới thiệu
-            </a>
+            </Link>
           </h1>
         </div>
-        <div className="blog-directory-item">
-          <h1>
-            <a href="/" className="blog-directory-link">
-              Chính sách đổi trả
-            </a>
-          </h1>
-        </div>
-        <div className="blog-directory-item">
-          <h1>
-            <a href="/" className="blog-directory-link">
-              Chính sách bảo mật
-            </a>
-          </h1>
-        </div>
-        <div className="blog-directory-item">
-          <h1>
-            <a href="/" className="blog-directory-link">
-              Điều khoản dịch vụ
-            </a>
-          </h1>
-        </div>
+        
       </div>
-      <div className="new-content-blog">
+      {/* <div className="new-content-blog">
         <h2 className="title-new-blog">bài viết mới nhất</h2>
         <div className="content-blog-left">
           <div className="content-blog-left_img">
@@ -112,7 +96,7 @@ export default function ContentLeft() {
             </span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

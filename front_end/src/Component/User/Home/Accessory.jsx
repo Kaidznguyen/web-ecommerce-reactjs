@@ -55,12 +55,12 @@ export default function Accessory() {
   return (
     <div>
       <div className="index-product-title">
-        <a href="#" id="cosplay">
+        <Link to={'/Figure-cate/15'} id="cosplay">
           Phụ kiện Anime & Game
-        </a>
+        </Link>
       </div>
       <div className="index-product-link">
-        <a href="#">Xem thêm...</a>
+        <Link to={'/Figure-cate/15'}>Xem thêm...</Link>
       </div>
       <div className="slider-product">
         <Slider {...settings}>

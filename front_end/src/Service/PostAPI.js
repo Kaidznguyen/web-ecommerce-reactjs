@@ -19,6 +19,14 @@ const PostAPI = {
       } catch (error) {
         throw new Error(`Error fetching post: ${error.message}`);
       }
+    },
+    async getById(id) {
+      try {
+        const response = await axios.get(`${API_URL}/blog/getById/${id}`);
+        return response.data;
+      } catch (error) {
+        throw new Error(`Error fetching data from API: ${error.message}`);
+      }
     }
   };
 
