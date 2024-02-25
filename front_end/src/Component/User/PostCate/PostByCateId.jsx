@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
@@ -22,7 +22,12 @@ export default function PostByCateId() {
     const [sortType, setSortType] = useState("");
     const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
     const postsPerPage = 1; // Số bài viết trên mỗi trang
+    const topRef = useRef(null);
 
+    useEffect(() => {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, [pageNumber]);
+  
     useEffect(() => {
       async function fetchPostCates() {
         try {
@@ -77,7 +82,7 @@ export default function PostByCateId() {
     const currentPageData = filteredPosts.slice(offset, offset + postsPerPage);
 
     return (
-      <div className="col l-8 c-12 m-12">
+      <div className="col l-8 c-12 m-12" ref={topRef}>
         <SearchPost onSearch={handleSearch} onSortChange={handleSortChange} />
 
         <div className="content-blog">

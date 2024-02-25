@@ -341,4 +341,22 @@
     .blog-detail-title-main{
         line-height: 3rem;
     }
+
+    .search_custom label input{
+        width:250px;
+        margin-right: -150px;
+    }
+    .SearchIcon{
+        right:-90px;
+      }
+
+    .select_input_mobile{
+        margin-left: 0px;
+        min-width: 100px;
+    } 
+
+    .select-input__link{
+        width: 100%;
+        text-align: center;
+    }
 }

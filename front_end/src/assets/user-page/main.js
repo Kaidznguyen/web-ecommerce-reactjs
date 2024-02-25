@@ -78,6 +78,5 @@ $(document).ready(function () {
         $(id_tab_content).fadeIn();
         return false;
     });
-
   
 });

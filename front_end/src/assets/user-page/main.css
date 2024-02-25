@@ -2286,12 +2286,6 @@
     height: 40px;
     font-size: 1.2rem;
 }
-.search-admin label ion-icon{
-    position:absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 2rem;
-}
 .user-admin{
     position: relative;
     min-width: 40px;

@@ -23,10 +23,10 @@ export default function SearchPost({ onSearch, onSortChange }) {
 
   return (
     <div
-      className="home-filter hide-on-mobile-table"
+      className="home-filter"
       style={{ margin: "20px 0" }}
     >
-      <div className="search-admin">
+      <div className="search-admin search_custom">
         <label htmlFor="" id="">
           <input
             className="SearchInput"
@@ -38,8 +38,8 @@ export default function SearchPost({ onSearch, onSortChange }) {
           <FontAwesomeIcon icon={faMagnifyingGlass} className="SearchIcon" />
         </label>
       </div>
-      <div className="select-input" style={{ marginLeft: "150px" }}>
-        <span className="select-input__label">Sắp xếp</span>
+      <div className="select-input select_input_mobile" style={{ marginLeft: "150px" }}>
+        <span className="select-input__label ">Sắp xếp</span>
         <FontAwesomeIcon icon={faAngleDown} />
         <ul className="select-input__list">
           <li className="select-input__items">

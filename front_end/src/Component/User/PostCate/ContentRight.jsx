@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
@@ -21,7 +21,9 @@ export default function ContentRight() {
   const [sortType, setSortType] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const postsPerPage = 2; // Số bài viết trên mỗi trang
+  const topRef = useRef(null);
 
+  // lấy tất cả blog
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -36,7 +38,7 @@ export default function ContentRight() {
 
     fetchPosts();
   }, []);
-
+  // sắp xếp theo cũ mới
   const filterAndSortPosts = (searchText, sortType, data) => {
     let filtered = [...data];
 
@@ -54,25 +56,28 @@ export default function ContentRight() {
 
     setFilteredPosts(filtered);
   };
-
+    const handleSortChange = (type) => {
+      setSortType(type);
+      // Filter and sort posts when sort type changes
+      filterAndSortPosts(searchText, type, posts);
+    };
+  // tìm kiếm
   const handleSearch = (searchText) => {
     setSearchText(searchText);
     // Filter and sort posts when search text changes
     filterAndSortPosts(searchText, sortType, posts);
   };
 
-  const handleSortChange = (type) => {
-    setSortType(type);
-    // Filter and sort posts when sort type changes
-    filterAndSortPosts(searchText, type, posts);
-  };
-
+    // phân trang
+    useEffect(() => {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, [pageNumber]);
   const pageCount = Math.ceil(filteredPosts.length / postsPerPage);
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
-
+  // phần cần filter
   const displayPosts = filteredPosts
     .slice(pageNumber * postsPerPage, (pageNumber + 1) * postsPerPage)
     .map((post) => (
@@ -106,11 +111,11 @@ export default function ContentRight() {
     ));
 
   return (
-    <div className="col l-8 c-12 m-12">
+    <div className="col l-8 c-12 m-12" ref={topRef}>
       <SearchPost onSearch={handleSearch} onSortChange={handleSortChange} />
       <div className="content-blog">
         <h2 className="content-blog-title">tin tức - DShop</h2>
-        <div className="row">
+        <div className="row" >
           {(filteredPosts.length === 0 && !searchText && !sortType) && (
             <div className="not_found">
               Hãy nhập từ khóa hoặc chọn cách sắp xếp để tìm kiếm bài viết
@@ -125,6 +130,7 @@ export default function ContentRight() {
             pageCount={pageCount}
             pageClassName={"pagination-item pagination-item__link"}
             onPageChange={changePage}
+            forcePage={pageNumber}
             containerClassName={"pagination home-product__pagination"}
             previousLinkClassName={"pagination-item pagination-item__link"}
             nextLinkClassName={"pagination-item pagination-item__link"}
