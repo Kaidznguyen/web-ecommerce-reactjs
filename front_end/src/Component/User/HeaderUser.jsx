@@ -10,6 +10,7 @@ import sp1 from  '../../assets/user-page/img/mô hình/luffy.png'
 import sp2 from  '../../assets/user-page/img/mô hình/batman.png'
 import sp3 from  '../../assets/user-page/img/mô hình/naruto.png'
 import nocart from '../../assets/user-page/img/app/no_cart.png'
+import avarta from '../../assets/user-page/img/mô hình/luffy.png'
 import { Link } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 
@@ -89,14 +90,11 @@ export default function HeaderUser() {
                 </li>
                  {/* khi đăng nhập có xuất hiện tên và avarta user  */}
                 <li className="hd__navbar-item hd__navbar-user" >
-                    <img src="./img/mô hình/luffy.png" alt="" className="hd__navbar-user-img"/>
+                    <img src={avarta} alt="" className="hd__navbar-user-img"/>
                     <span className="hd__navbar-user-name">Nguyễn Đạt</span>
                     <ul className="hd__navbar-user-menu">
                         <li className="hd__navbar-user-item">
-                            <a href="admin.html">Tài khoản của tôi</a>
-                        </li>
-                        <li className="hd__navbar-user-item">
-                            <a href="cart.html">Đơn mua</a>
+                            <Link to={'/system/dashboard'}>Quản lý cửa hàng</Link>
                         </li>
                         <li className="hd__navbar-user-item hd__navbar-user-item-separate">
                             <a href="">Đăng xuất</a>

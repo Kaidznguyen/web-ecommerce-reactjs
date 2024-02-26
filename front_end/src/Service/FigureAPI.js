@@ -12,6 +12,14 @@ const FigureAPI = {
       throw new Error(`Error fetching data from API: ${error.message}`);
     }
   },
+  async getAllAdmin() {
+    try {
+      const response = await axios.get(`${API_URL}/figure/getall`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error fetching data from API: ${error.message}`);
+    }
+  },
     async getLatestFigures() {
       try {
         const response = await axios.get(`${API_URL}/figure/getLatestFigures`);

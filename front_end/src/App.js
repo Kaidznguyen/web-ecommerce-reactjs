@@ -8,8 +8,7 @@ import Login from './Component/User/Login';
 import RegisAccount from './Component/User/RegisAccount';
 import DetailFgurePage from './Pages/UserPage/DetailFgurePage';
 import DashboadPage from './Pages/AdminPage/DashboadPage';
-import HeaderAdmin from './Component/Admin/HeaderAdmin'
-import FooterAdmin from './Component/Admin/FooterAdmin';
+import NavLeft from './Component/Admin/NavLeft'
 import Loading from './Component/Loading';
 import PostCatePage from './Pages/UserPage/PostCatePage';
 import PostDetailPage from './Pages/UserPage/PostDetailPage';
@@ -17,6 +16,7 @@ import PostByIdcatePage from './Pages/UserPage/PostByIdcatePage';
 import FigureCatePage from './Pages/UserPage/FigureCatePage';
 import FiguByCatePage from './Pages/UserPage/FiguByCatePage';
 import FiguByBrandPage from './Pages/UserPage/FiguByBrandPage';
+import FigureAdminPage from './Pages/AdminPage/FigureAdminPage';
 function UserLayout() {
   return (
     <>
@@ -52,11 +52,15 @@ function UserLayout() {
 function AdminLayout() {
   return (
     <>
-      <HeaderAdmin />
+      {/* <NavLeft /> */}
       <Routes>
         <Route exact path="/dashboard" element={<DashboadPage />} />
+        <Route exact path="/Figure-Admin" element={<FigureAdminPage />} />
+
+        <Route path="*" element={<ErorrPage />} />
+
       </Routes>
-      <FooterAdmin />
+
     </>
   );
 }

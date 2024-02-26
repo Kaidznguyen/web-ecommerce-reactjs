@@ -2149,7 +2149,7 @@
     position: fixed;
     width: 300px;
     height: 100%;
-    background-color: #f95530;
+    background-image: var(--gradient1-color);
     border-left: 10px var(--border-color);
     transition: 1s;
     overflow: hidden;
@@ -2240,17 +2240,15 @@
     box-shadow: 35px -35px 0 10px var(--white-color);
     pointer-events: none;
 }
+
 .main__admin{
-    position: absolute;
-    width: calc(100% - 300px);
-    left: 300px;
-    min-height: 100vh;
+    margin-left: 48px;
     background-color: var(--white-color);
-    transition: 1s;
 }
-.main__admin.active{
-    width: calc(100% - 60px);
-    left: 60px;
+ .custom_margin{
+    margin-top: -20px;
+    min-height: 100vh;
+
 }
 /* ================================================================================================== */
 /* tab1 admin.html */
@@ -2604,8 +2602,11 @@
 }
 .table__product-admin{
     margin: 20px 0;
-    width: 100%;
+    /* width: 20%; */
 }
+/* .table__product-admin td:nth-child(1){
+    width: 100px !important;
+} */
 .title-card-admin td{
     font-size: 1.8rem;
     text-align: center;
@@ -2619,22 +2620,25 @@
     color: var(--text2-color);
     font-weight: 600;
 }
-.card__admin td:nth-child(5){
+.card__admin td:nth-child(5),.card__admin td:nth-child(6){
     color: var(--primary-color);
 }
-.icon-manipulation i:first-child{
-    color:#0085ba;
+.icon-manipulation button:first-child,.icon-manipulation button:last-child{
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 5px;
+    margin: 0 5px;
+    border: none;
+    background-color: transparent;
+    color: var(--text2-color);
 }
-.icon-manipulation i:last-child{
-    color:var(--primary-color);
-    cursor: pointer;
-    padding: 0 10px;
+.icon-manipulation button:first-child:hover,.icon-manipulation button:last-child:hover{
+    color: var(--primary-color);
 }
 .img-product__admin img{
     width: 100px;
     height: 80px;
+    padding: 0;
+    margin: 0;
 }
 .overplay{
     position: fixed;
@@ -3403,4 +3407,17 @@
     color: var(--primary-color);
     line-height: 4rem;
     text-align: center;
+  }
+  .icon_check{
+    font-size: 2.5rem;
+  }
+  .img-cell {
+    width: 200px; 
+    height: 100px;
+    padding: 70px 0;
+  }
+  
+  .img-cell img {
+    max-width: 100%; /* Đảm bảo hình ảnh không bị tràn ra khỏi cột */
+    height: 100px; /* Giữ tỷ lệ khung hình */
   }
