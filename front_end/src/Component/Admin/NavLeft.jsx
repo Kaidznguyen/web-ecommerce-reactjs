@@ -23,26 +23,26 @@ export default function HeaderAdmin() {
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faUser} /></span>
             <span className="brand">Quản lý tài khoản</span>
         </Link></li>
-        <li className="navigation-item"><a href="#">
+        <li className="navigation-item"><Link  to={'/system/FiguCate-Admin'}>
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
             <span className="brand">Quản lý loại mô hình</span>
-        </a></li>
-        <li className="navigation-item"><a href="#">
+        </Link></li>
+        <li className="navigation-item"><Link to={'/system/Brand-Admin'}>
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
             <span className="brand">Quản lý thương hiệu</span>
-        </a></li>
+        </Link></li>
         <li className="navigation-item"><Link to={'/system/Figure-Admin'}>
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
             <span className="brand">Quản lý mô hình</span>
         </Link></li>
-        <li className="navigation-item"><a href="#">
+        <li className="navigation-item"><Link to={'/system/BlogCate-Admin'}>
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
             <span className="brand">Quản lý loại bài viết</span>
-        </a></li>
-        <li className="navigation-item"><a href="#">
+        </Link></li>
+        <li className="navigation-item"><Link to={'/system/Blog-Admin'}>
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
             <span className="brand">Quản lý bài viết</span>
-        </a></li>
+        </Link></li>
         <li className="navigation-item"><a href="#">
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faComment} /></span>
             <span className="brand">Nhắn tin</span>

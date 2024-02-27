@@ -17,6 +17,11 @@ import FigureCatePage from './Pages/UserPage/FigureCatePage';
 import FiguByCatePage from './Pages/UserPage/FiguByCatePage';
 import FiguByBrandPage from './Pages/UserPage/FiguByBrandPage';
 import FigureAdminPage from './Pages/AdminPage/FigureAdminPage';
+import FiguCateAdminPage from './Pages/AdminPage/FiguCateAdminPage';
+import BrandAdminPage from './Pages/AdminPage/BrandAdminPage';
+import BlogAdminPage from './Pages/AdminPage/BlogAdminPage';
+import BlogCatePage from './Pages/AdminPage/BlogCatePage';
+
 function UserLayout() {
   return (
     <>
@@ -56,7 +61,10 @@ function AdminLayout() {
       <Routes>
         <Route exact path="/dashboard" element={<DashboadPage />} />
         <Route exact path="/Figure-Admin" element={<FigureAdminPage />} />
-
+        <Route exact path="/FiguCate-Admin" element={<FiguCateAdminPage />} />
+        <Route exact path="/Brand-Admin" element={<BrandAdminPage />} />
+        <Route exact path="/Blog-Admin" element={<BlogAdminPage />} />
+        <Route exact path="/BlogCate-Admin" element={<BlogCatePage />} />
         <Route path="*" element={<ErorrPage />} />
 
       </Routes>

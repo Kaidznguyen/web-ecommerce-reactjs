@@ -15,6 +15,17 @@ router.get("/getall", (req, res) => {
     }
   });
 });
+// api lấy all sp
+router.get("/getalladmin", (req, res) => {
+  var sql = "SELECT * FROM brand";
+  db.query(sql, function (err, result) {
+    if (err) {
+      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+    } else {
+      res.send({ status: true, data: result });
+    }
+  });
+});
 // api lấy ảnh
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {

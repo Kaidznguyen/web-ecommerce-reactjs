@@ -15,6 +15,19 @@ router.get("/getall", (req, res) => {
       }
     });
   });
+  // api lấy all sp
+router.get("/getalladmin", (req, res) => {
+  var sql = `SELECT p.*, pc.name_cate
+  FROM post p 
+  JOIN post_category pc ON p.post_category_id = pc.id_cate`;
+  db.query(sql, function (err, result) {
+    if (err) {
+      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+    } else {
+      res.send({ status: true, data: result });
+    }
+  });
+});
 // api lấy ra 3 bài viết mới nhất
 // api lấy ra 8 sản phẩm nổi bật(có thể)
 router.get('/getNewpost', (req, res) => {

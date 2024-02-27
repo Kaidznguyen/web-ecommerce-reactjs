@@ -14,6 +14,18 @@ router.get("/getall", (req, res) => {
     }
   });
 });
+// api lấy all admin sp
+router.get("/getalladmin", (req, res) => {
+  var sql = 
+  `SELECT * FROM figure_category`;
+  db.query(sql, function (err, result) {
+    if (err) {
+      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+    } else {
+      res.send({ status: true, data: result });
+    }
+  });
+});
 // api thêm 1 sp
 router.post('/add', (req, res, next) => {
   const { name_cate, description_cate } = req.body;

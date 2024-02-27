@@ -4,6 +4,14 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8080';
 
 const PostAPI = {
+  async getAllAdmin() {
+    try {
+      const response = await axios.get(`${API_URL}/blog/getalladmin`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error fetching data from API: ${error.message}`);
+    }
+  },
     async Newpost() {
       try {
         const response = await axios.get(`${API_URL}/blog/getNewpost`);

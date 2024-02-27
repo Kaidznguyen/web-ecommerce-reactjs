@@ -17,8 +17,8 @@ import numeral from "numeral";
 
 export default function MainFigure() {
   const [figures, setFigures] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-
+  // const [searchTerm, setSearchTerm] = useState("");
+// lấy tất cả sp
   useEffect(() => {
     async function fetchFigures() {
       try {
@@ -96,7 +96,7 @@ export default function MainFigure() {
             {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()} className="title-card-admin">
                 {headerGroup.headers.map(column => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())} className="header-cell">
                     {column.render('Header')}
                     <span>
                       {column.isSorted
@@ -125,7 +125,7 @@ export default function MainFigure() {
         </table>
         <div style={{marginLeft:'500px'}}>
           <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            Previous
+            Trước
           </button>
           <span>
             Page{' '}
@@ -134,7 +134,7 @@ export default function MainFigure() {
             </strong>{' '}
           </span>
           <button onClick={() => nextPage()} disabled={!canNextPage}>
-            Next
+            Sau
           </button>
         </div>
       </div>

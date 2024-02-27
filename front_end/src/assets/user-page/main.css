@@ -3410,6 +3410,7 @@
   }
   .icon_check{
     font-size: 2.5rem;
+    color: var(--primary-color);
   }
   .img-cell {
     width: 200px; 
@@ -3420,4 +3421,14 @@
   .img-cell img {
     max-width: 100%; /* Đảm bảo hình ảnh không bị tràn ra khỏi cột */
     height: 100px; /* Giữ tỷ lệ khung hình */
+    
   }
+  /* Trong file CSS của bạn */
+.header-cell {
+    font-size: 1.8rem; /* Đặt kích thước phù hợp với mong muốn của bạn */
+    font-weight: bold; /* Tùy chọn: Đặt độ đậm của chữ */
+    color: var(--text2-color);
+    padding: 10px 0;
+    /* Các thuộc tính CSS khác có thể được áp dụng tại đây */
+  }
+  

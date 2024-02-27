@@ -88,12 +88,13 @@ $('.close').click(function(){
     $('.overplay').css('display','none');
 });
 // chuyển đổi them
-const themtoggle= document.querySelector(".dark-light__them");
-themtoggle.addEventListener('click', () =>{
-    document.body.classList.toggle('color__dark-them');
+// const themtoggle= document.querySelector(".dark-light__them");
+// themtoggle.addEventListener('click', () =>{
+//     document.body.classList.toggle('color__dark-them');
 
-    themtoggle.querySelector('span:nth-child(1)').classList.toggle('active_them');
-    themtoggle.querySelector('span:nth-child(2)').classList.toggle('active_them');
-});
-});
+//     themtoggle.querySelector('span:nth-child(1)').classList.toggle('active_them');
+//     themtoggle.querySelector('span:nth-child(2)').classList.toggle('active_them');
+// });
 // dataTable
+});
+
