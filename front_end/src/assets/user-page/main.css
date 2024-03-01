@@ -2561,6 +2561,7 @@
     color: var(--primary-color);
     margin-left: 20px;
     line-height: 4rem;
+    
 }
 .product-management{
     position: relative;
@@ -2574,7 +2575,7 @@
     right: 20px;
     font-size: 1.6rem;
     background-color: #0be881;
-    width: 140px;
+    width: auto;
     padding: 10px 5px;
     color: var(--white-color);
     border-radius: 5px;
@@ -2640,7 +2641,7 @@
     padding: 0;
     margin: 0;
 }
-.overplay{
+.overplay-add,.overplay-edit{
     position: fixed;
     top: 0;
     left: 0;
@@ -2649,6 +2650,16 @@
     background-color: rgba(0, 0, 0, .5);
     display: none;
     animation: fadein  ease-in .3s;;
+}
+.close{
+    font-size: 1.8rem;
+    color: var(--text2-color);
+    margin-top: 10px;
+}
+.close:hover{
+    color: var(--primary-color);
+    cursor: pointer;
+    opacity: .7;
 }
 .form-add__admin{
     position: absolute;
@@ -2734,11 +2745,11 @@
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
-    margin-right: 39px;
-    width: 110px;
+    width: auto;
     text-align: center;
-    float: right;
+    float: left;
     cursor: pointer;
+    border: none;
 }
 /* ================================================================================================== */
 /* tab3 admin.html */
@@ -3431,4 +3442,8 @@
     padding: 10px 0;
     /* Các thuộc tính CSS khác có thể được áp dụng tại đây */
   }
-  
+.checkstatus{
+    margin-top: 7px;
+    width: 20px;
+    height: 20px;
+}

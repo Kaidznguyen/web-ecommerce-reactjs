@@ -13,9 +13,14 @@ import {
   faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import FigureCateAPI from "../../../Service/FigureCateAPI.js";
+import AddFiguCate from "./AddFiguCate.jsx";
+import EditFiguCate from "./EditFiguCate.jsx";
 
 export default function FiguCateList() {
   const [figurecates, setFigureCates] = useState([]);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedPostCate, setSelectedPostCate] = useState(null);
   // lấy tất cả sp
   useEffect(() => {
     async function fetchFigureCates() {
@@ -43,7 +48,7 @@ export default function FiguCateList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button>
+            <button onClick={() => handleEditClick(figurecates)}>
               <FontAwesomeIcon icon={faPen} />
             </button>
             <button>
@@ -83,15 +88,38 @@ export default function FiguCateList() {
     useSortBy,
     usePagination
   );
+  const handleAddClick = () => {
+    setIsAddModalVisible(true);
+  };
+
+  const handleEditClick = (figurecates) => {
+    setSelectedPostCate(figurecates);
+    setIsEditModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsAddModalVisible(false);
+    setIsEditModalVisible(false);
+  };
+
   return (
     <div className="main__admin custom_margin">
       <h1 className="title-tab_admin2-main">Quản lý loại mô hình</h1>
       <div className="product-management">
         <div className="the-record">
-          <div className="title-tab_admin2">
-            <FontAwesomeIcon icon={faCirclePlus} /> Thêm loại
+          <div className="title-tab_admin2" id="add" onClick={handleAddClick}>
+            <FontAwesomeIcon icon={faCirclePlus} /> Thêm loại mô hình
           </div>
         </div>
+        <AddFiguCate
+          isModalVisible={isAddModalVisible}
+          handleCancel={handleCancel}
+        />
+        <EditFiguCate
+          isModalVisible={isEditModalVisible}
+          postcate={selectedPostCate}
+          handleCancel={handleCancel}
+        />
         <table
           {...getTableProps()}
           className="table__product-admin"

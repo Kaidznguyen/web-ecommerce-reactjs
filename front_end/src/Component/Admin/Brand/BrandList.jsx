@@ -13,8 +13,13 @@ import {
   faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import BrandAPI from "../../../Service/BrandAPI.js";
+import AddBrand from "./AddBrand.jsx";
+import EditBrand from "./EditBrand.jsx";
 export default function BrandList() {
   const [brands, setBrands] = useState([]);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedPostCate, setSelectedPostCate] = useState(null);
   // lấy tất cả sp
   useEffect(() => {
     async function fetchBrandes() {
@@ -43,7 +48,7 @@ export default function BrandList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button>
+            <button onClick={() => handleEditClick(brands)}>
               <FontAwesomeIcon icon={faPen} />
             </button>
             <button>
@@ -95,16 +100,34 @@ export default function BrandList() {
     useSortBy,
     usePagination
   );
+  const handleAddClick = () => {
+    setIsAddModalVisible(true);
+  };
+
+  const handleEditClick = (brands) => {
+    setSelectedPostCate(brands);
+    setIsEditModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsAddModalVisible(false);
+    setIsEditModalVisible(false);
+  };
   return (
     <div className="main__admin custom_margin">
       <h1 className="title-tab_admin2-main">Quản lý thương hiệu mô hình</h1>
       <div className="product-management">
         <div className="the-record">
-          <div className="title-tab_admin2">
+          <div className="title-tab_admin2" onClick={handleAddClick}>
             <FontAwesomeIcon icon={faCirclePlus} />
             Thêm thương hiệu
           </div>
         </div>
+        <AddBrand isModalVisible={isAddModalVisible}
+          handleCancel={handleCancel}/>
+        <EditBrand isModalVisible={isEditModalVisible}
+          postcate={selectedPostCate}
+          handleCancel={handleCancel}/>
         <table
           {...getTableProps()}
           className="table__product-admin"

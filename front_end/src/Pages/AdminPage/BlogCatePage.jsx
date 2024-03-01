@@ -7,6 +7,7 @@ import TopBar from "../../Component/Admin/TopBar";
 import NavLeft from "../../Component/Admin/NavLeft";
 import BlogCateList from "../../Component/Admin/BlogCate/BlogCateList.jsx";
 
+
 export default function BlogCatePage() {
     window.scrollTo({
         top: 0,

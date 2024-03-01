@@ -80,21 +80,12 @@ $(document).ready(function () {
     });
 //   ADMIN
 // // hiển thị form thêm sản phẩm
-$('.title-tab_admin2').click(function(){
-    $('.overplay').css('display','flex');
-});
-// đóng form thêm sản phẩm
-$('.close').click(function(){
-    $('.overplay').css('display','none');
-});
-// chuyển đổi them
-// const themtoggle= document.querySelector(".dark-light__them");
-// themtoggle.addEventListener('click', () =>{
-//     document.body.classList.toggle('color__dark-them');
-
-//     themtoggle.querySelector('span:nth-child(1)').classList.toggle('active_them');
-//     themtoggle.querySelector('span:nth-child(2)').classList.toggle('active_them');
+// $('.title-tab_admin2').click(function(){
+//     $('.overplay').css('display','flex');
 // });
-// dataTable
+// // đóng form thêm sản phẩm
+// $('.close').click(function(){
+//     $('.overplay').css('display','none');
+// });
 });
 

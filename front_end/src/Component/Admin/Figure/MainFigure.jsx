@@ -14,10 +14,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import numeral from "numeral";
+import AddFigure from "./AddFigure.jsx";
+import EditFigure from "./EditFigure.jsx";
 
 export default function MainFigure() {
   const [figures, setFigures] = useState([]);
-  // const [searchTerm, setSearchTerm] = useState("");
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedPostCate, setSelectedPostCate] = useState(null);
+
 // lấy tất cả sp
   useEffect(() => {
     async function fetchFigures() {
@@ -44,7 +49,7 @@ export default function MainFigure() {
       'Trạng thái': figure.status === 1 ? <FontAwesomeIcon icon={faCircleCheck} className="icon_check" /> : <FontAwesomeIcon icon={faCircleXmark} className="icon_check" />,
       'Thao tác': (
         <div className="icon-manipulation">
-          <button>
+          <button onClick={() => handleEditClick(figures)}>
             <FontAwesomeIcon icon={faPen} />
           </button>
           <button>
@@ -83,14 +88,31 @@ export default function MainFigure() {
     pageOptions,
     state: { pageIndex, pageSize },
   } = useTable({ columns, data, initialState: { pageIndex: 0, pageSize: 5 } }, useSortBy, usePagination);
+  const handleAddClick = () => {
+    setIsAddModalVisible(true);
+  };
 
+  const handleEditClick = (figures) => {
+    setSelectedPostCate(figures);
+    setIsEditModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsAddModalVisible(false);
+    setIsEditModalVisible(false);
+  };
   return (
     <div className="main__admin custom_margin">
       <h1 className="title-tab_admin2-main">Quản lý mô hình</h1>
       <div className="product-management">
         <div className="the-record">
-          <div className="title-tab_admin2"><FontAwesomeIcon icon={faCirclePlus} /> Thêm mô hình</div>
+          <div className="title-tab_admin2" onClick={handleAddClick}><FontAwesomeIcon icon={faCirclePlus} /> Thêm mô hình</div>
         </div>
+        <AddFigure isModalVisible={isAddModalVisible}
+          handleCancel={handleCancel}/>
+        <EditFigure isModalVisible={isEditModalVisible}
+          postcate={selectedPostCate}
+          handleCancel={handleCancel}/>
         <table {...getTableProps()} className="table__product-admin" style={{ width: '100%' }}>
           <thead>
             {headerGroups.map(headerGroup => (

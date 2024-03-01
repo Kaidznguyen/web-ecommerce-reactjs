@@ -13,8 +13,13 @@ import {
   faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import PostAPI from "../../../Service/PostAPI.js";
+import AddBlog from "./AddBlog.jsx";
+import EditBlog from "./EditBlog.jsx";
 export default function BlogList() {
   const [posts, setPosts] = useState([]);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedPostCate, setSelectedPostCate] = useState(null);
   // lấy tất cả sp
   useEffect(() => {
     async function fetchPosts() {
@@ -45,7 +50,7 @@ export default function BlogList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button>
+            <button onClick={() => handleEditClick(posts)}>
               <FontAwesomeIcon icon={faPen} />
             </button>
             <button>
@@ -91,15 +96,33 @@ export default function BlogList() {
     useSortBy,
     usePagination
   );
+  const handleAddClick = () => {
+    setIsAddModalVisible(true);
+  };
+
+  const handleEditClick = (posts) => {
+    setSelectedPostCate(posts);
+    setIsEditModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsAddModalVisible(false);
+    setIsEditModalVisible(false);
+  };
   return (
     <div className="main__admin custom_margin">
       <h1 className="title-tab_admin2-main">Quản lý bài viết</h1>
       <div className="product-management">
         <div className="the-record">
-          <div className="title-tab_admin2">
+          <div className="title-tab_admin2" onClick={handleAddClick}>
             <FontAwesomeIcon icon={faCirclePlus} /> Thêm bài viết
           </div>
         </div>
+        <AddBlog isModalVisible={isAddModalVisible}
+          handleCancel={handleCancel}/>
+        <EditBlog isModalVisible={isEditModalVisible}
+          postcate={selectedPostCate}
+          handleCancel={handleCancel}/>
         <table
           {...getTableProps()}
           className="table__product-admin"
