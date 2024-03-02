@@ -177,9 +177,9 @@ export default function BrandList() {
             Trước
           </button>
           <span>
-            Page{" "}
+            Trang{" "}
             <strong>
-              {pageIndex + 1} of {pageOptions.length}
+              {pageIndex + 1} / {pageOptions.length}
             </strong>{" "}
           </span>
           <button onClick={() => nextPage()} disabled={!canNextPage}>

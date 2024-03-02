@@ -15,7 +15,8 @@ import {
 import FigureCateAPI from "../../../Service/FigureCateAPI.js";
 import AddFiguCate from "./AddFiguCate.jsx";
 import EditFiguCate from "./EditFiguCate.jsx";
-
+import { Modal, Popconfirm } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 export default function FiguCateList() {
   const [figurecates, setFigureCates] = useState([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -34,6 +35,30 @@ export default function FiguCateList() {
 
     fetchFigureCates();
   }, []);
+  // xóa
+  const handleDeleteClick = (categoryId) => {
+    Modal.confirm({
+      title: "Xác nhận xóa",
+      icon: <ExclamationCircleOutlined />,
+      content: "Bạn có chắc muốn xóa loại mô hình này không?",
+      okText: "Xác nhận",
+      cancelText: "Hủy",
+      onOk: async () => {
+        try {
+          // Gọi service để xóa loại bài viết dựa vào categoryId
+          await FigureCateAPI.delete(categoryId);
+
+          // Reload trang sau khi xóa thành công
+          window.location.reload();
+        } catch (error) {
+          console.error("Error deleting post category:", error);
+        }
+      },
+      onCancel: () => {
+        console.log("Hủy xác nhận xóa");
+      },
+    });
+  };
   const data = React.useMemo(
     () =>
       figurecates.map((cate, index) => ({
@@ -48,10 +73,10 @@ export default function FiguCateList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button onClick={() => handleEditClick(figurecates)}>
+            <button onClick={() => handleEditClick(cate.id_cate)}>
               <FontAwesomeIcon icon={faPen} />
             </button>
-            <button>
+            <button onClick={() => handleDeleteClick(cate.id_cate)}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>
@@ -91,10 +116,12 @@ export default function FiguCateList() {
   const handleAddClick = () => {
     setIsAddModalVisible(true);
   };
-
-  const handleEditClick = (figurecates) => {
-    setSelectedPostCate(figurecates);
+  const handleEditClick = (categoryId) => {
+    const selectedPostCate = figurecates.find(
+      (postcate) => postcate.id_cate === categoryId
+    );
     setIsEditModalVisible(true);
+    setSelectedPostCate(selectedPostCate);
   };
 
   const handleCancel = () => {
@@ -117,7 +144,7 @@ export default function FiguCateList() {
         />
         <EditFiguCate
           isModalVisible={isEditModalVisible}
-          postcate={selectedPostCate}
+          initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
           handleCancel={handleCancel}
         />
         <table
@@ -169,9 +196,9 @@ export default function FiguCateList() {
             Trước
           </button>
           <span>
-            Page{" "}
+            Trang{" "}
             <strong>
-              {pageIndex + 1} of {pageOptions.length}
+              {pageIndex + 1} / {pageOptions.length}
             </strong>{" "}
           </span>
           <button onClick={() => nextPage()} disabled={!canNextPage}>

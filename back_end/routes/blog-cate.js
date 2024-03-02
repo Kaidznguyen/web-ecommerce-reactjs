@@ -28,11 +28,11 @@ router.get("/getalladmin", (req, res) => {
 });
 // api thêm 1 sp
 router.post('/add', (req, res, next) => {
-  const { name_cate, description_cate } = req.body;
+  const { name_cate, description_cate,status } = req.body;
 
-  let sql = "INSERT INTO post_category (name_cate,description_cate) values (?,?)";
+  let sql = "INSERT INTO post_category (name_cate,description_cate,status) values (?,?,?)";
 
-  db.query(sql, [name_cate, description_cate], (error, results) => {
+  db.query(sql, [name_cate, description_cate,status], (error, results) => {
       if (error) {
           res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu',error:error });
       } else {
@@ -63,10 +63,10 @@ router.get('/getById/:id', (req, res) => {
 // api sửa sp
 router.put('/update/:id', (req, res) => {
   const categoryId = req.params.id;
-  const { name_cate, description_cate } = req.body;
+  const { name_cate, description_cate,status } = req.body;
 
-  const query = 'UPDATE post_category SET name_cate=?, description_cate=? WHERE id_cate=?';
-  db.query(query, [name_cate, description_cate, categoryId], (error, results) => {
+  const query = 'UPDATE post_category SET name_cate=?, description_cate=?, status=? WHERE id_cate=?';
+  db.query(query, [name_cate, description_cate,status, categoryId], (error, results) => {
       if (error) {
           res.status(500).json({ error: err });
       } else {

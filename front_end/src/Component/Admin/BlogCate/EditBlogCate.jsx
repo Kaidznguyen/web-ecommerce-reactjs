@@ -1,20 +1,38 @@
 import React from "react";
-import { Modal, Form, Input, Checkbox } from "antd";
+import { Modal, Form, Input, Checkbox, notification } from "antd";
 import "../../../assets/user-page/main.css";
+import PostCateAPI from "../../../Service/PostCateAPI.js";
 
 const EditBlogCate = ({ isModalVisible, handleCancel, initialValue }) => {
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log("Received values:", values);
-    // Thực hiện các xử lý khi submit form
+  const onFinish = async (values) => {
+    try {
+      const status = values.status ? 1 : 0;
+      // Gọi hàm sửa từ service
+      await PostCateAPI.edit(initialValue.id_cate, values.name_cate, values.description_cate, status);
+       // Hiển thị thông báo thành công
+       notification.open({
+        message: "Sửa loại bài viết thành công!!",
+        duration: 1,
+        onClose: () => window.location.reload(), // Reload trang khi thông báo đóng
+      });
+
+      // Đóng modal sau khi sửa thành công
+      handleCancel();
+    } catch (error) {
+      notification.error({
+        message: "Sửa loại bài viết thất bại! Vui lòng thử lại sau!!",
+      });
+      console.log("lỗi", error);
+    }
   };
 
   return (
     <div>
       <Modal
         title="Chỉnh sửa loại bài viết"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
@@ -38,7 +56,7 @@ const EditBlogCate = ({ isModalVisible, handleCancel, initialValue }) => {
             <Checkbox>Trạng thái</Checkbox>
           </Form.Item>
           <Form.Item>
-            <button className="btn-add-form__admin" type="primary" htmlType="submit">
+            <button className="btn-add-form__admin" type="primary" htmltype="submit">
               Lưu chỉnh sửa
             </button>
           </Form.Item>

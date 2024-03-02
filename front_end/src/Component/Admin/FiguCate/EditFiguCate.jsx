@@ -1,13 +1,30 @@
 import React from "react";
-import { Modal, Form, Input, Checkbox } from "antd";
+import { Modal, Form, Input, Checkbox, notification } from "antd";
 import "../../../assets/user-page/main.css";
-
+import FiguCateAPI from "../../../Service/FigureCateAPI.js";
 const EditFiguCate = ({ isModalVisible, handleCancel, initialValue }) => {
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log("Received values:", values);
-    // Thực hiện các xử lý khi submit form
+  const onFinish = async (values) => {
+    try {
+      const status = values.status ? 1 : 0;
+      // Gọi hàm sửa từ service
+      await FiguCateAPI.edit(initialValue.id_cate, values.name_cate, values.description_cate, status);
+       // Hiển thị thông báo thành công
+       notification.open({
+        message: "Sửa loại mô hình thành công!!",
+        duration: 1,
+        onClose: () => window.location.reload(), // Reload trang khi thông báo đóng
+      });
+
+      // Đóng modal sau khi sửa thành công
+      handleCancel();
+    } catch (error) {
+      notification.error({
+        message: "Sửa loại mô hình thất bại! Vui lòng thử lại sau!!",
+      });
+      console.log("lỗi", error);
+    }
   };
 
   return (

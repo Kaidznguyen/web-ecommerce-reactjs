@@ -39,7 +39,7 @@ const upload = multer({ storage: storage });
 // api thêm 1 sp
 router.post('/add', upload.single('img_brand'), (req, res) => {
   try {
-    const { name_brand, description_brand } = req.body;
+    const { name_brand, description_brand,status } = req.body;
 
     db.query('SELECT * FROM brand WHERE name_brand = ?', name_brand, (selectErr, selectResult) => {
       if (selectErr) {
@@ -59,6 +59,7 @@ router.post('/add', upload.single('img_brand'), (req, res) => {
         name_brand: name_brand,
         img_brand: img,
         description_brand: description_brand,
+        status: status,
       };
 
       db.query('INSERT INTO brand SET ?', brand, (insertErr, insertResult) => {
@@ -79,7 +80,7 @@ router.post('/add', upload.single('img_brand'), (req, res) => {
 router.put('/update/:Id', upload.single('img'), (req, res) => {
   try {
       const Id = req.params.Id; // Lấy productId từ URL
-      const { name_brand, description_brand  } = req.body;
+      const { name_brand, description_brand,status  } = req.body;
 
       // Kiểm tra xem sản phẩm có tồn tại không
       db.query('SELECT * FROM brand WHERE id_brand = ?', Id, (selectErr, selectResult) => {
@@ -99,6 +100,7 @@ router.put('/update/:Id', upload.single('img'), (req, res) => {
               name_brand: name_brand || selectResult[0].name_brand,
               img_brand: img,
               description_brand: description_brand || selectResult[0].description_brand,
+              status: status || selectResult[0].status,
           };
 
           db.query('UPDATE brand SET ? WHERE id_brand = ?', [updatedProduct, Id], (updateErr, updateResult) => {
