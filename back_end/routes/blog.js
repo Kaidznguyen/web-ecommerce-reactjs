@@ -115,7 +115,7 @@ const upload = multer({ storage: storage });
 // api thêm sản phẩm
 router.post('/add', upload.single('img'), (req, res) => {
   try {
-    const { title,description,content,post_category_id,author } = req.body;
+    const { title,description,content,post_category_id,author,status } = req.body;
 
     db.query('SELECT * FROM post WHERE title = ?', title, (selectErr, selectResult) => {
       if (selectErr) {
@@ -138,6 +138,7 @@ router.post('/add', upload.single('img'), (req, res) => {
         content:content,
         post_category_id: post_category_id, 
         author:author,
+        status:status,
       };
 
       db.query('INSERT INTO post SET ?', figure, (insertErr, insertResult) => {
@@ -158,7 +159,7 @@ router.post('/add', upload.single('img'), (req, res) => {
 router.put('/update/:Id', upload.single('img'), (req, res) => {
   try {
       const Id = req.params.Id; // Lấy productId từ URL
-      const { title,description,content,post_category_id,author } = req.body;
+      const { title,description,content,post_category_id,author,status } = req.body;
 
       // Kiểm tra xem sản phẩm có tồn tại không
       db.query('SELECT * FROM post WHERE id = ?', Id, (selectErr, selectResult) => {
@@ -181,6 +182,7 @@ router.put('/update/:Id', upload.single('img'), (req, res) => {
               content: content || selectResult[0].content,
               post_category_id: post_category_id || selectResult[0].post_category_id,
               author: author || selectResult[0].author,
+              status:status || selectResult[0].status,
           };
 
           db.query('UPDATE post SET ? WHERE id = ?', [updatedProduct, Id], (updateErr, updateResult) => {

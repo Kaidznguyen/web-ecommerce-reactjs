@@ -124,7 +124,7 @@ const upload = multer({ storage: storage });
 
 router.post('/add', upload.single('img'), (req, res) => {
   try {
-    const { name, description, price, promotionprice, quantity, figure_category_id, brand_id, warranty } = req.body;
+    const { name, description, price, promotionprice, quantity, figure_category_id, brand_id, warranty,status } = req.body;
 
     db.query('SELECT * FROM figure WHERE name = ?', name, (selectErr, selectResult) => {
       if (selectErr) {
@@ -150,6 +150,7 @@ router.post('/add', upload.single('img'), (req, res) => {
         figure_category_id: figure_category_id,
         brand_id: brand_id,
         warranty: warranty,
+        status:status,
       };
 
       db.query('INSERT INTO figure SET ?', figure, (insertErr, insertResult) => {
@@ -170,7 +171,7 @@ router.post('/add', upload.single('img'), (req, res) => {
 router.put('/update/:Id', upload.single('img'), (req, res) => {
   try {
     const Id = req.params.Id; // Lấy productId từ URL
-    const { name, description, price, promotionprice, quantity, figure_category_id, brand_id, warranty } = req.body;
+    const { name, description, price, promotionprice, quantity, figure_category_id, brand_id, warranty,status } = req.body;
 
     // Kiểm tra xem sản phẩm có tồn tại không
     db.query('SELECT * FROM figure WHERE id = ?', Id, (selectErr, selectResult) => {
@@ -196,7 +197,9 @@ router.put('/update/:Id', upload.single('img'), (req, res) => {
         price: price || selectResult[0].price,
         figure_category_id: figure_category_id || selectResult[0].figure_category_id,
         brand_id: brand_id || selectResult[0].brand_id,
-        warranty: warranty || selectResult[0].warranty
+        warranty: warranty || selectResult[0].warranty,
+        status: status || selectResult[0].status
+
       };
 
       db.query('UPDATE figure SET ? WHERE id = ?', [updatedProduct, Id], (updateErr, updateResult) => {

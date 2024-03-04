@@ -15,6 +15,8 @@ import {
 import BrandAPI from "../../../Service/BrandAPI.js";
 import AddBrand from "./AddBrand.jsx";
 import EditBrand from "./EditBrand.jsx";
+import { Modal, Popconfirm } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 export default function BrandList() {
   const [brands, setBrands] = useState([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -33,6 +35,30 @@ export default function BrandList() {
 
     fetchBrandes();
   }, []);
+    // xóa
+    const handleDeleteClick = (categoryId) => {
+      Modal.confirm({
+        title: "Xác nhận xóa",
+        icon: <ExclamationCircleOutlined />,
+        content: "Bạn có chắc muốn xóa loại bài viết này không?",
+        okText: "Xác nhận",
+        cancelText: "Hủy",
+        onOk: async () => {
+          try {
+            // Gọi service để xóa loại bài viết dựa vào categoryId
+            await BrandAPI.delete(categoryId);
+  
+            // Reload trang sau khi xóa thành công
+            window.location.reload();
+          } catch (error) {
+            console.error("Error deleting post category:", error);
+          }
+        },
+        onCancel: () => {
+          console.log("Hủy xác nhận xóa");
+        },
+      });
+    };
   const data = React.useMemo(
     () =>
       brands.map((brand, index) => ({
@@ -48,10 +74,10 @@ export default function BrandList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button onClick={() => handleEditClick(brands)}>
+            <button onClick={() => handleEditClick(brand.id_brand)}>
               <FontAwesomeIcon icon={faPen} />
             </button>
-            <button>
+            <button onClick={() => handleDeleteClick(brand.id_brand)}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>
@@ -104,9 +130,12 @@ export default function BrandList() {
     setIsAddModalVisible(true);
   };
 
-  const handleEditClick = (brands) => {
-    setSelectedPostCate(brands);
+  const handleEditClick = (brandId) => {
+    const selectedPostCate = brands.find(
+      (brand) => brand.id_brand === brandId
+    );
     setIsEditModalVisible(true);
+    setSelectedPostCate(selectedPostCate);
   };
 
   const handleCancel = () => {
@@ -125,8 +154,8 @@ export default function BrandList() {
         </div>
         <AddBrand isModalVisible={isAddModalVisible}
           handleCancel={handleCancel}/>
-        <EditBrand isModalVisible={isEditModalVisible}
-          postcate={selectedPostCate}
+        <EditBrand  isModalVisible={isEditModalVisible}
+          initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
           handleCancel={handleCancel}/>
         <table
           {...getTableProps()}

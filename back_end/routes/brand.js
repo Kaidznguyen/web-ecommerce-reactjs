@@ -77,7 +77,7 @@ router.post('/add', upload.single('img_brand'), (req, res) => {
   }
 });
 // api sửa sp
-router.put('/update/:Id', upload.single('img'), (req, res) => {
+router.put('/update/:Id', upload.single('img_brand'), (req, res) => {
   try {
       const Id = req.params.Id; // Lấy productId từ URL
       const { name_brand, description_brand,status  } = req.body;
