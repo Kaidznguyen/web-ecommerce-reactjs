@@ -6,21 +6,17 @@ import BrandAPI from "../../../Service/BrandAPI.js";
 
 const AddBrand = ({ isModalVisible, handleCancel }) => {
   const [form] = Form.useForm();
-  const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState(null);
+
 
   const onFinish = async (values) => {
     try {
-      setUploading(true);
-  
       const formData = new FormData();
       formData.append('name_brand', values.name_brand);
       formData.append('description_brand', values.description_brand);
       formData.append('status', values.status ? 1 : 0);
-  
-      const fileList = values.img_brand || []; // Đảm bảo fileList không bị null hoặc undefined
-      fileList.forEach((file) => {
-        formData.append('img_brand', file.originFileObj);
-      });
+      formData.append("img_brand", image);
+
 
       
       await BrandAPI.add(formData);
@@ -37,21 +33,13 @@ const AddBrand = ({ isModalVisible, handleCancel }) => {
         message: "Thêm thương hiệu thất bại! Vui lòng thử lại sau!!",
       });
       console.log("lỗi", error);
-    } finally {
-      setUploading(false);
     }
   };
   
-  
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
+
   // Hàm xử lý khi người dùng chọn file
-  const beforeUpload = (file) => {
-    return true; // Return true để cho phép upload
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
   return (
@@ -70,19 +58,15 @@ const AddBrand = ({ isModalVisible, handleCancel }) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-  label="Ảnh"
-  name="img_brand"
-  rules={[{ required: true, message: "Hãy chọn ảnh!" }]}
-  valuePropName="fileList"
-  getValueFromEvent={normFile}
->
-  <Upload beforeUpload={beforeUpload} fileList={[]}>
-    <Button icon={<UploadOutlined />} disabled={uploading}>
-      {uploading ? 'Đang tải lên...' : 'Chọn ảnh'}
-    </Button>
-  </Upload>
-</Form.Item>
+          <div className="select_img">
+            <span>Ảnh:</span>
+            <input
+              type="file"
+              name="img_brand"
+              id="img-detail__admin"
+              onChange={handleImageChange}
+            />
+          </div>
 
           <Form.Item
             label="Mô tả"
@@ -98,7 +82,7 @@ const AddBrand = ({ isModalVisible, handleCancel }) => {
             <Checkbox>Trạng thái</Checkbox>
           </Form.Item>
           <Form.Item>
-            <button className="btn-add-form__admin" type="primary" htmltype="submit" disabled={uploading}>
+            <button className="btn-add-form__admin" type="primary" htmltype="submit">
               Thêm
             </button>
           </Form.Item>

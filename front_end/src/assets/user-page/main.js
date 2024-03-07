@@ -63,29 +63,7 @@ $(document).ready(function () {
         $('.login,.register').addClass('hidden__user')
         $('.hd__navbar-user').addClass('active__user')
     });
-    // hàm ẩn tab_content
-    $('.tabs-content-item').hide();
-    // hàm hiển thị tab_content đầu tiên
-    $('.tabs-content-item:first-child').fadeIn();
-    // hàm chuyển class active 
-    $('.tabs-item').click(function () {
-        // active nav tabs
-        $('.tabs-item').removeClass('active');
-        $(this).addClass('active');
-        // show tabs content item
-        let id_tab_content = $(this).children('a').attr('href');
-        $('.tabs-content-item').hide();
-        $(id_tab_content).fadeIn();
-        return false;
-    });
-//   ADMIN
-// // hiển thị form thêm sản phẩm
-// $('.title-tab_admin2').click(function(){
-//     $('.overplay').css('display','flex');
-// });
-// // đóng form thêm sản phẩm
-// $('.close').click(function(){
-//     $('.overplay').css('display','none');
-// });
+
+
 });
 

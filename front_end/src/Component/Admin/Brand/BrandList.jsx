@@ -63,7 +63,7 @@ export default function BrandList() {
     () =>
       brands.map((brand, index) => ({
         TT: index + 1,
-        Ảnh: <img src={"http://localhost:8080/" + brand.img_brand} alt="" />,
+        Ảnh: <img src={"http://localhost:8080/" + brand.img_brand} alt="" style={{marginLeft:'50px'}}/>,
         "Tên thương hiệu": brand.name_brand,
         "Mô tả": brand.description_brand,
         "Trạng thái":

@@ -73,10 +73,10 @@ export default function AllFigure() {
   const handlePriceRangeSelectChange = (minPrice, maxPrice) => {
     const filteredFigures = originalFigures.filter(
       (figure) =>
-        figure.promotionprice >= minPrice && figure.promotionprice <= maxPrice
+        figure.price >= minPrice && figure.price <= maxPrice
     );
     // Sắp xếp filteredFigures theo giá tiền tăng dần
-    filteredFigures.sort((a, b) => a.promotionprice - b.promotionprice);
+    filteredFigures.sort((a, b) => a.price - b.price);
     setFigures(filteredFigures);
     setShowNotFound(filteredFigures.length === 0); // Hiển thị thông báo nếu không có kết quả sau khi sắp xếp
   };

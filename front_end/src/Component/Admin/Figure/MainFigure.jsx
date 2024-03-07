@@ -16,7 +16,8 @@ import FigureAPI from "../../../Service/FigureAPI.js";
 import numeral from "numeral";
 import AddFigure from "./AddFigure.jsx";
 import EditFigure from "./EditFigure.jsx";
-
+import { Modal, Popconfirm } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 export default function MainFigure() {
   const [figures, setFigures] = useState([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -37,11 +38,34 @@ export default function MainFigure() {
 
     fetchFigures();
   }, []);
+ // xóa
+ const handleDeleteClick = (categoryId) => {
+  Modal.confirm({
+    title: "Xác nhận xóa",
+    icon: <ExclamationCircleOutlined />,
+    content: "Bạn có chắc muốn xóa mô hình này không?",
+    okText: "Xác nhận",
+    cancelText: "Hủy",
+    onOk: async () => {
+      try {
+        // Gọi service để xóa loại bài viết dựa vào categoryId
+        await FigureAPI.delete(categoryId);
 
+        // Reload trang sau khi xóa thành công
+        window.location.reload();
+      } catch (error) {
+        console.error("Error deleting post category:", error);
+      }
+    },
+    onCancel: () => {
+      console.log("Hủy xác nhận xóa");
+    },
+  });
+};
   const data = React.useMemo(
     () => figures.map((figure, index) => ({
       TT: index + 1,
-      Ảnh: <img src={"http://localhost:8080/" + figure.img} alt="" />,
+      Ảnh: <img src={"http://localhost:8080/" + figure.img} alt="" style={{marginLeft:'40px'}}/>,
       'Phân loại': figure.name_cate,
       'Tên sản phẩm': figure.name,
       Giá: numeral(figure.price).format("$0,0"),
@@ -49,10 +73,10 @@ export default function MainFigure() {
       'Trạng thái': figure.status === 1 ? <FontAwesomeIcon icon={faCircleCheck} className="icon_check" /> : <FontAwesomeIcon icon={faCircleXmark} className="icon_check" />,
       'Thao tác': (
         <div className="icon-manipulation">
-          <button onClick={() => handleEditClick(figures)}>
+          <button onClick={() => handleEditClick(figure.id)}>
             <FontAwesomeIcon icon={faPen} />
           </button>
-          <button>
+          <button  onClick={() => handleDeleteClick(figure.id)}>
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>
@@ -92,10 +116,14 @@ export default function MainFigure() {
     setIsAddModalVisible(true);
   };
 
-  const handleEditClick = (figures) => {
-    setSelectedPostCate(figures);
+  const handleEditClick = (figureId) => {
+    const selectedPostCate = figures.find(
+      (figure) => figure.id === figureId
+    );
     setIsEditModalVisible(true);
+    setSelectedPostCate(selectedPostCate);
   };
+
 
   const handleCancel = () => {
     setIsAddModalVisible(false);
@@ -111,7 +139,7 @@ export default function MainFigure() {
         <AddFigure isModalVisible={isAddModalVisible}
           handleCancel={handleCancel}/>
         <EditFigure isModalVisible={isEditModalVisible}
-          postcate={selectedPostCate}
+          initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
           handleCancel={handleCancel}/>
         <table {...getTableProps()} className="table__product-admin" style={{ width: '100%' }}>
           <thead>

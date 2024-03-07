@@ -4,13 +4,10 @@ import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
-import img1 from "../../../assets/user-page/img/ctsp1/zoro-tam-long2.png";
-import img2 from "../../../assets/user-page/img/ctsp1/zoro-tam-long3.png";
-import img3 from "../../../assets/user-page/img/ctsp1/zoro-tam-long4.png";
-import img4 from "../../../assets/user-page/img/ctsp1/zoro-tam-long5.png";
-import img5 from "../../../assets/user-page/img/ctsp1/zoro-tam-long6.png";
-import img6 from "../../../assets/user-page/img/mô hình/zoro_tamlong.png";
 import FigureAPI from "../../../Service/FigureAPI.js";
+import { Tabs } from 'antd';
+const { TabPane } = Tabs;
+
 export default function TabContent() {
   const { id } = useParams();
   const [detail, setFigure] = useState({});
@@ -29,19 +26,9 @@ export default function TabContent() {
   }, [id]);
   return (
     <div className="tabs">
-      <ul className="nav-tabs">
-        <li className="tabs-item active">
-          <a href="#tab1">Mô tả sản phẩm</a>
-        </li>
-        <li className="tabs-item">
-          <a href="#tab2">Hướng dẫn mua hàng</a>
-        </li>
-        <li className="tabs-item">
-          <a href="#tab3">Đánh giá</a>
-        </li>
-      </ul>
-      <div className="tabs-content">
-        <div className="tabs-content-item" id="tab1">
+      <Tabs defaultActiveKey="1" className="nav-tabs">
+        <TabPane tab="Mô tả sản phẩm" key="1" className="tabs-item">
+          <div class="tabs-content">
           <span className="title-tab">
             Xin chào bạn, bạn đang tìm kiếm cho mình mô hình {detail.name}. Một
             mô hình chuẩn anime, giá cả hợp lý, kích thước đúng tỉ lệ và giúp
@@ -107,9 +94,13 @@ export default function TabContent() {
               </li>
             </ul>
           </div>
-        </div>
-        <div className="tabs-content-item" id="tab2">
-          <h2 className="tabs-content-title">thời gian đặt hàng nhanh</h2>
+          </div>
+
+        
+        </TabPane>
+        <TabPane tab="Hướng dẫn mua hàng" key="2" className="tabs-item">
+<div class="tabs-content">
+<h2 className="tabs-content-title">thời gian đặt hàng nhanh</h2>
           <div className="tabs-content_subtit">
             <p>
               DShop luôn là đơn vị đi đầu khi bán ra thị trường những mẫu mô
@@ -198,9 +189,13 @@ export default function TabContent() {
               </li>
             </ul>
           </div>
-        </div>
-        <div className="tabs-content-item" id="tab3">
-          <h2 className="tabs-content-title">đánh giá</h2>
+</div>
+
+
+        </TabPane>
+        <TabPane tab="Bình luận" key="3" className="tabs-item">
+<div class="tabs-content">
+   <h2 className="tabs-content-title">đánh giá</h2>
           <span className="title-tab">Chưa có đánh giá</span>
           <div className="tabs-content-form">
             <input
@@ -210,8 +205,12 @@ export default function TabContent() {
             />
             <button className="btn btn--primary help">Đăng bình luận</button>
           </div>
-        </div>
-      </div>
+</div>
+         
+
+        </TabPane>
+      </Tabs>
     </div>
   );
 }
+

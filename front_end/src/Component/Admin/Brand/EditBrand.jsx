@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState} from "react";
 import { Modal, Form, Input, Checkbox, Upload, Button, notification } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "../../../assets/user-page/main.css";
@@ -6,6 +6,7 @@ import BrandAPI from "../../../Service/BrandAPI.js";
 
 const EditBrand = ({ isModalVisible, handleCancel, initialValue }) => {
   const [form] = Form.useForm();
+  const [image, setImage] = useState(null);
 
   const onFinish = async (values) => {
     try {
@@ -14,12 +15,9 @@ const EditBrand = ({ isModalVisible, handleCancel, initialValue }) => {
       formData.append('name_brand', values.name_brand);
       formData.append('description_brand', values.description_brand);
       formData.append('status', values.status ? 1 : 0);
-
-      // Nếu có chọn ảnh mới, thêm vào formData
-      if (values.img_brand && values.img_brand.file) {
-        formData.append('img_brand', values.img_brand.file.originFileObj);
+      if (image) {
+        formData.append("img_brand", image);
       }
-
       // Gọi service để gửi yêu cầu PUT
       await BrandAPI.update(initialValue.id_brand, formData);
 
@@ -42,10 +40,9 @@ const EditBrand = ({ isModalVisible, handleCancel, initialValue }) => {
   };
 
   // Hàm xử lý khi người dùng chọn file
-  const beforeUpload = (file) => {
-    return true; // Return true để cho phép upload
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
-
   return (
     <div>
       <Modal
@@ -67,15 +64,15 @@ const EditBrand = ({ isModalVisible, handleCancel, initialValue }) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Ảnh"
-            name="img_brand"
-            rules={[{ required: true, message: "Hãy chọn ảnh!" }]}
-          >
-            <Upload beforeUpload={beforeUpload} fileList={[]}>
-              <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-            </Upload>
-          </Form.Item>
+          <div className="select_img">
+            <span>Ảnh:</span>
+            <input
+              type="file"
+              name="img_brand"
+              id="img-detail__admin"
+              onChange={handleImageChange}
+            />
+          </div>
           <Form.Item label="Mô tả" name="description_brand">
             <Input.TextArea />
           </Form.Item>

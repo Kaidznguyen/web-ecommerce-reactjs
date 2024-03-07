@@ -1,21 +1,103 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Checkbox, Upload, Button, Select } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import {
+  Modal,
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  Select,
+  notification,
+} from "antd";
 import "../../../assets/user-page/main.css";
-
+import FigureAPI from "../../../Service/FigureAPI.js";
+import BrandAPI from "../../../Service/BrandAPI.js";
+import FiguCateAPI from "../../../Service/FigureCateAPI.js";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const { Option } = Select;
 
 const EditFigure = ({ isModalVisible, handleCancel, initialValue }) => {
   const [form] = Form.useForm();
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
+  const [figucates, setFiguCates] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [currentImage, setCurrentImage] = useState(null);
+// lấy data figucate
+useEffect(() => {
+  async function fetchFiguCates() {
+    try {
+      const data = await FiguCateAPI.getAll();
+      setFiguCates(data.data);
+    } catch (error) {
+      console.error("Error fetching post categories: ", error);
+    }
+  }
 
-  const onFinish = (values) => {
-    console.log("Received values:", values);
-    // Thực hiện các xử lý khi submit form
+  fetchFiguCates();
+}, []);
+// lấy data brand
+useEffect(() => {
+  async function fetchBrands() {
+    try {
+      const data = await BrandAPI.getAll();
+      setBrands(data.data);
+    } catch (error) {
+      console.error("Error fetching post categories: ", error);
+    }
+  }
+
+  fetchBrands();
+}, []);
+  // Hiển thị dữ liệu cho mô tả và ảnh
+  useEffect(() => {
+    if (initialValue) {
+      setDescription(initialValue.description);
+      setCurrentImage(initialValue.img); // Gán ảnh hiện tại của bài viết vào state
+    }
+  }, [initialValue]);
+  const onFinish = async (values) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("description", description);
+      formData.append("price", values.price);
+      formData.append("promotionprice", values.promotionprice);
+      formData.append("quantity", values.quantity);
+      formData.append("figure_category_id", values.figure_category_id);
+      formData.append("brand_id", values.brand_id);
+      formData.append("warranty", values.warranty);
+      formData.append("status", values.status ? 1 : 0);
+
+      // Kiểm tra xem người dùng có chọn ảnh mới không
+      if (image) {
+        formData.append("img", image);
+      } else {
+        formData.append("img", currentImage); // Sử dụng ảnh hiện tại nếu không có ảnh mới
+      }
+
+      await FigureAPI.update(initialValue.id, formData);
+
+      // Hiển thị thông báo thành công
+      notification.open({
+        message: "Chỉnh sửa mô hình thành công!!",
+        duration: 1,
+        onClose: () => window.location.reload(), // Tải lại trang khi thông báo đóng
+      });
+
+      // Đóng modal sau khi chỉnh sửa thành công
+      handleCancel();
+    } catch (error) {
+      console.error("Error updating blog:", error);
+      notification.error({
+        message: "Error",
+        description: "Đã xảy ra lỗi khi cập nhật mô hình!",
+      });
+    }
   };
-// Hàm xử lý khi người dùng chọn file
-const beforeUpload = (file) => {
-    // Validate file type, size, ...
-    return true; // Return true để cho phép upload
+  // Xử lý khi người dùng chọn file ảnh
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
   return (
     <div>
@@ -38,21 +120,28 @@ const beforeUpload = (file) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Ảnh"
-            name="img"
-            rules={[{ required: true, message: "Hãy chọn ảnh!" }]}
-          >
-            <Upload beforeUpload={beforeUpload} maxCount={1}>
-              <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-            </Upload>
-          </Form.Item>
+          <div className="select_img">
+            <span>Ảnh:</span>
+            <input
+              type="file"
+              name="img"
+              id="img-detail__admin"
+              onChange={handleImageChange}
+            />
+          </div>
           <Form.Item
             label="Mô tả"
             name="description"
             // rules={[{ required: true, message: "Hãy nhập mô tả!" }]}
           >
-            <Input.TextArea />
+            <CKEditor
+              editor={ClassicEditor}
+              data={description}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setDescription(data);
+              }}
+            />
           </Form.Item>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Form.Item
@@ -80,8 +169,12 @@ const beforeUpload = (file) => {
               style={{ flex: '1' }}
             >
               <Select>
-                <Option value="category1">Category 1</Option>
-                <Option value="category2">Category 2</Option>
+              {Array.isArray(figucates) &&
+                  figucates.map((figucate) => (
+                    <Option key={figucate.id_cate} value={figucate.id_cate}>
+                      {figucate.name_cate}
+                    </Option>
+                  ))}
               </Select>
             </Form.Item>
             <Form.Item
@@ -91,8 +184,12 @@ const beforeUpload = (file) => {
               style={{ flex: '1' }}
             >
               <Select>
-                <Option value="category1">Category 1</Option>
-                <Option value="category2">Category 2</Option>
+              {Array.isArray(brands) &&
+                  brands.map((brand) => (
+                    <Option key={brand.id_brand} value={brand.id_brand}>
+                      {brand.name_brand}
+                    </Option>
+                  ))}
               </Select>
             </Form.Item>
           </div>

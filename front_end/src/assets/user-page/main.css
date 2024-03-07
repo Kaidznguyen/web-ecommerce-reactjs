@@ -1785,9 +1785,9 @@
 /* =========================================================================== */
 /* css cho phần mô tả sản phẩm và các thông tin liên quan */
 .tabs{
-    border: 1px solid var(--border-color);
+    /* border: 1px solid var(--border-color);
     border-top: none;
-    border-right: none;
+    border-right: none; */
     position: relative;
     margin-top: 50px;
 }
@@ -2717,6 +2717,7 @@
 }
 #img-detail__admin{
     border: 2px dashed var(--border-color);
+    margin-left: 10px;
 }
 .number-detail-admin-content{
     display: flex;
@@ -3447,3 +3448,10 @@
     width: 20px;
     height: 20px;
 }
+.select_img{
+    display: flex;
+    margin: 20px;
+}
+/* .select_img input{
+    margin-right:50px;
+} */

@@ -15,6 +15,8 @@ import {
 import PostAPI from "../../../Service/PostAPI.js";
 import AddBlog from "./AddBlog.jsx";
 import EditBlog from "./EditBlog.jsx";
+import { Modal, Popconfirm } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 export default function BlogList() {
   const [posts, setPosts] = useState([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -33,6 +35,30 @@ export default function BlogList() {
 
     fetchPosts();
   }, []);
+      // xóa
+      const handleDeleteClick = (categoryId) => {
+        Modal.confirm({
+          title: "Xác nhận xóa",
+          icon: <ExclamationCircleOutlined />,
+          content: "Bạn có chắc muốn xóa bài viết này không?",
+          okText: "Xác nhận",
+          cancelText: "Hủy",
+          onOk: async () => {
+            try {
+              // Gọi service để xóa loại bài viết dựa vào categoryId
+              await PostAPI.delete(categoryId);
+    
+              // Reload trang sau khi xóa thành công
+              window.location.reload();
+            } catch (error) {
+              console.error("Error deleting post category:", error);
+            }
+          },
+          onCancel: () => {
+            console.log("Hủy xác nhận xóa");
+          },
+        });
+      };
   const data = React.useMemo(
     () =>
       posts.map((post, index) => ({
@@ -50,10 +76,10 @@ export default function BlogList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button onClick={() => handleEditClick(posts)}>
+            <button onClick={() => handleEditClick(post.id)}>
               <FontAwesomeIcon icon={faPen} />
             </button>
-            <button>
+            <button onClick={() => handleDeleteClick(post.id)}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>
@@ -100,10 +126,14 @@ export default function BlogList() {
     setIsAddModalVisible(true);
   };
 
-  const handleEditClick = (posts) => {
-    setSelectedPostCate(posts);
+  const handleEditClick = (postId) => {
+    const selectedPostCate = posts.find(
+      (post) => post.id === postId
+    );
     setIsEditModalVisible(true);
+    setSelectedPostCate(selectedPostCate);
   };
+
 
   const handleCancel = () => {
     setIsAddModalVisible(false);
@@ -121,7 +151,7 @@ export default function BlogList() {
         <AddBlog isModalVisible={isAddModalVisible}
           handleCancel={handleCancel}/>
         <EditBlog isModalVisible={isEditModalVisible}
-          postcate={selectedPostCate}
+          initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
           handleCancel={handleCancel}/>
         <table
           {...getTableProps()}
