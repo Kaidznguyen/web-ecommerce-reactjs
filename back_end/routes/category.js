@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require("../connection");
 
 
-// api lấy all sp
+// api lấy all danh mục loại
 router.get("/getall", (req, res) => {
   var sql = "SELECT * FROM figure_category where status = 1";
   db.query(sql, function (err, result) {

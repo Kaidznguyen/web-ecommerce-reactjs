@@ -4,7 +4,6 @@ import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
-import $ from "jquery";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import numeral from "numeral";
 export default function DetailFigure() {
@@ -23,13 +22,6 @@ export default function DetailFigure() {
         console.error("Error fetching data:", error);
       });
   }, [id]);
-  //hàm chuyển ảnh
-  useEffect(() => {
-    $(".list-img-item img").click(function () {
-      var imgSrc = $(this).attr("src");
-      $(".main-img img").attr("src", imgSrc);
-    });
-  }, []);
   return (
     <div className="row sm-gutter">
       <div className="col l-6 c-12 m-10">
@@ -124,9 +116,6 @@ export default function DetailFigure() {
              {detail.quantity === 0 ? "Hết hàng" : "Mua ngay"}
             </button>
           </div>
-          {/* <div className="main-content-text">
-            <span className="main-content-text-subtit">Hết hàng</span>
-          </div> */}
           <div className="main-content-text">
             <span className="main-content-text-list">
               Danh mục:<a href="/">{detail.name_cate}</a>

@@ -65,7 +65,7 @@ export default function MainFigure() {
   const data = React.useMemo(
     () => figures.map((figure, index) => ({
       TT: index + 1,
-      Ảnh: <img src={"http://localhost:8080/" + figure.img} alt="" style={{marginLeft:'40px'}}/>,
+      Ảnh: <img src={"http://localhost:8080/" + figure.img} alt="" style={{width:'150px', marginLeft:'45px', marginTop:'-40px'}}/>,
       'Phân loại': figure.name_cate,
       'Tên sản phẩm': figure.name,
       Giá: numeral(figure.price).format("$0,0"),
@@ -141,7 +141,7 @@ export default function MainFigure() {
         <EditFigure isModalVisible={isEditModalVisible}
           initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
           handleCancel={handleCancel}/>
-        <table {...getTableProps()} className="table__product-admin" style={{ width: '100%' }}>
+        <table {...getTableProps()} className="table__product-admin" style={{ width: '100%', textAlign: 'center' }}>
           <thead>
             {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()} className="title-card-admin">

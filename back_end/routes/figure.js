@@ -34,6 +34,27 @@ router.get("/getall", (req, res) => {
     }
   });
 });
+// api lấy comment theo figuid
+router.get('/getcommentbyFiguID/:id', (req, res) => {
+  const Id = req.params.id;
+  const query = `SELECT * FROM review_figure WHERE figure_id=${Id}`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: 'Lỗi cục bộ' });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Không tìm thấy mô hình' });
+      return;
+    }
+
+    // Trả về một mảng các dòng dữ liệu có figure_id bằng id
+    res.status(200).json(results);
+  });
+});
+
 // api tìm sp theo tên
 router.get('/getByName/:name', (req, res) => {
   const Name = req.params.name;
@@ -110,7 +131,20 @@ router.get('/getByPriceRange/:minPrice/:maxPrice', (req, res) => {
     res.status(200).json(results);
   });
 });
+// api thêm 1 sp
+router.post('/addComment', (req, res, next) => {
+  const { name_com, email, comment_mes,figure_id,parentID } = req.body;
 
+  let sql = "INSERT INTO review_figure (name_com, email, comment_mes,figure_id,parentID) values (?,?,?,?,?)";
+
+  db.query(sql, [name_com, email, comment_mes,figure_id,parentID], (error, results) => {
+      if (error) {
+          res.status(500).json({ error: error });
+      } else {
+          res.status(200).json({ message: 'Thêm Thành Công' });
+      }
+  });
+});
 // api thêm sản phẩm
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -314,20 +348,6 @@ router.get('/getpromotionFigures', (req, res) => {
     }
 
     res.status(200).json(results);
-  });
-});
-// api comment vào 1 sp
-router.post('/comment', (req, res, next) => {
-  const { name_com, comment_mes, figure_id } = req.body;
-
-  let sql = "INSERT INTO comment_figure (name_com,comment_mes, figure_id) values (?,?,?)";
-
-  db.query(sql, [name_com, comment_mes, figure_id], (error, results) => {
-    if (error) {
-      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu', error: error });
-    } else {
-      res.status(200).json({ message: 'Thêm Thành Công' });
-    }
   });
 });
 module.exports = router;

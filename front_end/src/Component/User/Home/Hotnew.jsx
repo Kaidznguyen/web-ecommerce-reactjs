@@ -19,7 +19,6 @@ export default function Hotnew() {
         }
         feetchPost();
     },[]);
-    const formattedDateTime = moment(post.updated_at).format('dddd DD/MM/YYYY HH:mm:ss');
   return (
     <div>
       <div className="index-product-title" style={{ marginBottom: "80px" }}>
@@ -33,7 +32,7 @@ export default function Hotnew() {
               <img src={"http://localhost:8080/" + post.img} alt="" title={post.title} />
             </a>
             <div className="content-newspaper-time">
-              <span>{formattedDateTime}</span>
+              <span>{moment(post.created_at).format("dddd DD/MM/YYYY HH:mm:ss")}</span>
             </div>
             <div className="content-newspaper-title">
               <a href="blog-detail.html">

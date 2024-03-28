@@ -130,15 +130,15 @@ export default function HeaderUser() {
                 </Link>                          
             </div>
             <input type="checkbox" hidden id="mobile-search-checkbox" className="hd__search-checkbox"/>
-            <div className="hd__search">
-                {/* search history  */}
+            {/* search history  */}
+            <div className="hd__search"> 
                 <div className="hd__seach-input-warp">
                     <input type="text" className="hd__seach-input" placeholder="Nhập vào từ khóa để bắt đầu tìm kiếm sản phẩm........."/>
                 </div>
                 <button className="hd__search-btn">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
-            </div>
+            </div> 
             <div className="hd__cart">
                 <a href="cart.html" className="hd__cart-wrap" >
                 <FontAwesomeIcon icon={faCartShopping} style={{color: 'white',fontSize:'30px'}}/>
