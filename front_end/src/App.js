@@ -8,7 +8,6 @@ import Login from './Component/User/Login';
 import RegisAccount from './Component/User/RegisAccount';
 import DetailFgurePage from './Pages/UserPage/DetailFgurePage';
 import DashboadPage from './Pages/AdminPage/DashboadPage';
-import NavLeft from './Component/Admin/NavLeft'
 import Loading from './Component/Loading';
 import PostCatePage from './Pages/UserPage/PostCatePage';
 import PostDetailPage from './Pages/UserPage/PostDetailPage';
@@ -21,6 +20,7 @@ import FiguCateAdminPage from './Pages/AdminPage/FiguCateAdminPage';
 import BrandAdminPage from './Pages/AdminPage/BrandAdminPage';
 import BlogAdminPage from './Pages/AdminPage/BlogAdminPage';
 import BlogCatePage from './Pages/AdminPage/BlogCatePage';
+import CartPage from './Pages/UserPage/CartPage';
 
 function UserLayout() {
   return (
@@ -44,7 +44,7 @@ function UserLayout() {
         {/* trang xem mô hình theo thương hiệu */}
         <Route exact path='/Figure-brand/:brandId' element={<FiguByBrandPage />}/>
         {/* trang giỏ hàng */}
-        {/* trang thanh toán */}
+        <Route exact path="/Cart" element={<CartPage />} />
         {/* trang cảm ơn mua hàng */}
         {/* trang lỗi */}
         <Route path="*" element={<ErorrPage />} />
@@ -59,12 +59,20 @@ function AdminLayout() {
     <>
       {/* <NavLeft /> */}
       <Routes>
+        {/* Trang thống kê */}
         <Route exact path="/dashboard" element={<DashboadPage />} />
+        {/* Trang quản lý mô hình */}
         <Route exact path="/Figure-Admin" element={<FigureAdminPage />} />
+        {/* Trang quản lý loại mô hình */}
         <Route exact path="/FiguCate-Admin" element={<FiguCateAdminPage />} />
+        {/* Trang quản lý thương hiệu */}
         <Route exact path="/Brand-Admin" element={<BrandAdminPage />} />
+        {/* Trang quản lý bài viết */}
         <Route exact path="/Blog-Admin" element={<BlogAdminPage />} />
+        {/* Trang quản lý loại bài viết */}
         <Route exact path="/BlogCate-Admin" element={<BlogCatePage />} />
+        {/* Trang quản lý hóa đơn bán */}
+        {/* Trang lỗi */}
         <Route path="*" element={<ErorrPage />} />
 
       </Routes>

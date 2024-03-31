@@ -5,7 +5,7 @@ import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
 import avartar from "../../../assets/user-page/img/noavatar.png";
-import moment from 'moment';
+import moment from "moment";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import { Tabs } from "antd";
 import CommentFigure from "./CommentFigure.jsx";
@@ -29,18 +29,17 @@ export default function TabContent() {
       });
   }, [id]);
   // lấy dữ liệu comment
-    useEffect(() => {
-      // Gọi service getById với id từ params
-      FigureAPI.getcommentbyFiguID(id)
-        .then((data) => {
-          // Lưu dữ liệu của figure vào state
-          setComment(data);
-
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    }, [id]);
+  useEffect(() => {
+    // Gọi service getById với id từ params
+    FigureAPI.getcommentbyFiguID(id)
+      .then((data) => {
+        // Lưu dữ liệu của figure vào state
+        setComment(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [id]);
   return (
     <div className="tabs">
       <Tabs defaultActiveKey="1" className="nav-tabs">
@@ -216,30 +215,42 @@ export default function TabContent() {
             </div>
           </div>
         </TabPane>
-        <TabPane tab="Đánh giá" key="3" className="tabs-item">
+        <TabPane tab="Bình luận" key="3" className="tabs-item">
           <div className="tabs-content">
-            <h2 className="tabs-content-title">đánh giá</h2>
+            <h2 className="tabs-content-title">Bình luận</h2>
             <CommentFigure id={id} />
             <div className="comment-list">
-            {Array.isArray(comment) && comment.map((comment) => (
-              <div className="comment-box">
-                <img src={avartar} alt="Avatar" className="avatar" />
-                <div className="comment_box" key={comment.id_comment}>
-                  <span className="name_com">{comment.name_com}</span>
-                  <hr />
-                  <div className="comment-text" dangerouslySetInnerHTML={{ __html: comment.comment_mes }}></div>
-                  <div className="info-bar">
-                    {/* <button>👍 0</button> */}
-                    <button>Trả lời</button>
-                    <span>{moment(comment.created_at).format("dddd DD/MM/YYYY HH:mm:ss")}</span>
+              {Array.isArray(comment) && comment.length > 0 ? (
+                comment.map((comment) => (
+                  <div className="comment-box" key={comment.id_comment}>
+                    <img src={avartar} alt="Avatar" className="avatar" />
+                    <div className="comment_box">
+                      <span className="name_com">{comment.name_com}</span>
+                      <hr />
+                      <div
+                        className="comment-text"
+                        dangerouslySetInnerHTML={{
+                          __html: comment.comment_mes,
+                        }}
+                      ></div>
+                      <div className="info-bar">
+                        <button>Trả lời</button>
+                        <span>
+                          {moment(comment.created_at).format(
+                            "dddd DD/MM/YYYY HH:mm:ss"
+                          )}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
-              
+                ))
+              ) : (
+                <span className="title-tab">
+                  Chưa có bình luận nào, bạn hãy trở thành người đầu tiên bình
+                  luận nhé! ^^
+                </span>
+              )}
             </div>
-
-            {/* <span className="title-tab">Chưa có đánh giá</span> */}
           </div>
         </TabPane>
       </Tabs>

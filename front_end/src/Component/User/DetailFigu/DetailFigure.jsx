@@ -6,10 +6,13 @@ import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import numeral from "numeral";
+import { notification } from 'antd';
+
 export default function DetailFigure() {
   const { id } = useParams();
   const [detail, setFigure] = useState({});
-
+  const [cart,setCart] = useState([]);
+  // gọi dữ liệu sp theo id
   useEffect(() => {
     // Gọi service getById với id từ params
     FigureAPI.getById(id)
@@ -22,6 +25,43 @@ export default function DetailFigure() {
         console.error("Error fetching data:", error);
       });
   }, [id]);
+  // thêm sp vào giỏ hàng
+  const onAddtoCartHandler = (product) => {
+    const index = cart.findIndex(item => item.id === product.id);
+  
+    if (index !== -1) {
+      // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên +1
+      const updatedCart = cart.map(item =>
+        item.id === product.id ? { ...item, amount: item.amount + 1 } : item
+      );
+      setCart(updatedCart);
+  
+      // Hiển thị thông báo
+      notification.info({
+        message: 'Thông báo',
+        description: `Bạn vừa thêm sản phẩm này lên +1`,
+        duration: 2,
+      });
+    } else {
+      // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm sản phẩm vào giỏ hàng với số lượng mặc định là 1
+      setCart(prevCart => [...prevCart, { ...product, amount: 1 }]);
+  
+      // Hiển thị thông báo
+      notification.success({
+        message: 'Thông báo',
+        description: `Bạn vừa thêm sản phẩm vào giỏ hàng`,
+        duration: 2,
+      });
+    }
+  };
+  
+  
+  
+  useEffect(() => {
+    // Lưu giỏ hàng vào sessionStorage
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    console.log(JSON.parse(sessionStorage.getItem('cart')));
+  }, [cart]);
   return (
     <div className="row sm-gutter">
       <div className="col l-6 c-12 m-10">
@@ -104,11 +144,11 @@ export default function DetailFigure() {
             </ul>
           </div>
           <div className="main-content-btn">
-            <button className={
+            <button onClick={() => onAddtoCartHandler(detail)} className={
               `btn-main1 ${
                 detail.quantity === 0 ? "hidden" : ""
               }`}>
-                hêm vào giỏ hàng
+                Thêm vào giỏ hàng
             </button>
             <button className={`${
                 detail.quantity === 0 ? "no_btn" : "btn-main2 "

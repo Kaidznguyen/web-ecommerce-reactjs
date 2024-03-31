@@ -3,12 +3,6 @@ const router = express.Router();
 const db = require("../connection");
 //api lấy tất cả hóa đơn
 router.get("/getall", (req, res) => {
-    // var sql = `SELECT *
-    // FROM orders o
-    // JOIN customer_shipping cs ON cs.id_ship = o.shipping_id
-    // JOIN order_detail od ON o.id_order = od.order_id
-    // ;
-    // `;
     var sql = `SELECT *
     FROM orders
     JOIN customer_shipping ON customer_shipping.id_ship = orders.shipping_id

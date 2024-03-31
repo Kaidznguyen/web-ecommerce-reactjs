@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 export default function RandomFigure() {
   const { id } = useParams();
   const [detail, setFigure] = useState({});
+  const [figures, setFigures] = useState([]);
 
   useEffect(() => {
     // Gọi service getById với id từ params
@@ -26,7 +27,6 @@ export default function RandomFigure() {
         console.error("Error fetching data:", error);
       });
   }, [id]);
-    const [figures, setFigures] = useState([]);
 
     const navigate = useNavigate();
     const handleClick = () => {

@@ -140,7 +140,7 @@ export default function HeaderUser() {
                 </button>
             </div> 
             <div className="hd__cart">
-                <a href="cart.html" className="hd__cart-wrap" >
+                <Link to={'/Cart'} className="hd__cart-wrap" >
                 <FontAwesomeIcon icon={faCartShopping} style={{color: 'white',fontSize:'30px'}}/>
                     <span className="hd__cart-notice">0</span>
                     {/* className khi ko có sản phẩm: hd__cart-list-no-cart 
@@ -150,7 +150,7 @@ export default function HeaderUser() {
                         <span className="hd__cart-list-no-cart-msg">Hãy click vào giỏ hàng để xem chi tiết tất cả sản phẩm</span>
                         <span className="hd__cart-list-no-cart-msg">Chức năng này đang trong quá trình hoàn thiện. Xin thông cảm!!</span>
                     </div>
-                </a>
+                </Link>
             </div>
         </div>
     </div>  
