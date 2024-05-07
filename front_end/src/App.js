@@ -21,7 +21,7 @@ import BrandAdminPage from './Pages/AdminPage/BrandAdminPage';
 import BlogAdminPage from './Pages/AdminPage/BlogAdminPage';
 import BlogCatePage from './Pages/AdminPage/BlogCatePage';
 import CartPage from './Pages/UserPage/CartPage';
-
+import OrderAdminPage from './Pages/AdminPage/OrderAdminPage';
 function UserLayout() {
   return (
     <>
@@ -59,6 +59,7 @@ function AdminLayout() {
     <>
       {/* <NavLeft /> */}
       <Routes>
+      
         {/* Trang thống kê */}
         <Route exact path="/dashboard" element={<DashboadPage />} />
         {/* Trang quản lý mô hình */}
@@ -72,9 +73,10 @@ function AdminLayout() {
         {/* Trang quản lý loại bài viết */}
         <Route exact path="/BlogCate-Admin" element={<BlogCatePage />} />
         {/* Trang quản lý hóa đơn bán */}
+        <Route exact path="/Order-Admin" element={<OrderAdminPage />} />
         {/* Trang lỗi */}
         <Route path="*" element={<ErorrPage />} />
-
+       
       </Routes>
 
     </>

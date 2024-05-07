@@ -43,6 +43,10 @@ export default function HeaderAdmin() {
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
             <span className="brand">Quản lý bài viết</span>
         </Link></li>
+        <li className="navigation-item"><Link to={'/system/Order-Admin'}>
+            <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
+            <span className="brand">Quản lý hóa đơn</span>
+        </Link></li>
         <li className="navigation-item"><a href="#">
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faComment} /></span>
             <span className="brand">Nhắn tin</span>

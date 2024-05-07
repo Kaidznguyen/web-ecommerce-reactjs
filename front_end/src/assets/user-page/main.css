@@ -1833,6 +1833,8 @@
 .tabs-content{
     padding: 5px 0;
     background-color: var(--white-color);
+    max-height: 500px;
+    overflow: auto;
 }
 .tabs-content-item::before{
     content: "";
@@ -2305,11 +2307,12 @@
 }
 .card-box{
     position: relative;
-    width: 100%;
+    width: 90%;
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(4,1fr);
     grid-gap: 30px;
+    margin-left: 80px;
 }
 .card{
     position: relative;
@@ -2321,9 +2324,7 @@
     justify-content: space-between;
     cursor: pointer;
 }
-.card:hover{
-    background-color: var(--primary-color);
-}
+
 .numbers{
     position: relative;
     font-weight: 800;
@@ -2339,20 +2340,18 @@
 }
 .iconBx{
     font-size: 6rem;
-    color: var(--primary-color);
-}
-.card:hover .numbers,.card:hover .iconBx,.card:hover .card_name{
-    color: var(--white-color);
+    color: rgba(5,84,94,1);
 }
 .graphBox,.graphBox2,.graphBox3,.graphBox4{
     position: relative;
-    width: 100%;
+    width: 90%;
     padding: 20px;
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-gap: 30px;
     margin-top: 10px;
     min-height: 200px;
+    margin-left: 80px;
 }
 .graphBox2{
     grid-template-columns: 1fr 1fr 1fr;
@@ -2367,7 +2366,8 @@
     position: relative;
     background-color: var(--white-color);
     padding: 20px;
-    width: 100%;
+    width: auto;
+    height: 500px;
     box-shadow: 0 7px 25px var(--box-shadow);
     border-radius: 20px;
     margin-bottom: 10px;
@@ -3503,5 +3503,108 @@
     cursor: pointer;
     opacity: .7;
  }
-
+/* CSS cho phần hóa đơn chi tiết */
+.section {
+    margin: 0px auto;
+    width: auto;
+    background-color: #d2dae2;
+    height: auto;
+    padding: 20px 30px;
+  
+  }
+  
+  .sign1 {
+    margin-left: -25px;
+    line-height: 2rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+  }
+  .rounded2{
+    border-radius: 1.25rem !important;
+  }
+  .sign2 {
+    margin-left: 40px;
+    line-height: 2rem;
+    color: #FD7272;
+    font-size: 1.2rem;  
+  }
+  
+  .header_order{
+    display: flex;
+  }
+  .header_img_order img{
+    width: 60%;
+  }
+  .header_name_order {
+    width: 60%;
+    padding-left: 150px;
+  }
+  
+  .header_name_p_order {
+  
+    font-size: 1.2rem;
+    font-style: oblique;
+    color: #4b6584;
+  }
+  
+  .container_header {
+    text-align: center;
+    color: var(--primary-color);
+    padding-top: 30px;
+    padding-bottom: 10px;
+  }
+  .container_name_p {
+    font-size: 1.4rem;
+  }
+  
+  
+  .footer-order {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 80px;
+    width:100%;
+  }
+  .footer-order-state{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around;
+    
+  }
+  .one{
+    width:50%;
+    text-align: center;
+  }
+  
+  .two{
+    width:50%;
+    text-align: center;
+    align-items: center;
+  }
+  
+  
+  .footer_img_seller {
+    
+    border-radius: 50%;
+    width:70%;
+  }
+  
+  
+  .footer_cutomer{
+    width:100%;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .footer_name_p {
+    font-size: 1.2rem;
+    font-style: oblique;
+    float: left;
+  }
+  
+  .footer_cutomer_p {
+    font-size: 1.2rem;
+  }
+  
 

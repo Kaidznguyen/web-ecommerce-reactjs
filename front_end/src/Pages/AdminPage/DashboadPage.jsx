@@ -5,6 +5,8 @@ import "../../assets/user-page/reponsive.css";
 import "../../assets/user-page/main.js";
 import TopBar from "../../Component/Admin/TopBar";
 import NavLeft from "../../Component/Admin/NavLeft";
+import StatisticsCard from "../../Component/Admin/Dashboard/StatisticsCard.jsx";
+import Chart from "../../Component/Admin/Dashboard/Chart.jsx";
 export default function DashboadPage() {
   window.scrollTo({
     top: 0,
@@ -19,7 +21,8 @@ export default function DashboadPage() {
           </div>
           <div className="col l-10 m-0 c-0">
             <TopBar />
-            <h1 style={{marginLeft:'200px'}}>đang trống</h1>
+            <StatisticsCard/>
+            <Chart />
           </div>
         </div>
       </div>
