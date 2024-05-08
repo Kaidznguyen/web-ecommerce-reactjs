@@ -1,5 +1,5 @@
-import React from "react";
-import { Form, Input, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Form, Input, Button, Radio } from "antd";
 import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
@@ -10,9 +10,20 @@ const CheckOut = () => {
   const onFinish = (values) => {
     console.log("Received values:", values);
   };
-
+  const [products, setProducts] = useState([]);
+  const [isEmptyCart, setIsEmptyCart] = useState(false);
+  // hàm xử lý lấy sản phẩm trong local
+  useEffect(() => {
+    // Lấy danh sách sản phẩm từ local storage
+    const storedCart = JSON.parse(localStorage.getItem("cart"));
+    if (storedCart) {
+      setProducts(storedCart);
+    }else {
+      setIsEmptyCart(true);
+    }
+  }, []);
   return (
-    <div className="col l-12 m-8 c-12">
+    <div className="col l-12 m-8 c-12" style={{ display: isEmptyCart ? "none" : "block" }}>
       <div className="row app__content sm-gutter">
         <div className="col l-8 m-12 c-12">
           <div className="addres-content">
@@ -21,23 +32,30 @@ const CheckOut = () => {
               <Form.Item
                 label="Họ và tên"
                 name="name"
-                rules={[{ required: true, message: "Vui lòng nhập họ tên của bạn!" }]}
-                style={{width:"80%"}}
+                rules={[
+                  { required: true, message: "Vui lòng nhập họ tên của bạn!" },
+                ]}
+                style={{ width: "80%" }}
               >
                 <Input placeholder="Nhập họ tên của bạn" />
               </Form.Item>
 
               <Form.Item
                 label="Số điện thoại"
-                style={{width:"80%"}}
+                style={{ width: "80%" }}
                 name="phone"
-                rules={[{ required: true, message: "Vui lòng nhập số điện thoại của bạn!" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập số điện thoại của bạn!",
+                  },
+                ]}
               >
                 <Input placeholder="Nhập số điện thoại của bạn" />
               </Form.Item>
 
               <Form.Item
-                style={{width:"80%"}}
+                style={{ width: "80%" }}
                 label="Email"
                 name="email"
                 rules={[
@@ -49,23 +67,36 @@ const CheckOut = () => {
               </Form.Item>
 
               <Form.Item
-                style={{width:"80%"}}
+                style={{ width: "80%" }}
                 label="Địa chỉ"
                 name="address"
-                rules={[{ required: true, message: "Vui lòng nhập địa chỉ của bạn!" }]}
+                rules={[
+                  { required: true, message: "Vui lòng nhập địa chỉ của bạn!" },
+                ]}
               >
                 <Input placeholder="Nhập địa chỉ giao hàng" />
               </Form.Item>
+              <Form.Item style={{ width: "80%" }} label="Phương thức thanh toán">
+                <Radio.Group name="payment">
+                  <Radio.Button value="cod">Nhận hàng rồi thanh toán</Radio.Button>
+                  <Radio.Button value="momo">Thanh toán online</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
               <Form.Item
-                style={{width:"80%"}}
+                style={{ width: "80%" }}
                 label="Lời nhắn"
                 name="message"
-                
               >
                 <TextArea placeholder="Hãy để lại lời nhắn cho chúng tôi nếu như bạn có yêu cầu đặc biệt nào khác nha!" />
               </Form.Item>
               <Form.Item>
-                <Button style={{backgroundColor:"var(--primary-color)",color:"var(--white-color)"}} htmlType="submit">
+                <Button
+                  style={{
+                    backgroundColor: "var(--primary-color)",
+                    color: "var(--white-color)",
+                  }}
+                  htmlType="submit"
+                >
                   Thanh toán
                 </Button>
               </Form.Item>
@@ -77,7 +108,10 @@ const CheckOut = () => {
             <h2 className="cart-title">Thông tin đơn hàng</h2>
             <div className="temporary-payment">
               <span>Tổng cộng (0 sản phẩm)</span>
-              <span className="payment-price" style={{ color: "var(--primary-color)" }}>
+              <span
+                className="payment-price"
+                style={{ color: "var(--primary-color)" }}
+              >
                 0đ
               </span>
             </div>

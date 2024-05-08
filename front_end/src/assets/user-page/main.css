@@ -3606,5 +3606,13 @@
   .footer_cutomer_p {
     font-size: 1.2rem;
   }
-  
-
+/* CSS PHẦN NO CART */
+.no_cart_text{
+    color: var(--primary-color);
+    font-size: 3em;
+    text-align: center;
+}
+.no_cart_img{
+    width: 100%;
+    height: 100%;
+}

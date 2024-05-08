@@ -25,43 +25,47 @@ export default function DetailFigure() {
         console.error("Error fetching data:", error);
       });
   }, [id]);
-  // thêm sp vào giỏ hàng
   const onAddtoCartHandler = (product) => {
-    const index = cart.findIndex(item => item.id === product.id);
-  
-    if (index !== -1) {
-      // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên +1
-      const updatedCart = cart.map(item =>
-        item.id === product.id ? { ...item, amount: item.amount + 1 } : item
-      );
-      setCart(updatedCart);
-  
-      // Hiển thị thông báo
+    let updatedCart; // Định nghĩa biến updatedCart trước khi sử dụng
+    const existingProductIndex = cart.findIndex(item => item.id === product.id);
+    if (existingProductIndex !== -1) {
+        // Sản phẩm đã tồn tại trong cart, chỉ cần tăng số lượng
+        updatedCart = [...cart];
+        updatedCart[existingProductIndex].amount += 1;
+        setCart(updatedCart);
+        // Hiển thị thông báo
       notification.info({
         message: 'Thông báo',
         description: `Bạn vừa thêm sản phẩm này lên +1`,
         duration: 2,
       });
     } else {
-      // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm sản phẩm vào giỏ hàng với số lượng mặc định là 1
-      setCart(prevCart => [...prevCart, { ...product, amount: 1 }]);
-  
-      // Hiển thị thông báo
-      notification.success({
-        message: 'Thông báo',
-        description: `Bạn vừa thêm sản phẩm vào giỏ hàng`,
-        duration: 2,
-      });
+        // Sản phẩm chưa tồn tại trong cart, thêm mới vào cart
+        product.amount = 1;
+        updatedCart = [...cart, product];
+        setCart(updatedCart);
+        notification.info({
+          message: 'Thông báo',
+          description: `Bạn vừa thêm mới sản phẩm này vào giở hàng`,
+          duration: 2,
+        });
     }
-  };
-  
-  
-  
-  useEffect(() => {
-    // Lưu giỏ hàng vào sessionStorage
-    sessionStorage.setItem('cart', JSON.stringify(cart));
-    console.log(JSON.parse(sessionStorage.getItem('cart')));
-  }, [cart]);
+    // Lưu cart vào local storage sau khi cập nhật
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+};
+
+useEffect(() => {
+    // Lấy cart từ local storage khi component mount
+    const storedCart = JSON.parse(localStorage.getItem('cart'));
+    if (storedCart) {
+        setCart(storedCart);
+        console.log(storedCart)
+    }
+}, []);
+
+
+
   return (
     <div className="row sm-gutter">
       <div className="col l-6 c-12 m-10">
