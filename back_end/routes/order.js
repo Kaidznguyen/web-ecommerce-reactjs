@@ -101,4 +101,50 @@ router.put('/update/:id', (req, res) => {
         }
     });
   });
+//   tính doanh thu của các đơn hàng có trạng thái là delivered
+router.get("/get_total_price_delivered", (req, res) => {
+    var sql = `SELECT 
+    SUM(od.totalprice) AS total_price_delivered
+FROM 
+    orders AS o
+JOIN 
+    order_detail AS od ON o.id_order = od.order_id
+JOIN
+    customer_shipping AS cs ON o.shipping_id = cs.id_ship
+WHERE 
+    (cs.payment = 'MoMo') or
+    (o.status = 'delivered' AND cs.payment = 'COD');
+    `;
+    db.query(sql, function (err, result) {
+      if (err) {
+        res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+      } else {
+        res.send({ status: true, data: result });
+      }
+    });
+  });
+// tính các hóa đơn đã thu được đến nay
+router.get("/get_paid_invoices", (req, res) => {
+  var sql = `
+  SELECT 
+      o.id_order
+  FROM 
+      orders AS o
+  JOIN 
+      order_detail AS od ON o.id_order = od.order_id
+  JOIN
+      customer_shipping AS cs ON o.shipping_id = cs.id_ship
+  WHERE 
+      (cs.payment = 'MoMo') OR (o.status = 'delivered' AND cs.payment = 'COD')
+  GROUP BY
+      o.id_order;
+  `;
+  db.query(sql, function (err, result) {
+    if (err) {
+      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+    } else {
+      res.send({ status: true, data: result });
+    }
+  });
+});
 module.exports = router;

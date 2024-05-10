@@ -1,52 +1,84 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Charts from 'chart.js/auto';
 import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
+import FigureAPI from "../../../Service/FigureAPI.js";
 
 export default function Chart() {
+    const [figures, setFigures] = useState([]);
+    const uniqueColors = [
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+        'rgba(255, 159, 64, 0.6)',
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+        'rgba(255, 159, 64, 0.6)',
+    ];
+    useEffect(() => {
+        async function fetchCountFigure() {
+            try {
+                const response = await FigureAPI.getCountFigure();
+                if (response.status) {
+                    const allData = response.data.map(item => ({
+                        name: item.name_cate,
+                        count: item.product_count
+                    }));
+                    setFigures(allData);
+                    console.table(allData);
+                } else {
+                    console.error("API error: ", response.error);
+                }
+            } catch (error) {
+                console.error("Error fetching total price delivered: ", error);
+            }
+        }
+    
+        fetchCountFigure();
+    }, []);
+    
     // PolarArea
     useEffect(() => {
-        const ctx = document.getElementById('PolarArea').getContext('2d');
-        const PolarArea = new Charts(ctx, {
-            type: 'polarArea',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    r: {
-                        grid: {
-                            color: 'red',
+        if (figures.length > 0) {
+            const ctx = document.getElementById('PolarArea').getContext('2d');
+            const dataLabels = figures.map(item => item.name);
+            const dataValues = figures.map(item => item.count);
+            const backgroundColors = uniqueColors.slice(0, figures.length);
+            const PolarArea = new Charts(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: dataLabels,
+                    datasets: [{
+                        label: 'số lượng',
+                        data: dataValues,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(color => color.replace('0.6', '0.2')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            grid: {
+                                color: 'red',
+                            }
                         }
                     }
                 }
-            }
-        });
-        return () => {
-            PolarArea.destroy();
-        };
-    }, []);
+            });
+            return () => {
+                PolarArea.destroy();
+            };
+        }
+    }, [figures]);
+    
     // Point Styling
     useEffect(() => {
         const ctx = document.getElementById('PointStyling').getContext('2d');
@@ -77,13 +109,13 @@ export default function Chart() {
         };
     }, []);
     return (
-        <div class="graphBox">
-            <div class="box">
-                <h1 class="title-box">Tổng quan các mô hình trong shop</h1>
+        <div className="graphBox">
+            <div className="box">
+                <h1 className="title-box">Tổng quan các mô hình trong shop</h1>
                 <canvas id="PolarArea" width="400" height="400"></canvas>
             </div>
-            <div class="box">
-                <h1 class="title-box">Doanh thu theo tháng</h1>
+            <div className="box">
+                <h1 className="title-box">Doanh thu theo tháng</h1>
                 <canvas id="PointStyling" width="600" height="400"></canvas>
             </div>
         </div>

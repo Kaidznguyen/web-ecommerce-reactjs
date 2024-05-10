@@ -35,6 +35,22 @@ const OrderAPI = {
         throw new Error(`Error updating brand: ${error.message}`);
       }
     },
+    async getCalculateRevenue() {
+      try {
+        const response = await axios.get(`${API_URL}/order/get_total_price_delivered`);
+        return response.data;
+      } catch (error) {
+        throw new Error(`Error fetching data from API: ${error.message}`);
+      }
+    },
+    async getPaidInvoices() {
+      try {
+        const response = await axios.get(`${API_URL}/order/get_paid_invoices`);
+        return response.data;
+      } catch (error) {
+        throw new Error(`Error fetching data from API: ${error.message}`);
+      }
+    },
 };
   
   export default OrderAPI;

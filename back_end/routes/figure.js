@@ -350,4 +350,24 @@ router.get('/getpromotionFigures', (req, res) => {
     res.status(200).json(results);
   });
 });
+// thống kế số lượng mô hình theo loại
+router.get("/getCountFigure", (req, res) => {
+  var sql = 
+  `SELECT 
+  fc.name_cate,
+  COUNT(*) AS product_count
+FROM 
+  figure AS f
+JOIN 
+  figure_category AS fc ON f.figure_category_id = fc.id_cate
+GROUP BY
+  f.figure_category_id;`;
+  db.query(sql, function (err, result) {
+    if (err) {
+      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+    } else {
+      res.send({ status: true, data: result });
+    }
+  });
+});
 module.exports = router;

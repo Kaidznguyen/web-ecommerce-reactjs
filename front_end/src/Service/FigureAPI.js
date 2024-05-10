@@ -13,6 +13,14 @@ const FigureAPI = {
       throw new Error(`Error fetching data from API: ${error.message}`);
     }
   },
+  async getCountFigure() {
+    try {
+      const response = await axios.get(`${API_URL}/figure/getCountFigure`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error fetching data from API: ${error.message}`);
+    }
+  },
   add: async (formData) => {
     try {
       const response = await axios.post(`${API_URL}/figure/add`, formData);

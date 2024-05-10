@@ -15,7 +15,7 @@ export default function DashboadPage() {
   return (
     <div className="container-admin">
       <div className="grid">
-        <div class="row ">
+        <div className="row ">
           <div className="col l-2 m-0 c-0">
             <NavLeft />
           </div>
