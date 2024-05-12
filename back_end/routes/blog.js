@@ -33,7 +33,8 @@ router.get("/getalladmin", (req, res) => {
 router.get('/getNewpost', (req, res) => {
   const query = `
       SELECT *
-      FROM post where status = 1
+      FROM post where status = 1 
+      ORDER BY views DESC
       LIMIT 3
   `;
 
@@ -100,6 +101,23 @@ router.delete('/delete/:id', (req, res) => {
         } else {
             res.status(200).json({ message: 'Xóa thành công' });
         }
+    });
+  });
+  // tăng views
+  router.put('/views/:id', (req, res) => {
+    const id = req.params.id;
+  
+    const query = `
+      UPDATE post
+      SET views = views + 1
+      WHERE id = ?`;
+  
+    db.query(query, [id], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.status(200).json({ message: 'Tăng views thành công' });
+      }
     });
   });
 //api upload ảnh

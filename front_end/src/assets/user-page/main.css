@@ -2367,10 +2367,13 @@
     background-color: var(--white-color);
     padding: 20px;
     width: auto;
-    height: 500px;
+    height: auto;
     box-shadow: 0 7px 25px var(--box-shadow);
     border-radius: 20px;
     margin-bottom: 10px;
+}
+.box2{
+    width:auto;
 }
 .box:hover{
     box-shadow: 0 7px 25px var(--box-shadow-hover);
@@ -2523,22 +2526,10 @@
 .iconBox{
     position: relative;
     font-size: 4rem;
-    color: var(--white-color);
+    color: rgba(5,84,94,1);
     text-align: center;
 }
-.iconBox::before{
-    content: '';
-    position: absolute;
-    border-radius: 80%;
-    background-color: var(--primary-color);
-    width: 60px;
-    height: 20px;
-    top: 0;
-    left: 55px;
-    bottom: 0;
-    right: 0;
-    padding: 5px 0 20px;
-}
+
 .detail__box h2{
     text-align: center;
     color: var(--text2-color);

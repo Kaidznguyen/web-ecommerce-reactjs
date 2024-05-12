@@ -5,17 +5,16 @@ const db = require("../connection");
 // API lấy 10 figure bán gần đây nhất sử dụng stored procedure
 router.get("/unique-figures", (req, res) => {
     var sql = `
-    SELECT
-    f.*
-  FROM
-    figure f
-  WHERE
-    NOT EXISTS (
+    SELECT f.*
+    FROM figure f
+    WHERE NOT EXISTS (
       SELECT 1
       FROM order_detail od
       WHERE od.figure_id = f.id
+      ORDER BY od.updated_at desc
+      limit 1
     )
-  LIMIT 10;
+    LIMIT 10;
   `;
     db.query(sql, function (err, result) {
       if (err) {

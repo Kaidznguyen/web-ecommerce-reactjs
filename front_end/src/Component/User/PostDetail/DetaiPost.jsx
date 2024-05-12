@@ -5,7 +5,7 @@ import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faFileLines, faComment} from '@fortawesome/free-solid-svg-icons'
+import {faFileLines, faComment,faEye} from '@fortawesome/free-solid-svg-icons'
 import PostAPI from '../../../Service/PostAPI.js';
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -13,18 +13,33 @@ export default function DetaiPost() {
     const { id } = useParams();
   const [detail, setPost] = useState({});
 
-  useEffect(() => {
-    // Gọi service getById với id từ params
-    PostAPI.getById(id)
-      .then((data) => {
-        // Lưu dữ liệu của figure vào state
-        setPost(data);
 
-      })
-      .catch((error) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await PostAPI.getById(id);
+        setPost(data);
+      } catch (error) {
         console.error("Error fetching data:", error);
-      });
+      }
+    };
+
+    fetchData();
+
+    const timeoutId = setTimeout(() => {
+      increaseViews();
+    }, 10000);
+
+    return () => clearTimeout(timeoutId);
   }, [id]);
+  const increaseViews = async () => {
+    try {
+      // Gọi API để tăng views của sản phẩm
+      await PostAPI.views(id);
+    } catch (error) {
+      console.error("Error incrementing views:", error);
+    }
+  };
   const formattedDateTime = moment(detail.updated_at).format(
     "dddd DD/MM/YYYY HH:mm:ss"
   );
@@ -40,6 +55,7 @@ export default function DetaiPost() {
                             <span className="blog-detail-author">Người viết: {detail.author} lúc {formattedDateTime}</span>
                             <span className="blog-detail-author"><FontAwesomeIcon icon={faFileLines} className="blog-detail-icon" /><Link to={'/Blog'}>Tin tức - DShop</Link></span>
                             <span className="blog-detail-author"><FontAwesomeIcon icon={faComment} className="blog-detail-icon" /><a href="#comment">0 Bình luận</a></span>
+                            <span className="blog-detail-author" style={{marginLeft:'-15px'}}><FontAwesomeIcon icon={faEye} className="blog-detail-icon" /><a href="#">{detail.views} Lượt xem</a></span>
                             <p className=" blog-content__img blog-text"  dangerouslySetInnerHTML={{ __html: detail.content }}/>
                             <Link className="blog-link" to={'/'}>Ngoài ra các bạn có thể mua mô hình tại đây.</Link>
                             <div className="blog-comment">

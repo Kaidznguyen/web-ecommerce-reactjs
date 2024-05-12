@@ -61,7 +61,15 @@ const PostAPI = {
       } catch (error) {
         throw new Error(`Error fetching data from API: ${error.message}`);
       }
-    }
+    },
+    views: async (Id) => {
+      try {
+        const response = await axios.put(`${API_URL}/blog/views/${Id}`);
+        return response.data;
+      } catch (error) {
+        throw new Error(`Error editing post category: ${error.message}`);
+      }
+    },
   };
 
 export default PostAPI;

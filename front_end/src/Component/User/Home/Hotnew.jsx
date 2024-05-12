@@ -6,6 +6,8 @@ import "../../../assets/user-page/main.js";
 import PostAPI from "../../../Service/PostAPI.js"
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faEye} from '@fortawesome/free-solid-svg-icons'
 export default function Hotnew() {
     const [post, setPost] =useState([]);
     useEffect(()=>{
@@ -28,16 +30,16 @@ export default function Hotnew() {
         <div className="row sm-gutter">
             {post.map((post) => (
                 <div className="col l-4 c-12 m-4" key={post.id}>
-            <a href="blog-detail.html" className="content-newspaper-item">
+            <Link to={`/Blog-Detail/${post.id}`} className="content-newspaper-item">
               <img src={"http://localhost:8080/" + post.img} alt="" title={post.title} />
-            </a>
+            </Link>
             <div className="content-newspaper-time">
-              <span>{moment(post.created_at).format("dddd DD/MM/YYYY HH:mm:ss")}</span>
+              <span>{moment(post.created_at).format("dddd DD/MM/YYYY HH:mm:ss")} <b style={{color:'var(--primary-color)', marginLeft:'20px'}}>{post.views} <FontAwesomeIcon icon={faEye} /></b></span>
             </div>
             <div className="content-newspaper-title">
-              <a href="blog-detail.html">
+              <Link to={`/Blog-Detail/${post.id}`}>
                 {post.title}
-              </a>
+              </Link>
             </div>
             <div className="content-newspaper">
             <span dangerouslySetInnerHTML={{ __html: post.description }} />

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleRight,
   faAngleLeft,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function ContentRight() {
@@ -99,7 +100,8 @@ export default function ContentRight() {
             </Link>
             <p className="content-blog-main_author">
               Người viết: {post.author} /{" "}
-              <b>{moment(post.created_at).format("dddd DD/MM/YYYY HH:mm:ss")}</b>
+              <b>{moment(post.created_at).format("dddd DD/MM/YYYY HH:mm:ss")}</b>/
+              <b >{post.views} <FontAwesomeIcon icon={faEye} /></b>
             </p>
             <p
               className="content-blog-main_text"

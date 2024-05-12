@@ -201,6 +201,24 @@ router.post('/add', upload.single('img'), (req, res) => {
     return res.status(500).json({ error: 'Server error', err: err });
   }
 });
+// api tính views
+router.put('/views/:id', (req, res) => {
+  const id = req.params.id;
+
+  const query = `
+    UPDATE figure
+    SET views = views + 1
+    WHERE id = ?`;
+
+  db.query(query, [id], (error, results) => {
+    if (error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(200).json({ message: 'Tăng views thành công' });
+    }
+  });
+});
+
 // api sửa thông tin sản phẩm 
 router.put('/update/:Id', upload.single('img'), (req, res) => {
   try {
@@ -253,12 +271,13 @@ router.put('/update/:Id', upload.single('img'), (req, res) => {
 // api lấy ra 8 sản phẩm mới nhất
 router.get('/getLatestFigures', (req, res) => {
   const query = `
-    SELECT f.*, fc.name_cate, b.name_brand
-    FROM figure f 
-    JOIN figure_category fc ON f.figure_category_id = fc.id_cate
-    JOIN brand b ON f.brand_id = b.id_brand
-    WHERE f.status = 1
-    LIMIT 9; 
+  SELECT f.*, fc.name_cate, b.name_brand
+  FROM figure f 
+  JOIN figure_category fc ON f.figure_category_id = fc.id_cate
+  JOIN brand b ON f.brand_id = b.id_brand
+  WHERE f.status = 1
+  ORDER BY f.views DESC
+  LIMIT 9; 
     `;
 
   db.query(query, (err, results) => {
@@ -370,4 +389,5 @@ GROUP BY
     }
   });
 });
+
 module.exports = router;

@@ -32,7 +32,6 @@ export default function Chart() {
                         count: item.product_count
                     }));
                     setFigures(allData);
-                    console.table(allData);
                 } else {
                     console.error("API error: ", response.error);
                 }

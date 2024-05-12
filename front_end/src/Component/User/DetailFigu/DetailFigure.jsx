@@ -7,24 +7,40 @@ import "../../../assets/user-page/main.js";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import numeral from "numeral";
 import { notification } from 'antd';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faEye} from '@fortawesome/free-solid-svg-icons'
 export default function DetailFigure() {
   const { id } = useParams();
   const [detail, setFigure] = useState({});
   const [cart,setCart] = useState([]);
   // gọi dữ liệu sp theo id
   useEffect(() => {
-    // Gọi service getById với id từ params
-    FigureAPI.getById(id)
-      .then((data) => {
-        // Lưu dữ liệu của figure vào state
+    const fetchData = async () => {
+      try {
+        const data = await FigureAPI.getById(id);
         setFigure(data);
-
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching data:", error);
-      });
+      }
+    };
+
+    fetchData();
+
+    const timeoutId = setTimeout(() => {
+      increaseViews();
+    }, 10000);
+
+    return () => clearTimeout(timeoutId);
   }, [id]);
+
+  const increaseViews = async () => {
+    try {
+      // Gọi API để tăng views của sản phẩm
+      await FigureAPI.views(id);
+    } catch (error) {
+      console.error("Error incrementing views:", error);
+    }
+  };
   const onAddtoCartHandler = (product) => {
     let updatedCart; // Định nghĩa biến updatedCart trước khi sử dụng
     const existingProductIndex = cart.findIndex(item => item.id === product.id);
@@ -165,12 +181,11 @@ useEffect(() => {
               Danh mục:<a href="/">{detail.name_cate}</a>
             </span>
           </div>
-          {/* <div className="main-content-text">
+          <div className="main-content-text">
             <span className="main-content-text-key">
-              Từ khóa:<a href="">Zoro</a>;<a href="">One Piece</a>;
-              <a href="">Zoro tam long</a>
+              Lượt xem: {detail.views} <FontAwesomeIcon icon={faEye} />
             </span>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
