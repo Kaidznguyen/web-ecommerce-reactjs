@@ -2617,7 +2617,7 @@
 .card__admin td:nth-child(5),.card__admin td:nth-child(6){
     color: var(--primary-color);
 }
-.icon-manipulation button:first-child,.icon-manipulation button:last-child{
+.icon-manipulation button{
     cursor: pointer;
     padding: 0 5px;
     margin: 0 5px;
@@ -2625,7 +2625,7 @@
     background-color: transparent;
     color: var(--text2-color);
 }
-.icon-manipulation button:first-child:hover,.icon-manipulation button:last-child:hover{
+.icon-manipulation button:hover{
     color: var(--primary-color);
 }
 .img-product__admin img{
@@ -3505,7 +3505,7 @@
   }
   
   .sign1 {
-    margin-left: -25px;
+    /* margin-left: -25px; */
     line-height: 2rem;
     color: var(--primary-color);
     font-size: 1.2rem;
@@ -3531,7 +3531,9 @@
     width: 60%;
     padding-left: 150px;
   }
-  
+  .header_img_order img{
+    width: 80%;
+  }
   .header_name_p_order {
   
     font-size: 1.2rem;
@@ -3548,8 +3550,8 @@
   .container_name_p {
     font-size: 1.4rem;
   }
-  
-  
+
+
   .footer-order {
     margin-top: 30px;
     display: flex;
@@ -3566,6 +3568,8 @@
   .one{
     width:50%;
     text-align: center;
+    align-items: center;
+
   }
   
   .two{
@@ -3597,6 +3601,67 @@
   .footer_cutomer_p {
     font-size: 1.2rem;
   }
+  /* css phần in */
+  @media print {
+    @page {
+        size: A4 portrait; /* Hoặc "landscape" nếu muốn in ngang */
+        margin: 1cm; /* Thiết lập lề trang */
+      }
+    button {
+        display: none; /* Ẩn các nút khi in */
+    }
+    .container-fluid{
+        width: 100%;
+    }
+    .container_header{
+        font-size: 5rem;
+      }
+    .section{
+        width: 90%;
+        margin-left: 70px;
+    }
+    .header_name_order {
+        padding-left: 50px;
+      }
+      
+      .header_name_p_order {
+      
+        font-size:2.3rem;
+
+      }
+      .table-responsive{
+        font-size: 2rem;
+      }
+    .footer-order{
+        justify-content: space-between;
+    }
+    .container_name_p{
+        font-size: 2rem;
+    
+      }
+    .one{
+        text-align: center;
+        margin-left: -70px;
+        align-items: center;
+      }
+      .two{
+        margin-right: -30px;
+        text-align: center;
+        align-items: center;
+      }
+      .print-button {
+        display: none !important;
+      }
+      .footer_cutomer_p {
+        font-size: 2.5rem;
+      }
+        h3{
+            font-size: 2.5rem;
+        }
+  .sign1 {
+    font-size: 2.5rem;
+  }
+  }
 /* CSS PHẦN NO CART */
 .no_cart_text{
     color: var(--primary-color);
@@ -3606,4 +3671,8 @@
 .no_cart_img{
     width: 100%;
     height: 100%;
+}
+.print-button{
+    margin-top: 20px;
+    margin-Left:40%
 }

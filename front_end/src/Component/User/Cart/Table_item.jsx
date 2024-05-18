@@ -9,47 +9,62 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { Modal, notification } from "antd";
+import CheckOut from "./CheckOut.jsx";
+
+
 export default function Table_item() {
   const [products, setProducts] = useState([]);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [productToDeleteIndex, setProductToDeleteIndex] = useState(null);
   const [confirmDeleteAllVisible, setConfirmDeleteAllVisible] = useState(false);
   const [isEmptyCart, setIsEmptyCart] = useState(false);
-  // hàm xử lý lấy sản phẩm trong local
-  useEffect(() => {
-    // Lấy danh sách sản phẩm từ local storage
-    const storedCart = JSON.parse(localStorage.getItem("cart"));
-    if (storedCart) {
-      setProducts(storedCart);
-    }else {
-      setIsEmptyCart(true);
-    }
-  }, []);
-  // Hàm xử lý sự kiện khi thay đổi số lượng sản phẩm
+  const [totalPrice, setTotalPrice] = useState(0);
+// Hàm tính tổng giá của sản phẩm
+const calculateTotalPrice = (cart) => {
+  return cart.reduce((total, product) => {
+    const productPrice = product.promotionprice !== 0 ? product.promotionprice : product.price;
+    return total + productPrice * product.amount;
+  }, 0);
+};
 
-  const handleQuantityChange = (index, newQuantity) => {
-    const updatedProducts = [...products];
-    updatedProducts[index].amount = newQuantity;
-    setProducts(updatedProducts);
-    localStorage.setItem("cart", JSON.stringify(updatedProducts));
-  };
-  // hàm xử lý xóa 1 sản phẩm
-  const handleDeleteProduct = (index) => {
-    setProductToDeleteIndex(index);
-    setConfirmDeleteVisible(true);
-  };
-  const confirmDelete = () => {
-    const updatedProducts = [...products];
-    updatedProducts.splice(productToDeleteIndex, 1);
-    setProducts(updatedProducts);
-    localStorage.setItem("cart", JSON.stringify(updatedProducts));
-    setConfirmDeleteVisible(false);
-    notification.success({
-      message: "Xóa sản phẩm thành công",
-      duration: 2,
-    });
-  };
+// Hàm xử lý lấy sản phẩm trong local
+useEffect(() => {
+  // Lấy danh sách sản phẩm từ local storage
+  const storedCart = JSON.parse(localStorage.getItem("cart"));
+  if (storedCart && storedCart.length > 0) {
+    setProducts(storedCart);
+    const totalPrice = calculateTotalPrice(storedCart); // Tính tổng giá khi có sản phẩm
+    setTotalPrice(totalPrice); // Lưu tổng giá vào state
+  } else {
+    setIsEmptyCart(true);
+  }
+}, []);
 
+// Hàm xử lý sự kiện khi thay đổi số lượng sản phẩm
+const handleQuantityChange = (index, newQuantity) => {
+  const updatedProducts = [...products];
+  updatedProducts[index].amount = newQuantity;
+  setProducts(updatedProducts);
+  localStorage.setItem("cart", JSON.stringify(updatedProducts));
+  const totalPrice = calculateTotalPrice(updatedProducts); // Tính tổng giá khi có thay đổi
+  setTotalPrice(totalPrice); // Cập nhật tổng giá mới
+};
+
+// Hàm xử lý xóa 1 sản phẩm
+const handleDeleteProduct = (index) => {
+  setProductToDeleteIndex(index);
+  setConfirmDeleteVisible(true);
+};
+
+const confirmDelete = () => {
+  const updatedProducts = [...products];
+  updatedProducts.splice(productToDeleteIndex, 1);
+  setProducts(updatedProducts);
+  localStorage.setItem("cart", JSON.stringify(updatedProducts));
+  setConfirmDeleteVisible(false);
+  const totalPrice = calculateTotalPrice(updatedProducts); // Tính tổng giá khi xóa sản phẩm
+  setTotalPrice(totalPrice); // Cập nhật tổng giá mới
+};
   const cancelDelete = () => {
     setConfirmDeleteVisible(false);
   };
@@ -84,7 +99,7 @@ export default function Table_item() {
 
         </div>
       ) : (
-        <table cellspacing="0" cellpadding="0">
+        <table cellSpacing="0" cellPadding="0">
           <thead>
             <tr>
               <th className="cart-product_title">Ảnh</th>
@@ -102,12 +117,12 @@ export default function Table_item() {
                 <td>
                   <img
                     src={"http://localhost:8080/" + product.img}
-                    alt="Product Image"
+                    alt={product.name}
                     className="cart-product_img"
                   />
                 </td>
                 <td>
-                  <a href="#">{product.name_cate}</a>
+                  <span>{product.name_cate}</span>
                 </td>
                 <td>
                   <Link to={`/Detail-Figure/${product.id}`}>{product.name}</Link>
@@ -193,7 +208,7 @@ export default function Table_item() {
   <div style={{ display: isEmptyCart ? "none" : "block" }}>
     <button className="btn btn--primary" style={{ marginTop: "35px" }}>
       <Link
-        to={"/"}
+        to={"/Figure"}
         style={{ textDecoration: "none", color: "var(--white-color)" }}
       >
         Tiếp tục mua sắm
@@ -207,6 +222,10 @@ export default function Table_item() {
       Xóa toàn bộ giỏ hàng
     </button>
   </div>
+  <CheckOut totalPrice={totalPrice} />
+
+
     </div>
+
   );
 }

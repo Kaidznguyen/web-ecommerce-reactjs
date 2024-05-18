@@ -3,7 +3,6 @@ import "../../assets/user-page/main.css";
 import "../../assets/user-page/grid-system.css";
 import "../../assets/user-page/reponsive.css";
 import Table_item from "../../Component/User/Cart/Table_item";
-import CheckOut from "../../Component/User/Cart/CheckOut";
 export default function CartPage() {
   window.scrollTo({
     top: 0,
@@ -15,7 +14,6 @@ export default function CartPage() {
         <div className="col l-12 m-12 c-12 table-content">
           <h2 className="cart-title">DSHOP | Giỏ hàng</h2>
           <Table_item />
-          <CheckOut />
         </div>
       </div>
     </div>

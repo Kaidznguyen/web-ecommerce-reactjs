@@ -7,7 +7,7 @@ import { useTable, usePagination, useSortBy } from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInfoCircle,
-  faClipboardList
+  faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
 import OrderAPI from "../../../Service/OrderAPI.js";
 import OrderDetail from "./OrderDetail.jsx";
@@ -113,6 +113,7 @@ function translateStatus(status) {
     setIsDetailModalVisible(true);
     setSelectedPostCate(orderId);
   };
+
   const handleStateClick = (orderId) => {
     setIsStateModalVisible(true);
     setSelectedPostCate(orderId);
@@ -120,7 +121,6 @@ function translateStatus(status) {
   const handleCancel = () => {
     setIsDetailModalVisible(false);
     setIsStateModalVisible(false);
-
   };
 
   return (

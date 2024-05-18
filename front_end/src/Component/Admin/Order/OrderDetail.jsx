@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 import "../../../assets/user-page/main.css";
 import OrderAPI from "../../../Service/OrderAPI.js";
 import logo from  '../../../assets/user-page/img/app/logo.png'
 import numeral from "numeral";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPrint
+} from "@fortawesome/free-solid-svg-icons";
 const OrderDetail = ({ isModalVisible, handleCancel, orderId }) => {
     const [order, setOrder] = useState([]);
     const [cus, setCus] = useState({});
@@ -30,6 +34,9 @@ const OrderDetail = ({ isModalVisible, handleCancel, orderId }) => {
       });
   }, [orderId]);
   const totalOrderPrice = order.reduce((total, currentOrder) => total + currentOrder.totalprice, 0);
+  const handlePrint = () => {
+    window.print();
+  };
   return (
     <Modal open={isModalVisible} onCancel={handleCancel} footer={null}  width="45%">
       <div className="container-fluid">
@@ -128,6 +135,9 @@ const OrderDetail = ({ isModalVisible, handleCancel, orderId }) => {
               </div>
             </div>
           </div>
+          <Button onClick={handlePrint} type="primary" className="print-button" style={{ marginTop: "20px", marginLeft:'40%' }}>
+            In Hóa Đơn<FontAwesomeIcon icon={faPrint} style={{marginLeft:'10px'}}/>
+          </Button>
         </div>
       </div>
     </Modal>

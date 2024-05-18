@@ -1,6 +1,86 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../connection");
+router.post('/create-order', async (req, res) => {
+  try {
+    const { shippingInfo, orderDetail } = req.body;
+
+    // Kiểm tra dữ liệu gửi lên từ client
+    if (!shippingInfo || !orderDetail || !Array.isArray(orderDetail) || orderDetail.length === 0) {
+      console.error('Dữ liệu đơn hàng không hợp lệ:', shippingInfo, orderDetail);
+      return res.status(400).json({ success: false, message: 'Dữ liệu đơn hàng không hợp lệ.' });
+    }
+
+    // Thêm thông tin giao hàng vào bảng customer_shipping
+    const shippingResult = await new Promise((resolve, reject) => {
+      const sql = `INSERT INTO dshop.customer_shipping (name, email, phone, address, note, payment) 
+                   VALUES (?, ?, ?, ?, ?, ?)`;
+      db.query(sql, [shippingInfo.name, shippingInfo.email, shippingInfo.phone, shippingInfo.address, shippingInfo.note, shippingInfo.payment], (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    if (!shippingResult || shippingResult.affectedRows === 0) {
+      return res.status(500).json({ success: false, message: 'Không thể tạo thông tin vận chuyển mới.' });
+    }
+
+    const shippingID = shippingResult.insertId;
+
+    // Thêm thông tin đơn hàng vào bảng orders
+    const orderResult = await new Promise((resolve, reject) => {
+      const sql = `INSERT INTO dshop.orders (shipping_id, status) VALUES (?, 'pending')`;
+      db.query(sql, [shippingID], (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    if (!orderResult || orderResult.affectedRows === 0) {
+      return res.status(500).json({ success: false, message: 'Không thể tạo đơn hàng mới.' });
+    }
+
+    const orderID = orderResult.insertId;
+
+    // Thêm thông tin chi tiết đơn hàng vào bảng order_detail và cập nhật quantity trong bảng figure
+    for (const item of orderDetail) {
+      await new Promise((resolve, reject) => {
+        const sql = `INSERT INTO dshop.order_detail (order_id, figure_id, totalquantity, totalprice) VALUES (?, ?, ?, ?)`;
+        db.query(sql, [orderID, item.figure_id, item.totalquantity, item.totalprice], (error, results) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        });
+      });
+
+      // Cập nhật quantity trong bảng figure
+      await new Promise((resolve, reject) => {
+        const updateSql = `UPDATE dshop.figure SET quantity = quantity - ? WHERE id = ?`;
+        db.query(updateSql, [item.totalquantity, item.figure_id], (error, results) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        });
+      });
+    }
+
+    res.status(200).json({ success: true, message: 'Đã tạo đơn hàng thành công.', shipping_id: shippingID, order_id: orderID });
+  } catch (error) {
+    console.error('Lỗi khi tạo đơn hàng:', error);
+    res.status(500).json({ success: false, message: 'Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại sau.' });
+  }
+});
+
 //api lấy tất cả hóa đơn
 router.get("/getall", (req, res) => {
     var sql = `SELECT *
@@ -60,33 +140,6 @@ router.get('/getCusById/:id', (req, res) => {
   });
 });
 
-// api thêm
-router.post('/create-order', async (req, res) => {
-    const { order, orderDetail } = req.body;
-
-    try {
-        const [orderDetails] = await db.query('CALL Create_Order (?, ?)', [
-            JSON.stringify(order),
-            JSON.stringify(orderDetail)
-        ]);
-
-        // Kiểm tra xem orderDetails có phải là mảng hay không
-        if (!Array.isArray(orderDetails)) {
-            console.error('Lỗi khi lấy dữ liệu từ stored procedure, orderDetails không phải là mảng:', orderDetails);
-            // Nếu bạn muốn bỏ qua lỗi, bạn có thể chỉ log lỗi
-            console.log('Giá trị sau khi lặp:', orderDetails);
-        } else {
-            console.log('Giá trị sau khi lặp:', orderDetails);
-        }
-
-        // Trả về một phản hồi thành công với đối tượng { success: true } và trạng thái 200
-        res.status(200).json({ success: true });
-    } catch (error) {
-        console.error('Lỗi khi tạo đơn hàng:', error);
-        // Nếu có lỗi, vẫn trả về một phản hồi thành công với đối tượng { success: true } và trạng thái 200
-        res.status(200).json({ success: true });
-    }
-});
 // api cập nhật đơn hàng
 router.put('/update/:id', (req, res) => {
     const Id = req.params.id;

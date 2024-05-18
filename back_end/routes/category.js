@@ -94,6 +94,7 @@ router.get('/getByidcate/:id', (req, res) => {
     SELECT *
     FROM figure_category fc
     JOIN figure f ON fc.id_cate = f.figure_category_id
+    join brand b on b.id_brand = f.brand_id
     WHERE fc.id_cate = ? and f.status = 1`;
 
   db.query(query, [idcate], (err, results) => {
