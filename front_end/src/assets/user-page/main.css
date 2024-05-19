@@ -2342,7 +2342,7 @@
     font-size: 6rem;
     color: rgba(5,84,94,1);
 }
-.graphBox,.graphBox2,.graphBox3,.graphBox4{
+.graphBox,.graphBox2,.graphBox3,.graphBox4,.graphBox5{
     position: relative;
     width: 90%;
     padding: 20px;
@@ -2361,6 +2361,9 @@
 }
 .graphBox4{
     grid-template-columns: 2fr 1fr;
+}
+.graphBox5{
+    grid-template-columns: 1fr 1fr;
 }
 .box{
     position: relative;
@@ -2386,15 +2389,18 @@
     grid-template-columns: 2fr 1fr;
     grid-gap: 30px;
     margin-top: 10px;
+    margin-left: 80px;
 }
 .recent_orders,.recent_customers{
     position: relative;
     display: grid;
-    min-height: 500px;
+    height: 400px;
+    overflow: auto;
     background-color: var(--white-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 7px 25px var(--box-shadow);
+    width: auto;
 }
 .card_header{
     display: flex;
@@ -2545,7 +2551,7 @@
     position: absolute;
     top: -10px;
     color: var(--primary-color);
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 /* ================================================================================================== */
 /* tab2 admin.html */

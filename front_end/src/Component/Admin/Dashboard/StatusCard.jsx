@@ -25,7 +25,6 @@ export default function StatusCard() {
     cancelled: 0,
     pending: 0
   });;
-
   // lấy số lượng figure
   useEffect(() => {
     async function fetchFigures() {
@@ -63,6 +62,21 @@ useEffect(() => {
   
     fetchOrders();
   }, []);
+  // tính % chiếm của COD và MoMo
+  const calculatePercentage = (value, total) => {
+    const percentage = (value / total) * 100;
+    return roundPercentage(percentage);
+  };
+  
+  const roundPercentage = (percentage) => {
+    const rounded = Math.round(percentage);
+    return `${rounded}%`;
+  };
+  
+  const totalOrders = orders.cod + orders.momo;
+  const codPercentage = calculatePercentage(orders.cod, totalOrders);
+  const momoPercentage = calculatePercentage(orders.momo, totalOrders);
+  
   // tính số lượng hóa đơn hủy
   useEffect(() => {
     async function fetchOrders() {
@@ -92,7 +106,7 @@ useEffect(() => {
       <div className="box" style={{ maxHeight: "300px", overflow: "auto" }}>
         <h1 className="title-box">10 mẫu mô hình được mua gần đây</h1>
         {figures.map((figure) => (
-          <div className="detail_box" style={{ marginBottom: "10px" }}>
+          <div className="detail_box" style={{ marginBottom: "10px" }} key={figure.id}>
             <div className="imgBx">
               <img
                 src={"http://localhost:8080/" + figure.img}
@@ -122,7 +136,7 @@ useEffect(() => {
             <div className="detail__box">
               <h2>Đơn hàng thanh toán COD</h2>
               <div className="detai_numberBox">
-                <span>{orders.cod}</span>
+                <span>{orders.cod} <span class="numberBox">chiếm {codPercentage}</span></span>
               </div>
             </div>
           </div>
@@ -134,7 +148,7 @@ useEffect(() => {
             <div className="detail__box">
               <h2>Đơn hàng thanh toán onine</h2>
               <div className="detai_numberBox">
-                <span>{orders.momo}</span>
+                <span>{orders.momo}<span class="numberBox">chiếm {momoPercentage}</span></span>
               </div>
             </div>
           </div>

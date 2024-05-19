@@ -110,7 +110,7 @@ export default function Chart() {
     return (
         <div className="graphBox">
             <div className="box">
-                <h1 className="title-box">Tổng quan các mô hình trong shop</h1>
+                <h1 className="title-box">Thống kê số lượng mô hình theo loại</h1>
                 <canvas id="PolarArea" width="400" height="400"></canvas>
             </div>
             <div className="box">

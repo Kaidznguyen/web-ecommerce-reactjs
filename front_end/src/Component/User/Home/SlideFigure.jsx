@@ -54,7 +54,7 @@ export default function SlideFigure() {
   return (
     <div>
       <div className="index-product-title">
-        <Link to={'/Figure'}>Sản phẩm bán chạy</Link>
+        <Link to={'/Figure'}>Sản phẩm đáng chú ý</Link>
       </div>
       <div className="index-product-link">
         <Link to={'/Figure'}>Xem thêm...</Link>

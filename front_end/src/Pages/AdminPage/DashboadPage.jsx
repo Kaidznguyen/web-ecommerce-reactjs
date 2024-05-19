@@ -8,6 +8,7 @@ import NavLeft from "../../Component/Admin/NavLeft";
 import StatisticsCard from "../../Component/Admin/Dashboard/StatisticsCard.jsx";
 import Chart from "../../Component/Admin/Dashboard/Chart.jsx";
 import StatusCard from "../../Component/Admin/Dashboard/StatusCard.jsx";
+import QuantityStatistics from "../../Component/Admin/Dashboard/QuantityStatistics.jsx";
 export default function DashboadPage() {
   window.scrollTo({
     top: 0,
@@ -25,6 +26,7 @@ export default function DashboadPage() {
             <StatisticsCard/>
             <Chart />
             <StatusCard />
+            <QuantityStatistics />
           </div>
         </div>
       </div>
