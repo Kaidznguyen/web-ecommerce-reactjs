@@ -74,10 +74,10 @@ export default function BrandList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button onClick={() => handleEditClick(brand.id_brand)}>
+            <button onClick={() => handleEditClick(brand.id_brand)} title="Sửa">
               <FontAwesomeIcon icon={faPen} />
             </button>
-            <button onClick={() => handleDeleteClick(brand.id_brand)}>
+            <button onClick={() => handleDeleteClick(brand.id_brand)} title="Xóa">
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>

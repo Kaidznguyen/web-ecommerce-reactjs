@@ -64,10 +64,10 @@ function translateStatus(status) {
         "Thao tác": (
           <div className="icon-manipulation">
             {/* Sử dụng sự kiện onClick để hiển thị EditBlogCate */}
-            <button onClick={() => handleDetailClick(order.id_order)}>
+            <button onClick={() => handleDetailClick(order.id_order)} title="Chi tiết đơn hàng">
               <FontAwesomeIcon icon={faInfoCircle} />
             </button>
-            <button onClick={() => handleStateClick(order.id_order)}>
+            <button onClick={() => handleStateClick(order.id_order)} title="Cập nhật trạng thái đơn hàng">
               <FontAwesomeIcon icon={faClipboardList} />
             </button>
           </div>

@@ -73,10 +73,10 @@ export default function FiguCateList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button onClick={() => handleEditClick(cate.id_cate)}>
+            <button onClick={() => handleEditClick(cate.id_cate)} title="Sửa">
               <FontAwesomeIcon icon={faPen} />
             </button>
-            <button onClick={() => handleDeleteClick(cate.id_cate)}>
+            <button onClick={() => handleDeleteClick(cate.id_cate)} title="Xóa">
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>

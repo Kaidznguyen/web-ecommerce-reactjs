@@ -73,10 +73,10 @@ export default function MainFigure() {
       'Trạng thái': figure.status === 1 ? <FontAwesomeIcon icon={faCircleCheck} className="icon_check" /> : <FontAwesomeIcon icon={faCircleXmark} className="icon_check" />,
       'Thao tác': (
         <div className="icon-manipulation">
-          <button onClick={() => handleEditClick(figure.id)}>
+          <button onClick={() => handleEditClick(figure.id)} title="Sửa">
             <FontAwesomeIcon icon={faPen} />
           </button>
-          <button  onClick={() => handleDeleteClick(figure.id)}>
+          <button  onClick={() => handleDeleteClick(figure.id)} title="Xóa">
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>

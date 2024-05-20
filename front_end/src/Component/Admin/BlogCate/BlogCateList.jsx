@@ -77,10 +77,10 @@ export default function BlogCateList() {
         "Thao tác": (
           <div className="icon-manipulation">
             {/* Sử dụng sự kiện onClick để hiển thị EditBlogCate */}
-            <button onClick={() => handleEditClick(postcate.id_cate)}>
+            <button onClick={() => handleEditClick(postcate.id_cate)} title="Sửa">
               <FontAwesomeIcon icon={faPen} />
             </button>
-            <button onClick={() => handleDeleteClick(postcate.id_cate)}>
+            <button onClick={() => handleDeleteClick(postcate.id_cate)} title="Xóa">
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>

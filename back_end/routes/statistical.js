@@ -142,5 +142,34 @@ ORDER BY quantity ASC;
       }
     });
   });
+  router.get("/monthly_revenue", (req, res) => {
+    var sql = `
+
+    SELECT 
+    DATE_FORMAT(o.created_at, '%Y-%m') AS month,
+    SUM(od.totalprice) AS revenue
+FROM 
+    orders o
+JOIN 
+    order_detail od ON o.id_order = od.order_id
+JOIN 
+    customer_shipping cs ON o.shipping_id = cs.id_ship
+WHERE 
+    (cs.payment = 'MoMo') OR 
+    (cs.payment = 'COD' AND o.status = 'delivered')
+GROUP BY 
+    DATE_FORMAT(o.created_at, '%Y-%m')
+ORDER BY 
+    month;
+
+  `;
+    db.query(sql, function (err, result) {
+      if (err) {
+        res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+      } else {
+        res.send({ status: true, data: result });
+      }
+    });
+  });
 })
 module.exports = router;

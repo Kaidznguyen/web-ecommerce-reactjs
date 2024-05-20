@@ -136,7 +136,7 @@ useEffect(() => {
             <div className="detail__box">
               <h2>Đơn hàng thanh toán COD</h2>
               <div className="detai_numberBox">
-                <span>{orders.cod} <span class="numberBox">chiếm {codPercentage}</span></span>
+                <span>{orders.cod} <span className="numberBox">chiếm {codPercentage}</span></span>
               </div>
             </div>
           </div>
@@ -148,7 +148,7 @@ useEffect(() => {
             <div className="detail__box">
               <h2>Đơn hàng thanh toán onine</h2>
               <div className="detai_numberBox">
-                <span>{orders.momo}<span class="numberBox">chiếm {momoPercentage}</span></span>
+                <span>{orders.momo}<span className="numberBox">chiếm {momoPercentage}</span></span>
               </div>
             </div>
           </div>

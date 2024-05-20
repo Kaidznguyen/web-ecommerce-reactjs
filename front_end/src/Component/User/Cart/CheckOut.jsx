@@ -74,7 +74,11 @@ const CheckOut = ({ totalPrice }) => {
       const orderDetail = storedCart.map(item => ({
         figure_id: item.id,
         totalquantity: item.amount,
-        totalprice: item.amount * (item.promotionprice !== 0 ? item.promotionprice : item.price)
+        totalprice: item.amount * (item.promotionprice !== 0 ? item.promotionprice : item.price),
+        name: item.name,
+        price: item.price,
+        promotionprice: item.promotionprice,
+        amount: item.amount,
       }));
   
       // Gửi request tạo đơn hàng lên server
@@ -108,11 +112,6 @@ const CheckOut = ({ totalPrice }) => {
       });
     }
   };
-  
-  
-  
-  
-
   return (
     <div
       className="col l-12 m-8 c-12"

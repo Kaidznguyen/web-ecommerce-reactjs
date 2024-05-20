@@ -76,10 +76,10 @@ export default function BlogList() {
           ),
         "Thao tác": (
           <div className="icon-manipulation">
-            <button onClick={() => handleEditClick(post.id)}>
+            <button onClick={() => handleEditClick(post.id)} title="Sửa">
               <FontAwesomeIcon icon={faPen} />
             </button>
-            <button onClick={() => handleDeleteClick(post.id)}>
+            <button onClick={() => handleDeleteClick(post.id)} title="Xóa">
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>

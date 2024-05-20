@@ -60,5 +60,13 @@ const StatisticalAPI = {
         throw new Error(`Error fetching data from API: ${error.message}`);
       }
     },
+    async monthlyRevenue() {
+      try {
+        const response = await axios.get(`${API_URL}/statistical/monthly_revenue`);
+        return response.data;
+      } catch (error) {
+        throw new Error(`Error fetching data from API: ${error.message}`);
+      }
+    },
     };
 export default StatisticalAPI;
