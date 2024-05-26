@@ -3,7 +3,6 @@ import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
-import { useTable, usePagination, useSortBy } from 'react-table';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPen,
@@ -16,13 +15,14 @@ import FigureAPI from "../../../Service/FigureAPI.js";
 import numeral from "numeral";
 import AddFigure from "./AddFigure.jsx";
 import EditFigure from "./EditFigure.jsx";
-import { Modal, Popconfirm } from "antd";
+import { Table, Button, Modal, Input } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 export default function MainFigure() {
   const [figures, setFigures] = useState([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedPostCate, setSelectedPostCate] = useState(null);
+  const [searchText, setSearchText] = useState("");
 
 // lấy tất cả sp
   useEffect(() => {
@@ -38,6 +38,10 @@ export default function MainFigure() {
 
     fetchFigures();
   }, []);
+      // tìm kiếm theo tên
+      const filteredUsers = figures.filter((user) =>
+        user.name.toLowerCase().includes(searchText.toLowerCase())
+      );
  // xóa
  const handleDeleteClick = (categoryId) => {
   Modal.confirm({
@@ -62,56 +66,6 @@ export default function MainFigure() {
     },
   });
 };
-  const data = React.useMemo(
-    () => figures.map((figure, index) => ({
-      TT: index + 1,
-      Ảnh: <img src={"http://localhost:8080/" + figure.img} alt="" style={{width:'150px', marginLeft:'45px', marginTop:'-40px'}}/>,
-      'Phân loại': figure.name_cate,
-      'Tên sản phẩm': figure.name,
-      Giá: numeral(figure.price).format("$0,0"),
-      'Giá khuyến mãi': figure.promotionprice !== 0 ? numeral(figure.promotionprice).format("$0,0") : "Không khuyến mãi",
-      'Trạng thái': figure.status === 1 ? <FontAwesomeIcon icon={faCircleCheck} className="icon_check" /> : <FontAwesomeIcon icon={faCircleXmark} className="icon_check" />,
-      'Thao tác': (
-        <div className="icon-manipulation">
-          <button onClick={() => handleEditClick(figure.id)} title="Sửa">
-            <FontAwesomeIcon icon={faPen} />
-          </button>
-          <button  onClick={() => handleDeleteClick(figure.id)} title="Xóa">
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
-        </div>
-      )
-    })),
-    [figures]
-  );
-
-  const columns = React.useMemo(
-    () => [
-      { Header: 'TT', accessor: 'TT' },
-      { Header: 'Ảnh', accessor: 'Ảnh', Cell: row => <div className="img-cell">{row.value}</div> },
-      { Header: 'Phân loại', accessor: 'Phân loại' },
-      { Header: 'Tên sản phẩm', accessor: 'Tên sản phẩm' },
-      { Header: 'Giá', accessor: 'Giá' },
-      { Header: 'Giá khuyến mãi', accessor: 'Giá khuyến mãi' },
-      { Header: 'Trạng thái', accessor: 'Trạng thái' },
-      { Header: 'Thao tác', accessor: 'Thao tác' },
-    ],
-    []
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    state: { pageIndex, pageSize },
-  } = useTable({ columns, data, initialState: { pageIndex: 0, pageSize: 5 } }, useSortBy, usePagination);
   const handleAddClick = () => {
     setIsAddModalVisible(true);
   };
@@ -129,6 +83,85 @@ export default function MainFigure() {
     setIsAddModalVisible(false);
     setIsEditModalVisible(false);
   };
+  const column = [
+    {
+      title: "STT",
+      render: (text, record, index) => index + 1,
+      sorter: (a, b) => a.id - b.id,
+      align: "center",
+    },
+    {
+      title: "Ảnh",
+      dataIndex: "img",
+      key: "img",
+      align: "center",
+      render: (text) => <img src={"http://localhost:8080/" + text} alt="Ảnh" style={{ width: 150, height: 150 }} />,
+    },  
+    {
+      title: "Phân loại",
+      dataIndex: "name_cate",
+      align: "center",
+      key: "name_cate",
+    },  
+    {
+      title: "Tên mô hình",
+      dataIndex: "name",
+      align: "center",
+      key: "name",
+    },
+    {
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
+      render: (price) => numeral(price).format("$0,0"),
+      align: "center",
+      sorter: (a, b) => a.price - b.price,
+    },
+    {
+      title: "Giá khuyến mại",
+      dataIndex: "promotionprice",
+      align: "center",
+      sorter: (a, b) => a.promotionprice - b.promotionprice,
+      key: "promotionprice",
+      render: (promotionprice) => (
+        promotionprice !== 0 ? numeral(promotionprice).format("$0,0") : "Không khuyến mãi"
+      ),
+    },
+    {
+      title: "Status",
+      align: "center",
+      dataIndex: "status",
+      key: "status",
+      render: (text, record) =>
+        record.status === 1 ? (
+          <FontAwesomeIcon icon={faCircleCheck} className="icon_check" />
+        ) : (
+          <FontAwesomeIcon icon={faCircleXmark} className="icon_check" />
+        ),
+    },
+    {
+      align: "center",
+      title: "Thao tác",
+      render: (text, record) => (
+        <div className="icon-manipulation">
+          <Button
+            type="primary"
+            onClick={() => handleEditClick(record.id)}
+            title="Sửa"
+          >
+            <FontAwesomeIcon icon={faPen} />
+          </Button>
+          <Button
+            type="danger"
+            onClick={() => handleDeleteClick(record.id)}
+            title="Xóa"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        </div>
+      ),
+    },
+  ];
   return (
     <div className="main__admin custom_margin">
       <h1 className="title-tab_admin2-main">Quản lý mô hình</h1>
@@ -136,57 +169,24 @@ export default function MainFigure() {
         <div className="the-record">
           <div className="title-tab_admin2" onClick={handleAddClick}><FontAwesomeIcon icon={faCirclePlus} /> Thêm mô hình</div>
         </div>
+        <Input.Search
+          placeholder="Nhập từ khóa..."
+          allowClear
+          style={{ width: 200, marginBottom: 10,marginLeft:10, marginTop:-50 }}
+          onChange={(e) => setSearchText(e.target.value)} />
         <AddFigure isModalVisible={isAddModalVisible}
           handleCancel={handleCancel}/>
         <EditFigure isModalVisible={isEditModalVisible}
           initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
           handleCancel={handleCancel}/>
-        <table {...getTableProps()} className="table__product-admin" style={{ width: '100%', textAlign: 'center' }}>
-          <thead>
-            {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()} className="title-card-admin">
-                {headerGroup.headers.map(column => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())} className="header-cell">
-                    {column.render('Header')}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ''}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map(row => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} className="card__admin">
-                  {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div style={{marginLeft:'500px'}}>
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            Trước
-          </button>
-          <span>
-            Trang{' '}
-            <strong>
-              {pageIndex + 1} / {pageOptions.length}
-            </strong>{' '}
-          </span>
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            Sau
-          </button>
-        </div>
+        <Table
+          style={{ margin: "0 10px", align: "center" }}
+          columns={column}
+          dataSource={filteredUsers}
+          bordered
+          pagination={{ pageSize: 5 }}
+          size="middle"
+        />
       </div>
     </div>
   );

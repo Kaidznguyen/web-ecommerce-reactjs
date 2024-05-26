@@ -3,7 +3,6 @@ import "../../../assets/user-page/main.css";
 import "../../../assets/user-page/grid-system.css";
 import "../../../assets/user-page/reponsive.css";
 import "../../../assets/user-page/main.js";
-import { useTable, usePagination, useSortBy } from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPen,
@@ -15,13 +14,15 @@ import {
 import FigureCateAPI from "../../../Service/FigureCateAPI.js";
 import AddFiguCate from "./AddFiguCate.jsx";
 import EditFiguCate from "./EditFiguCate.jsx";
-import { Modal, Popconfirm } from "antd";
+import { Table, Button, Modal, Input } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 export default function FiguCateList() {
   const [figurecates, setFigureCates] = useState([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedPostCate, setSelectedPostCate] = useState(null);
+  const [searchText, setSearchText] = useState("");
+
   // lấy tất cả sp
   useEffect(() => {
     async function fetchFigureCates() {
@@ -35,6 +36,10 @@ export default function FiguCateList() {
 
     fetchFigureCates();
   }, []);
+  // tìm kiếm theo tên
+  const filteredUsers = figurecates.filter((user) =>
+    user.name_cate.toLowerCase().includes(searchText.toLowerCase())
+  );
   // xóa
   const handleDeleteClick = (categoryId) => {
     Modal.confirm({
@@ -59,60 +64,6 @@ export default function FiguCateList() {
       },
     });
   };
-  const data = React.useMemo(
-    () =>
-      figurecates.map((cate, index) => ({
-        TT: index + 1,
-        "Tên loại": cate.name_cate,
-        "Mô tả": cate.description_cate,
-        "Trạng thái":
-          cate.status === 1 ? (
-            <FontAwesomeIcon icon={faCircleCheck} className="icon_check" />
-          ) : (
-            <FontAwesomeIcon icon={faCircleXmark} className="icon_check" />
-          ),
-        "Thao tác": (
-          <div className="icon-manipulation">
-            <button onClick={() => handleEditClick(cate.id_cate)} title="Sửa">
-              <FontAwesomeIcon icon={faPen} />
-            </button>
-            <button onClick={() => handleDeleteClick(cate.id_cate)} title="Xóa">
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
-          </div>
-        ),
-      })),
-    [figurecates]
-  );
-
-  const columns = React.useMemo(
-    () => [
-      { Header: "TT", accessor: "TT" },
-      { Header: "Tên loại", accessor: "Tên loại" },
-      { Header: "Mô tả", accessor: "Mô tả" },
-      { Header: "Trạng thái", accessor: "Trạng thái" },
-      { Header: "Thao tác", accessor: "Thao tác" },
-    ],
-    []
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    { columns, data, initialState: { pageIndex: 0, pageSize: 5 } },
-    useSortBy,
-    usePagination
-  );
   const handleAddClick = () => {
     setIsAddModalVisible(true);
   };
@@ -128,7 +79,60 @@ export default function FiguCateList() {
     setIsAddModalVisible(false);
     setIsEditModalVisible(false);
   };
-
+  const column = [
+    {
+      align: "center",
+      title: "STT",
+      render: (text, record, index) => index + 1,
+      sorter: (a, b) => a.id_cate - b.id_cate,
+    },
+    {
+      align: "center",
+      title: "Tên loại",
+      dataIndex: "name_cate",
+      key: "name_cate",
+    },
+    {
+      align: "center",
+      title: "Mô tả",
+      dataIndex: "description_cate",
+      key: "description_cate",
+    },
+    {
+      align: "center",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (text, record) =>
+        record.status === 1 ? (
+          <FontAwesomeIcon icon={faCircleCheck} className="icon_check" />
+        ) : (
+          <FontAwesomeIcon icon={faCircleXmark} className="icon_check" />
+        ),
+    },
+    {
+      align: "center",
+      title: "Thao tác",
+      render: (text, record) => (
+        <div className="icon-manipulation">
+          <Button
+            type="primary"
+            onClick={() => handleEditClick(record.id_cate)}
+            title="Sửa"
+          >
+            <FontAwesomeIcon icon={faPen} />
+          </Button>
+          <Button
+            type="danger"
+            onClick={() => handleDeleteClick(record.id_cate)}
+            title="Xóa"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        </div>
+      ),
+    },
+  ];
   return (
     <div className="main__admin custom_margin">
       <h1 className="title-tab_admin2-main">Quản lý loại mô hình</h1>
@@ -136,7 +140,18 @@ export default function FiguCateList() {
         <div className="the-record">
           <div className="title-tab_admin2" id="add" onClick={handleAddClick}>
             <FontAwesomeIcon icon={faCirclePlus} /> Thêm loại mô hình
+
           </div>
+          
+              <Input.Search
+          placeholder="Nhập từ khóa..."
+          allowClear
+          style={{ width: 200, marginBottom: 10,marginLeft:10, marginTop:-50 }}
+          onChange={(e) => setSearchText(e.target.value)} />
+          
+        
+          
+          
         </div>
         <AddFiguCate
           isModalVisible={isAddModalVisible}
@@ -147,64 +162,15 @@ export default function FiguCateList() {
           initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
           handleCancel={handleCancel}
         />
-        <table
-          {...getTableProps()}
-          className="table__product-admin"
-          style={{ width: "100%" }}
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr
-                {...headerGroup.getHeaderGroupProps()}
-                className="title-card-admin"
-              >
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="header-cell"
-                  >
-                    {column.render("Header")}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} className="card__admin">
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div style={{ marginLeft: "500px" }}>
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            Trước
-          </button>
-          <span>
-            Trang{" "}
-            <strong>
-              {pageIndex + 1} / {pageOptions.length}
-            </strong>{" "}
-          </span>
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            Sau
-          </button>
-        </div>
+        
+        <Table
+          style={{ margin: "0 10px" }}
+          columns={column}
+          dataSource={filteredUsers}
+          bordered
+          pagination={{ pageSize: 5 }}
+          size="middle"
+        />
       </div>
     </div>
   );

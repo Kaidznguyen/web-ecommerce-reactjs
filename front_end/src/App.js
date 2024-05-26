@@ -22,6 +22,7 @@ import BlogAdminPage from './Pages/AdminPage/BlogAdminPage';
 import BlogCatePage from './Pages/AdminPage/BlogCatePage';
 import CartPage from './Pages/UserPage/CartPage';
 import OrderAdminPage from './Pages/AdminPage/OrderAdminPage';
+import UserAdminPage from './Pages/AdminPage/UserAdminPage';
 function UserLayout() {
   return (
     <>
@@ -62,6 +63,8 @@ function AdminLayout() {
       
         {/* Trang thống kê */}
         <Route exact path="/dashboard" element={<DashboadPage />} />
+        {/* Trang thống kê */}
+        <Route exact path="/User-Admin" element={<UserAdminPage />} />
         {/* Trang quản lý mô hình */}
         <Route exact path="/Figure-Admin" element={<FigureAdminPage />} />
         {/* Trang quản lý loại mô hình */}
@@ -113,8 +116,6 @@ function AppContent() {
         <Route path="/*" element={<UserLayout />} />
         <Route path="/system/*" element={<AdminLayout />} />
       </Routes>
-      <Login />
-      <RegisAccount />
     </>
   );
 }

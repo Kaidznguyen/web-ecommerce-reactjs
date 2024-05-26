@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, Checkbox, Upload, Button, notification } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import "../../../assets/user-page/main.css";
 import BrandAPI from "../../../Service/BrandAPI.js";
 

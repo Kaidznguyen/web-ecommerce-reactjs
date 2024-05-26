@@ -55,7 +55,7 @@
     display: flex;
     justify-items: center;
     position: relative;
-    display: none;
+
 }
 .active__user{
     display: flex;
@@ -64,8 +64,8 @@
     display: none;
 }
 .hd__navbar-user-img{
-    width: 22px;
-    height: 22px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, .1);
 }
@@ -2579,6 +2579,7 @@
     color: var(--white-color);
     border-radius: 5px;
     cursor: pointer;
+
 }
 .the-record{
     padding-top: 60px;
