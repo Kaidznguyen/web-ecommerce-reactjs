@@ -120,8 +120,15 @@
     display: block;
     padding: 5px 16px;
 }
-.hd__navbar-user-item a:hover{
+.btt_manage{
+    border: none;
+    background-color: transparent;
+    padding: 5px 16px;
+    
+}
+.hd__navbar-user-item a:hover,.btt_manage:hover{
     background-color: #fafafa;
+    cursor: pointer;
 }
 .hd__navbar-user-item a:first-child{
     border-radius: 2px;

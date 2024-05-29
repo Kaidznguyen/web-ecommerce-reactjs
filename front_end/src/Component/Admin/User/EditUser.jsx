@@ -21,42 +21,39 @@ const EditUser = ({ isModalVisible, handleCancel, initialValue }) => {
 
   const onFinish = async (values) => {
     try {
-        const userData = {
-            username: values.username,
-            password_hash: values.password_hash,
-            email: values.email,
-            role: values.role,
-            status: values.status ? 1 : 0,
-            name: values.name,
-        };
-console.log(userData)
-        // Gọi service để cập nhật người dùng
-        await UserAPI.update(initialValue.id_us, userData);
+      const userData = {
+        username: values.username,
+        password_hash: values.password_hash,
+        email: values.email,
+        role: values.role,
+        status: values.status ? 1 : 0,
+        name: values.name,
+      };
+      // Gọi service để cập nhật người dùng
+      await UserAPI.update(initialValue.id_us, userData);
 
-        notification.open({
-            message: "Cập nhật tài khoản thành công!",
-            duration: 1,
-            onClose: () => window.location.reload(),
-        });
+      notification.open({
+        message: "Cập nhật tài khoản thành công!",
+        duration: 1,
+        onClose: () => window.location.reload(),
+      });
 
-        handleCancel();
+      handleCancel();
     } catch (error) {
-        if (error.response) {
-            notification.error({
-                message: `Cập nhật tài khoản thất bại! ${
-                    error.response.data.message || "Vui lòng thử lại sau!"
-                }`,
-            });
-        } else {
-            notification.error({
-                message: "Cập nhật tài khoản thất bại! Vui lòng thử lại sau!",
-            });
-            console.log("Lỗi", error);
-        }
+      if (error.response) {
+        notification.error({
+          message: `Cập nhật tài khoản thất bại! ${
+            error.response.data.message || "Vui lòng thử lại sau!"
+          }`,
+        });
+      } else {
+        notification.error({
+          message: "Cập nhật tài khoản thất bại! Vui lòng thử lại sau!",
+        });
+        console.log("Lỗi", error);
+      }
     }
-};
-
-
+  };
 
   return (
     <div>
@@ -89,9 +86,19 @@ console.log(userData)
           <Form.Item
             label="Mật khẩu"
             name="password_hash"
-            rules={[{ required: true, message: "Hãy nhập mật khẩu!" }]}
+            rules={[
+              { required: true, message: "Hãy nhập mật khẩu!" },
+              {
+                min: 8,
+                message: "Mật khẩu phải chứa ít nhất 8 ký tự!",
+              },
+              {
+                pattern: /^(?=.*[A-Za-z])(?=.*\d).*$/,
+                message: "Mật khẩu phải chứa cả chữ và số!",
+              },
+            ]}
           >
-            <Input type="password" />
+            <Input.Password />
           </Form.Item>
           <Form.Item
             label="Địa chỉ email"
@@ -124,10 +131,7 @@ console.log(userData)
             <Checkbox>Trạng thái</Checkbox>
           </Form.Item>
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-            >
+            <Button type="primary" htmlType="submit">
               Cập nhật
             </Button>
           </Form.Item>

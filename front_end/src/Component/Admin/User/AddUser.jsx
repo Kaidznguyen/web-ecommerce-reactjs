@@ -22,11 +22,11 @@ const AddUser = ({ isModalVisible, handleCancel }) => {
         password_hash: values.password_hash,
         email: values.email,
         role: values.role,
-        status: values.status ? 1 : 0,  // Chuyển đổi boolean thành 0 hoặc 1
+        status: values.status ? 1 : 0, // Chuyển đổi boolean thành 0 hoặc 1
         name: values.name,
       };
 
-      console.log(userData);  // Log dữ liệu gửi đi để kiểm tra
+      console.log(userData); // Log dữ liệu gửi đi để kiểm tra
 
       await UserAPI.add(userData);
 
@@ -79,7 +79,17 @@ const AddUser = ({ isModalVisible, handleCancel }) => {
           <Form.Item
             label="Mật khẩu"
             name="password_hash"
-            rules={[{ required: true, message: "Hãy nhập mật khẩu!" }]}
+            rules={[
+              { required: true, message: "Hãy nhập mật khẩu!" },
+              {
+                min: 8,
+                message: "Mật khẩu phải chứa ít nhất 8 ký tự!",
+              },
+              {
+                pattern: /^(?=.*[A-Za-z])(?=.*\d).*$/,
+                message: "Mật khẩu phải chứa cả chữ và số!",
+              },
+            ]}
           >
             <Input type="password" />
           </Form.Item>
@@ -114,10 +124,7 @@ const AddUser = ({ isModalVisible, handleCancel }) => {
             <Checkbox>Trạng thái</Checkbox>
           </Form.Item>
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-            >
+            <Button type="primary" htmlType="submit">
               Thêm
             </Button>
           </Form.Item>

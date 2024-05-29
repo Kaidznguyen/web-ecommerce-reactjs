@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, notification } from "antd";
 import "../../../assets/user-page/main.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import FigureAPI from "../../../Service/FigureAPI.js";
+import { jwtDecode } from "jwt-decode";
 
 const CommentFigure = ({ id }) => {
   const [form] = Form.useForm();
   const [comment_mes, setComment_mes] = useState("");
-
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    // Lấy token từ localStorage hoặc sessionStorage
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
+    if (token) {
+      try {
+        // Giải mã token để lấy thông tin người dùng
+        const decoded = jwtDecode(token);
+        // Cập nhật state với thông tin người dùng
+        setUser(decoded);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        // Xóa token không hợp lệ nếu giải mã thất bại
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+      }
+    } else {
+      console.log(
+        "Không tìm thấy token trong localStorage hoặc sessionStorage."
+      );
+    }
+  }, []);
   const onFinish = async (data) => {
     try {
-      const { name_com, email,parentID} = data;
+      const { name_com, email, parentID } = data;
       const figure_id = id;
       const name_com_value = name_com || "Người dùng ẩn danh";
       const parentID_value = parentID || 0;
@@ -38,51 +61,59 @@ const CommentFigure = ({ id }) => {
 
   return (
     <div style={{ marginTop: "8px" }}>
-      <Form form={form} name="comment" onFinish={onFinish}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Form.Item
-            label="Tên hiển thị"
-            name="name_com"
-            style={{ flex: "1", margin: " 10px" }}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Hãy nhập email!" }]}
-            style={{ flex: "1", margin: " 10px" }}
-          >
-            <Input />
-          </Form.Item>
-        </div>
-        <Form.Item
-          label="Bình luận"
-          name="comment_mes"
-          rules={[{ required: true, message: "Hãy nhập bình luận!" }]}
-          style={{ margin: " 10px" }}
-        >
-          <CKEditor
-            editor={ClassicEditor}
-            data={comment_mes}
-            onBlur={(event, editor) => {
-              const data = editor.getData();
-              setComment_mes(data);
-              form.setFieldsValue({ "comment_mes": data }); // Cập nhật giá trị của trường `comment_mes` trong Form
-            }}
-          />
-        </Form.Item>
-        <Form.Item>
-          <button
-            className="btn-add-form__admin"
-            type="primary"
-            htmltype="submit"
-            style={{ margin: " 10px" }}
-          >
-            Thêm
-          </button>
-        </Form.Item>
-      </Form>
+
+  <Form
+    form={form}
+    name="comment"
+    onFinish={onFinish}
+
+  >
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <Form.Item
+        label="Tên hiển thị"
+        name="name_com"
+        style={{ flex: "1", margin: " 10px" }}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Email"
+        name="email"
+        rules={[{ required: true, message: "Hãy nhập email!" }]}
+        style={{ flex: "1", margin: " 10px" }}
+      >
+        <Input />
+      </Form.Item>
+    </div>
+    <Form.Item
+      label="Bình luận"
+      name="comment_mes"
+      rules={[{ required: true, message: "Hãy nhập bình luận!" }]}
+      style={{ margin: " 10px" }}
+    >
+      <CKEditor
+        editor={ClassicEditor}
+        data={comment_mes}
+        onBlur={(event, editor) => {
+          const data = editor.getData();
+          setComment_mes(data);
+          form.setFieldsValue({ comment_mes: data }); // Cập nhật giá trị của trường `comment_mes` trong Form
+        }}
+      />
+    </Form.Item>
+    <Form.Item>
+      <button
+        className="btn-add-form__admin"
+        type="primary"
+        htmltype="submit"
+        style={{ margin: " 10px" }}
+      >
+        Thêm
+      </button>
+    </Form.Item>
+  </Form>
+
+
     </div>
   );
 };

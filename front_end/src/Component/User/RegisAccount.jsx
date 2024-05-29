@@ -109,6 +109,14 @@ export default function RegisAccount({ isModalVisible, handleCancel }) {
                   required: true,
                   message: "Vui lòng nhập mật khẩu của bạn!",
                 },
+                {
+                  min: 8,
+                  message: "Mật khẩu phải chứa ít nhất 8 ký tự!",
+                },
+                {
+                  pattern: /^(?=.*[A-Za-z])(?=.*\d).*$/,
+                  message: "Mật khẩu phải chứa cả chữ và số!",
+                },
               ]}
             >
               <Input.Password placeholder="Nhập mật khẩu của bạn" />

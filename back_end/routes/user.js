@@ -45,6 +45,9 @@ router.post('/login', (req, res) => {
             email: user.email,
             role: user.role,
             status: user.status,
+            name:user.name,
+            password_hash: user.password_hash
+
         };
         // Tạo token bằng cách sử dụng dữ liệu và secret key, với thời gian hết hạn được thiết lập
         const token = jwt.sign(tokenData, secretKey, { expiresIn });

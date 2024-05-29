@@ -21,20 +21,20 @@ import { Link } from "react-router-dom";
 import Login from "./Login";
 import RegisAccount from "./RegisAccount";
 import { jwtDecode } from "jwt-decode";
+import Manege_acc from "./Manege_acc";
 export default function HeaderUser() {
   const [isLoginVisible, setLoginVisible] = useState(false);
   const [isRegisVisible, setRegisVisible] = useState(false);
+  const [isManegeVisible, setManegeVisible] = useState(false);
   const [user, setUser] = useState(null);
   useEffect(() => {
     // Lấy token từ localStorage hoặc sessionStorage
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token");
-    console.log("Token:", token);
     if (token) {
       try {
         // Giải mã token để lấy thông tin người dùng
         const decoded = jwtDecode(token);
-        console.log("Decoded token:", decoded);
         // Cập nhật state với thông tin người dùng
         setUser(decoded);
       } catch (error) {
@@ -44,7 +44,7 @@ export default function HeaderUser() {
         sessionStorage.removeItem("token");
       }
     } else {
-      console.log("No token found in localStorage or sessionStorage.");
+      console.log("Không tìm thấy token trong localStorage hoặc sessionStorage.");
     }
   }, []);
 
@@ -54,9 +54,14 @@ export default function HeaderUser() {
   const handleLoginClick = () => {
     setLoginVisible(true);
   };
+  const handleManegeClick = () => {
+    setManegeVisible(true);
+  };
   const handleCancel = () => {
     setLoginVisible(false);
     setRegisVisible(false);
+    setManegeVisible(false);
+
   };
   return (
     <header className="header">
@@ -154,7 +159,7 @@ export default function HeaderUser() {
                     </li>
                   ) : (
                     <li className="hd__navbar-user-item">
-                      <Link to="/user">Quản lý tài khoản</Link>
+                      <button className="btt_manage" onClick={handleManegeClick}>Quản lý tài khoản</button>
                     </li>
                   )}
                   <li className="hd__navbar-user-item hd__navbar-user-item-separate">
@@ -200,6 +205,8 @@ export default function HeaderUser() {
               isModalVisible={isRegisVisible}
               handleCancel={handleCancel}
             />
+            <Manege_acc isModalVisible={isManegeVisible}
+              handleCancel={handleCancel}/>
           </ul>
         </nav>
         {/* searrch */}
