@@ -9,7 +9,9 @@ import moment from "moment";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import { Tabs } from "antd";
 import CommentFigure from "./CommentFigure.jsx";
+import CommentAPI from "../../../Service/CommentAPI.js";
 const { TabPane } = Tabs;
+
 
 export default function TabContent() {
   const { id } = useParams();
@@ -31,7 +33,7 @@ export default function TabContent() {
   // lấy dữ liệu comment
   useEffect(() => {
     // Gọi service getById với id từ params
-    FigureAPI.getcommentbyFiguID(id)
+    CommentAPI.getcommentbyFiguID(id)
       .then((data) => {
         // Lưu dữ liệu của figure vào state
         setComment(data);

@@ -45,7 +45,10 @@ const AddFiguCate = ({ isModalVisible, handleCancel }) => {
           <Form.Item
             label="Tên loại"
             name="name_cate"
-            rules={[{ required: true, message: "Hãy nhập tên loại!" }]}
+            rules={[{ required: true, message: "Hãy nhập tên loại mô hình!" },
+              {pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+              message: "Tên loại mô hình phải chứa ít nhất một chữ cái và có thể chứa ký tự đặc biệt!"}
+            ]}
           >
             <Input />
           </Form.Item>

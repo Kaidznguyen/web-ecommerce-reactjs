@@ -85,7 +85,12 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
           <Form.Item
             label="Tên mô hình"
             name="name"
-            rules={[{ required: true, message: "Hãy nhập tên mô hình!" }]}
+            rules={[{ required: true, message: "Hãy nhập tên mô hình!" },
+              {
+                pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                message: "Tên mô hình phải chứa cả chữ và số hoặc chỉ chữ, không thể chỉ chứa số!"
+              }
+            ]}
           >
             <Input />
           </Form.Item>
@@ -112,15 +117,21 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
             <Form.Item
               label="Giá"
               name="price"
-              //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
               style={{ flex: "0.7", marginRight: "10px" }}
+              rules={[
+                { required: true, message: "Hãy nhập giá!" },
+                { type: 'number', min: 0, max: 1000000, message: "Chỉ có thể nhập số và phải nằm trong khoảng từ 0 đến 1,000,000!" }
+              ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
               label="Giá khuyến mại"
               name="promotionprice"
-              //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[
+                { required: true, message: "Hãy nhập giá!" },
+                { type: 'number', min: 0, max: 1000000, message: "Chỉ có thể nhập số và phải nằm trong khoảng từ 0 đến 1,000,000!" }
+              ]}
               style={{ flex: "1" }}
             >
               <Input />
@@ -148,7 +159,7 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
             <Form.Item
               label="Thương hiệu"
               name="brand_id"
-              rules={[{ required: true, message: "Hãy chọn loại bài viết!" }]}
+              rules={[{ required: true, message: "Hãy chọn thương hiệu!" }]}
               style={{ flex: "1" }}
             >
               <Select defaultValue="">
@@ -168,7 +179,9 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
             <Form.Item
               label="Số lượng"
               name="quantity"
-              //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[
+                { type: 'number', min: 0, message: "Chỉ có thể nhập số" }
+              ]}
               style={{ flex: "1", marginRight: "10px" }}
             >
               <Input />
@@ -176,7 +189,10 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
             <Form.Item
               label="Bảo hành"
               name="warranty"
-              //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[
+                
+                { type: 'number', min: 0, message: "Chỉ có thể nhập số" }
+              ]}
               style={{ flex: "1" }}
             >
               <Input />

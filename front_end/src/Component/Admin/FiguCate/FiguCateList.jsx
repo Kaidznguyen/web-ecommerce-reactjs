@@ -14,7 +14,7 @@ import {
 import FigureCateAPI from "../../../Service/FigureCateAPI.js";
 import AddFiguCate from "./AddFiguCate.jsx";
 import EditFiguCate from "./EditFiguCate.jsx";
-import { Table, Button, Modal, Input } from "antd";
+import { Table, Button, Modal, Input,notification } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 export default function FiguCateList() {
   const [figurecates, setFigureCates] = useState([]);
@@ -36,34 +36,68 @@ export default function FiguCateList() {
 
     fetchFigureCates();
   }, []);
+      // Hàm loại bỏ dấu tiếng Việt
+      function removeVietnameseTones(str) {
+        str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+        return str;
+      }
   // tìm kiếm theo tên
   const filteredUsers = figurecates.filter((user) =>
-    user.name_cate.toLowerCase().includes(searchText.toLowerCase())
-  );
-  // xóa
-  const handleDeleteClick = (categoryId) => {
-    Modal.confirm({
-      title: "Xác nhận xóa",
-      icon: <ExclamationCircleOutlined />,
-      content: "Bạn có chắc muốn xóa loại mô hình này không?",
-      okText: "Xác nhận",
-      cancelText: "Hủy",
-      onOk: async () => {
-        try {
-          // Gọi service để xóa loại bài viết dựa vào categoryId
-          await FigureCateAPI.delete(categoryId);
+  removeVietnameseTones(user.name_cate.toLowerCase()).includes(removeVietnameseTones(searchText.toLowerCase()))
 
-          // Reload trang sau khi xóa thành công
-          window.location.reload();
-        } catch (error) {
-          console.error("Error deleting post category:", error);
-        }
-      },
-      onCancel: () => {
-        console.log("Hủy xác nhận xóa");
-      },
-    });
+  );
+  // Hàm kiểm tra xem có mô hình nào trong bảng figure có figure_category_id trùng với categoryId không
+  const checkAssociation = async (categoryId) => {
+    try {
+      // Gọi service để kiểm tra xem có mô hình nào trong bảng figure có figure_category_id trùng với categoryId không
+      const response = await FigureCateAPI.getByCategoryId(categoryId);
+      return response.data.length > 0; // Thay vì trả về độ dài của mảng dữ liệu, trả về kết quả trực tiếp
+    } catch (error) {
+      console.error("Error checking association:", error);
+      return false;
+    }
   };
+  
+//xóa
+const handleDeleteClick = async (categoryId) => {
+  Modal.confirm({
+    title: "Xác nhận xóa",
+    icon: <ExclamationCircleOutlined />,
+    content: "Bạn có chắc muốn xóa loại mô hình này không?",
+    okText: "Xác nhận",
+    cancelText: "Hủy",
+    async onOk() {
+      try {
+        // Kiểm tra xem có mô hình nào trong bảng figure có figure_category_id trùng với categoryId không
+        const isAssociated = await checkAssociation(categoryId);
+        console.log(isAssociated)
+        if (!isAssociated) {
+          // Nếu không có mô hình trùng, thực hiện xóa
+          const response = await FigureCateAPI.delete(categoryId);
+          // Kiểm tra nếu xóa thành công trước khi reload trang
+          if (response && response.message === 'Xóa thành công') {
+            window.location.reload();
+          }
+        } else {
+          // Nếu có mô hình trùng, hiển thị thông báo trên màn hình
+          notification.error({
+            message: 'Không thể xóa',
+            description: 'Loại mô hình này đang được liên kết với một hoặc nhiều mô hình khác. Hãy xóa các mô hình liên kết trước khi xóa loại mô hình này.',
+          });
+        }
+      } catch (error) {
+        console.error("Error deleting post category:", error);
+      }
+    },
+    onCancel() {
+      console.log("Hủy xác nhận xóa");
+    },
+  });
+};
+
+  
+
   const handleAddClick = () => {
     setIsAddModalVisible(true);
   };

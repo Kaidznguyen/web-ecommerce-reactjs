@@ -39,13 +39,24 @@ export default function ContentRight() {
 
     fetchPosts();
   }, []);
-  // sắp xếp theo cũ mới
+  
+  // sắp xếp và lọc bài viết
   const filterAndSortPosts = (searchText, sortType, data) => {
     let filtered = [...data];
 
+    // Hàm loại bỏ dấu tiếng Việt
+    const removeVietnameseTones = (str) => {
+      str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+      return str;
+    }
+
     if (searchText) {
+      // Chuẩn hóa searchText
+      const normalizedSearchText = removeVietnameseTones(searchText.toLowerCase());
+      
       filtered = filtered.filter((post) =>
-        post.title.toLowerCase().includes(searchText.toLowerCase())
+        removeVietnameseTones(post.title.toLowerCase()).includes(normalizedSearchText)
       );
     }
 
@@ -57,27 +68,31 @@ export default function ContentRight() {
 
     setFilteredPosts(filtered);
   };
-    const handleSortChange = (type) => {
-      setSortType(type);
-      // Filter and sort posts when sort type changes
-      filterAndSortPosts(searchText, type, posts);
-    };
-  // tìm kiếm
+
+  const handleSortChange = (type) => {
+    setSortType(type);
+    // Filter and sort posts when sort type changes
+    filterAndSortPosts(searchText, type, posts);
+  };
+
+  // Xử lý tìm kiếm
   const handleSearch = (searchText) => {
     setSearchText(searchText);
     // Filter and sort posts when search text changes
     filterAndSortPosts(searchText, sortType, posts);
   };
 
-    // phân trang
-    useEffect(() => {
-      topRef.current.scrollIntoView({ behavior: 'smooth' });
-    }, [pageNumber]);
+  // Phân trang
+  useEffect(() => {
+    topRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [pageNumber]);
+
   const pageCount = Math.ceil(filteredPosts.length / postsPerPage);
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
+
   // phần cần filter
   const displayPosts = filteredPosts
     .slice(pageNumber * postsPerPage, (pageNumber + 1) * postsPerPage)

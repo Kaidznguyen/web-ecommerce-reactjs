@@ -1,47 +1,56 @@
-import React from "react";
-import { Form, Input, Button, Checkbox, Modal, Space,notification  } from "antd";
+import React, { useState } from "react";
+import { Form, Input, Button, Checkbox, Modal, Space, notification } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import UserAPI from "../../Service/UserAPI";
+import ReCaptcha from "react-google-recaptcha";
+
 export default function RegisAccount({ isModalVisible, handleCancel }) {
-    const onFinish = async (values) => {
-        try {
-          // Kiểm tra email có đúng định dạng không
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(values.email)) {
-            throw new Error("Email không hợp lệ");
-          }
-    
-          // Thêm giá trị mặc định cho trường role và status
-          const formData = {
-            username: values.username,
-            password_hash: values.password_hash,
-            email: values.email,
-            role: "user",
-            status: 1,
-            name: values.name,
-          };
-    
-          // Gửi dữ liệu form lên server
-          await UserAPI.add(formData);
-    
-          // Hiển thị thông báo đăng ký thành công
-          notification.success({
-            message: 'Đăng ký thành công!',
-            duration: 1, // Thiết lập thời gian hiển thị thông báo
-          });
-          handleCancel();
-        } catch (error) {
-          // Xử lý lỗi nếu có
-          console.error("Đăng ký thất bại:", error.message);
-          // Hiển thị thông báo lỗi
-          notification.error({
-            message: 'Đăng ký thất bại',
-            description: error.message,
-          });
-          // Có thể thêm các hành động khác tùy ý
-        }
+  const [recaptchaValue, setRecaptchaValue] = useState(null);
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+  };
+
+  const onFinish = async (values) => {
+    try {
+      if (!recaptchaValue) {
+        throw new Error("Vui lòng xác nhận ReCaptcha!");
+      }
+
+      // Kiểm tra email có đúng định dạng không
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(values.email)) {
+        throw new Error("Email không hợp lệ");
+      }
+
+      // Thêm giá trị mặc định cho trường role và status
+      const formData = {
+        username: values.username,
+        password_hash: values.password_hash,
+        email: values.email,
+        role: "user",
+        status: 1,
+        name: values.name,
       };
+
+      // Gửi dữ liệu form lên server
+      await UserAPI.add(formData);
+
+      // Hiển thị thông báo đăng ký thành công
+      notification.success({
+        message: "Đăng ký thành công!",
+        duration: 1, // Thiết lập thời gian hiển thị thông báo
+      });
+      handleCancel();
+    } catch (error) {
+      // Hiển thị thông báo lỗi
+      notification.error({
+        message: "Đăng ký thất bại",
+        description: error.message,
+      });
+    }
+  };
 
   return (
     <Modal
@@ -66,6 +75,10 @@ export default function RegisAccount({ isModalVisible, handleCancel }) {
                   required: true,
                   message: "Vui lòng nhập username của bạn!",
                 },
+                {
+                  pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                  message: "Tên hiển thị phải chứa ít nhất một chữ cái và có thể chứa ký tự đặc biệt!"
+                }
               ]}
             >
               <Input placeholder="Nhập username của bạn" />
@@ -78,6 +91,10 @@ export default function RegisAccount({ isModalVisible, handleCancel }) {
                   required: true,
                   message: "Vui lòng nhập họ và tên của bạn!",
                 },
+                {
+                  pattern: /^[A-Za-z\s]+$/,
+                  message: "Họ và tên chỉ có thể chứa chữ và không có ký tự đặc biệt cũng như số!"
+                }
               ]}
             >
               <Input placeholder="Nhập họ và tên của bạn" />
@@ -172,7 +189,12 @@ export default function RegisAccount({ isModalVisible, handleCancel }) {
                 </a>
               </Checkbox>
             </Form.Item>
-
+            <Form.Item>
+                <ReCaptcha
+                  sitekey="6LfImvQpAAAAAHxCgEY8C-w__qAV3J52vaoVySOT"
+                  onChange={handleRecaptchaChange}
+                />
+              </Form.Item>
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">

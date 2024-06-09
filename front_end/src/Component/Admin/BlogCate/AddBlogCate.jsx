@@ -45,7 +45,12 @@ const AddBlogCate = ({ isModalVisible, handleCancel }) => {
           <Form.Item
             label="Tên loại"
             name="name_cate"
-            rules={[{ required: true, message: "Hãy nhập tên loại!" }]}
+            rules={[{ required: true, message: "Hãy nhập loại bài viết!" },
+              {
+                pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                message: "Loại bài viết không thể chỉ chứa số!"
+              }
+            ]}
           >
             <Input />
           </Form.Item>

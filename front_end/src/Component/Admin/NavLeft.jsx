@@ -47,6 +47,10 @@ export default function HeaderAdmin() {
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faClipboardList} /></span>
             <span className="brand">Quản lý hóa đơn</span>
         </Link></li>
+        <li className="navigation-item"><Link to={'/system/Comment-Admin'}>
+            <span className="icon-navigation__admin"><FontAwesomeIcon icon={faComment} /></span>
+            <span className="brand">Quản lý bình luận</span>
+        </Link></li>
         <li><Link to={'/'}>
             <span className="icon-navigation__admin"><FontAwesomeIcon icon={faRightFromBracket} /></span>
             <span className="brand">Thoát</span>

@@ -38,9 +38,16 @@ export default function MainFigure() {
 
     fetchFigures();
   }, []);
+      // Hàm loại bỏ dấu tiếng Việt
+      function removeVietnameseTones(str) {
+        str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+        return str;
+      }
       // tìm kiếm theo tên
       const filteredUsers = figures.filter((user) =>
-        user.name.toLowerCase().includes(searchText.toLowerCase())
+      removeVietnameseTones(user.name.toLowerCase()).includes(removeVietnameseTones(searchText.toLowerCase()))
+
       );
  // xóa
  const handleDeleteClick = (categoryId) => {
@@ -126,6 +133,16 @@ export default function MainFigure() {
       render: (promotionprice) => (
         promotionprice !== 0 ? numeral(promotionprice).format("$0,0") : "Không khuyến mãi"
       ),
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+      align: "center",
+      sorter: (a, b) => a.quantity - b.quantity,
+      key: "quantity",
+      // render: (quantity) => (
+      //   quantity !== 0 ? numeral(quantity).format("$0,0") : "Không khuyến mãi"
+      // ),
     },
     {
       title: "Status",

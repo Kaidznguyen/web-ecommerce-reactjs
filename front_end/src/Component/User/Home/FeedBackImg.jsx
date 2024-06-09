@@ -21,7 +21,7 @@ export default function FeedBackImg() {
   return (
     <div>
       <div className="index-product-title" style={{ marginBottom: "80px" }}>
-        <a href="#">Ảnh feedback từ khách</a>
+        <a href="#">Ảnh Feedback từ khách</a>
       </div>
       <div className="feedback-img">
         <div className="row sm-gutter">

@@ -14,6 +14,7 @@ import {
   faAngleRight,
   faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
+
 export default function PostByCateId() {
     const { categoryId } = useParams();
     const [posts, setPostCates] = useState([]);
@@ -21,7 +22,7 @@ export default function PostByCateId() {
     const [searchText, setSearchText] = useState("");
     const [sortType, setSortType] = useState("");
     const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
-    const postsPerPage = 1; // Số bài viết trên mỗi trang
+    const postsPerPage = 2; // Số bài viết trên mỗi trang
     const topRef = useRef(null);
 
     useEffect(() => {
@@ -45,7 +46,7 @@ export default function PostByCateId() {
 
     useEffect(() => {
       const filteredData = posts.filter((post) =>
-        post.title.toLowerCase().includes(searchText.toLowerCase())
+        removeVietnameseTones(post.title.toLowerCase()).includes(removeVietnameseTones(searchText.toLowerCase()))
       );
       setFilteredPosts(filteredData);
     }, [searchText, posts]);
@@ -63,6 +64,12 @@ export default function PostByCateId() {
       } else {
         return data;
       }
+    };
+
+    const removeVietnameseTones = (str) => {
+      str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+      return str;
     };
 
     const handleSearch = (searchText) => {

@@ -144,7 +144,7 @@ router.get("/getall", (req, res) => {
   var sql = `SELECT *
     FROM orders
     JOIN customer_shipping ON customer_shipping.id_ship = orders.shipping_id
-    ORDER BY orders.id_order asc
+    ORDER BY orders.id_order desc
     `;
   db.query(sql, function (err, result) {
     if (err) {

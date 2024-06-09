@@ -146,9 +146,15 @@ export default function UserList() {
     setIsAddModalVisible(false);
     setIsEditModalVisible(false);
   };
-
+    // Hàm loại bỏ dấu tiếng Việt
+    function removeVietnameseTones(str) {
+      str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+      return str;
+    }
   const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(searchText.toLowerCase())
+  removeVietnameseTones(user.username.toLowerCase()).includes(removeVietnameseTones(searchText.toLowerCase()))
+
   );
 
   return (

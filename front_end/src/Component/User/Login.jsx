@@ -57,7 +57,16 @@ export default function Login({ isModalVisible, handleCancel }) {
       >
         <Form.Item
           name="email"
-          rules={[{ required: true, message: "Vui lòng nhập Email của bạn!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập Email của bạn!" },
+            {
+              type: "email",
+              message: "Email không hợp lệ!",
+            },
+            {
+              pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Email không hợp lệ!",
+            },
+          ]}
         >
           <Input placeholder="Nhập Email của bạn" />
         </Form.Item>

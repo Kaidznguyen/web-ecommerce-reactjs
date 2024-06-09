@@ -7,8 +7,26 @@ import "../../../assets/user-page/main.js";
 import TextArea from "antd/es/input/TextArea.js";
 import OrderAPI from "../../../Service/OrderAPI.js";
 import numeral from "numeral";
+import ReCaptcha from "react-google-recaptcha";
 
-const CheckOut = ({ totalPrice }) => {
+const CheckOut = ({ totalPrice, onVerify }) => {
+  const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
+  const [recaptchaValue, setRecaptchaValue] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [isEmptyCart, setIsEmptyCart] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart"));
+    if (storedCart && storedCart.length > 0) {
+      setProducts(storedCart);
+      setCartItemCount(storedCart.length);
+    } else {
+      setIsEmptyCart(true);
+      setCartItemCount(0);
+    }
+  }, []);
+
   const validateName = (_, value) => {
     if (!value || value.length > 50 || /[+\-*/.=_?><,{}[\]]/.test(value)) {
       return Promise.reject(
@@ -34,26 +52,24 @@ const CheckOut = ({ totalPrice }) => {
     return Promise.resolve();
   };
 
-  const [products, setProducts] = useState([]);
-  const [isEmptyCart, setIsEmptyCart] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0);
-  // hàm xử lý lấy sản phẩm trong local
-  useEffect(() => {
-    // Lấy danh sách sản phẩm từ local storage
-    const storedCart = JSON.parse(localStorage.getItem("cart"));
-    if (storedCart && storedCart.length > 0) {
-      setProducts(storedCart);
-      setCartItemCount(storedCart.length);
-    } else {
-      setIsEmptyCart(true);
-      setCartItemCount(0);
-    }
-  }, []);
+  const handleRecaptchaChange = (value) => {
+    setIsRecaptchaVerified(true);
+    setRecaptchaValue(value);
+    onVerify(value);
+  };
+
   const onFinish = async (values) => {
+    if (!isRecaptchaVerified) {
+      notification.error({
+        message: "Vui lòng xác nhận ReCaptcha trước khi thanh toán!",
+        duration: 2,
+      });
+      return;
+    }
+
     try {
-      // Lấy dữ liệu từ localStorage hoặc từ state products
       const storedCart = JSON.parse(localStorage.getItem("cart"));
-  
+
       if (!Array.isArray(storedCart) || storedCart.length === 0) {
         notification.error({
           message: "Giỏ hàng trống. Không thể tạo đơn hàng",
@@ -61,8 +77,7 @@ const CheckOut = ({ totalPrice }) => {
         });
         return;
       }
-  
-      // Tạo dữ liệu order và orderDetail
+
       const shippingInfo = {
         name: values.name,
         phone: values.phone,
@@ -71,29 +86,29 @@ const CheckOut = ({ totalPrice }) => {
         payment: values.payment,
         note: values.note,
       };
-      const orderDetail = storedCart.map(item => ({
+      const orderDetail = storedCart.map((item) => ({
         figure_id: item.id,
         totalquantity: item.amount,
-        totalprice: item.amount * (item.promotionprice !== 0 ? item.promotionprice : item.price),
+        totalprice:
+          item.amount *
+          (item.promotionprice !== 0 ? item.promotionprice : item.price),
         name: item.name,
         price: item.price,
         promotionprice: item.promotionprice,
         amount: item.amount,
       }));
-  
-      // Gửi request tạo đơn hàng lên server
+
       const response = await OrderAPI.create({ shippingInfo, orderDetail });
-  
+
       if (response.success) {
-        // Xóa dữ liệu cart sau khi tạo đơn hàng thành công
         localStorage.removeItem("cart");
-  
+
         notification.success({
-          message: "Cảm ơn bạn vì đã ủng hộ chúng tôi! Hãy check mail để kiểm tra lại đơn hàng nha",
+          message:
+            "Cảm ơn bạn vì đã ủng hộ chúng tôi! Hãy check mail để kiểm tra lại đơn hàng nha",
           duration: 2,
         });
-  
-        // Đợi 2 giây trước khi làm mới trang
+
         setTimeout(() => {
           window.location.reload();
         }, 2000);
@@ -194,11 +209,20 @@ const CheckOut = ({ totalPrice }) => {
               <Form.Item style={{ width: "80%" }} label="Lời nhắn" name="note">
                 <TextArea placeholder="Hãy để lại lời nhắn cho chúng tôi nếu như bạn có yêu cầu đặc biệt nào khác nha!" />
               </Form.Item>
+              {/* site key:6LfImvQpAAAAAHxCgEY8C-w__qAV3J52vaoVySOT
+                secret key:6LfImvQpAAAAAMCT51t-Mf_49H1BoU-lFEcEIbE5 */}
+              <Form.Item>
+                <ReCaptcha
+                  sitekey="6LfImvQpAAAAAHxCgEY8C-w__qAV3J52vaoVySOT"
+                  onChange={handleRecaptchaChange}
+                />
+              </Form.Item>
               <Form.Item>
                 <Button
                   style={{
                     backgroundColor: "var(--primary-color)",
                     color: "var(--white-color)",
+                    marginTop: "20px",
                   }}
                   htmlType="submit"
                 >

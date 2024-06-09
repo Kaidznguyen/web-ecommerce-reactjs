@@ -9,6 +9,7 @@ import numeral from "numeral";
 import { notification } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye} from '@fortawesome/free-solid-svg-icons'
+
 export default function DetailFigure() {
   const { id } = useParams();
   const [detail, setFigure] = useState({});

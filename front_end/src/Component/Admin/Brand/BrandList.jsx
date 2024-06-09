@@ -36,9 +36,16 @@ export default function BrandList() {
 
     fetchBrandes();
   }, []);
+      // Hàm loại bỏ dấu tiếng Việt
+      function removeVietnameseTones(str) {
+        str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+        return str;
+      }
     // tìm kiếm theo tên
     const filteredUsers = brands.filter((user) =>
-      user.name_brand.toLowerCase().includes(searchText.toLowerCase())
+    removeVietnameseTones(user.name_brand.toLowerCase()).includes(removeVietnameseTones(searchText.toLowerCase()))
+
     );
     // xóa
     const handleDeleteClick = (categoryId) => {

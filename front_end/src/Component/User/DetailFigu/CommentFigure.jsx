@@ -5,7 +5,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import { jwtDecode } from "jwt-decode";
-
+import CommentAPI from "../../../Service/CommentAPI.js";
 const CommentFigure = ({ id }) => {
   const [form] = Form.useForm();
   const [comment_mes, setComment_mes] = useState("");
@@ -32,13 +32,19 @@ const CommentFigure = ({ id }) => {
       );
     }
   }, []);
+  const validateEmail = (_, value) => {
+    if (!value || !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.com)$/.test(value)) {
+      return Promise.reject("Email không hợp lệ hoặc không có đuôi .com!");
+    }
+    return Promise.resolve();
+  };
   const onFinish = async (data) => {
     try {
       const { name_com, email, parentID } = data;
       const figure_id = id;
       const name_com_value = name_com || "Người dùng ẩn danh";
       const parentID_value = parentID || 0;
-      await FigureAPI.addComment(
+      await CommentAPI.addComment(
         name_com_value,
         email,
         comment_mes, // Dữ liệu của trình soạn thảo CKEditor được lấy từ comment_mes
@@ -79,7 +85,7 @@ const CommentFigure = ({ id }) => {
       <Form.Item
         label="Email"
         name="email"
-        rules={[{ required: true, message: "Hãy nhập email!" }]}
+        rules={[{ required: true, message: "Hãy nhập email!" },{ required: true, validator: validateEmail }]}
         style={{ flex: "1", margin: " 10px" }}
       >
         <Input />

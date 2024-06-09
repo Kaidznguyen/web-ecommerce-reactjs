@@ -75,7 +75,12 @@ const AddBlog = ({ isModalVisible, handleCancel }) => {
           <Form.Item
             label="Tiêu đề bài viết"
             name="title"
-            rules={[{ required: true, message: "Hãy nhập tiêu đề bài viết!" }]}
+            rules={[{ required: true, message: "Hãy nhập tiêu đề!" },
+              {
+                pattern: /^(?!\d+$)[\dA-Za-z\s]+$/,
+                message: "Tiêu đề không thể chỉ chứa số!"
+              }
+            ]}
           >
             <Input />
           </Form.Item>
@@ -120,7 +125,12 @@ const AddBlog = ({ isModalVisible, handleCancel }) => {
             <Form.Item
               label="Tác giả"
               name="author"
-              //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[{ required: true, message: "Hãy nhập tên tác giả!" },
+                {
+                  pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                  message: "Tên tác giả không thể chỉ chứa số!"
+                }
+              ]}
               style={{ flex: "1", marginRight: "10px" }}
             >
               <Input />

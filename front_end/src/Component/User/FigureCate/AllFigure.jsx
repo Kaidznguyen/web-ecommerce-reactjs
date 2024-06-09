@@ -38,25 +38,36 @@ export default function AllFigure() {
     fetchFigures();
   }, []);
 
-  // Xử lý tìm kiếm
-  const handleSearch = (searchText) => {
-    setSearchText(searchText);
-    if (!searchText.trim()) {
-      // Nếu searchText rỗng, reset dữ liệu về ban đầu từ danh sách sản phẩm gốc
-      setFigures(originalFigures);
-      setShowNotFound(false);
-      return;
-    }
+// Hàm loại bỏ dấu tiếng Việt
+function removeVietnameseTones(str) {
+  str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+  return str;
+}
 
-    // Thực hiện tìm kiếm với searchText
-    const filteredFigures = originalFigures.filter((figure) =>
-      figure.name.toLowerCase().includes(searchText.toLowerCase())
-    );
+// Xử lý tìm kiếm
+const handleSearch = (searchText) => {
+  setSearchText(searchText);
+  if (!searchText.trim()) {
+    // Nếu searchText rỗng, reset dữ liệu về ban đầu từ danh sách sản phẩm gốc
+    setFigures(originalFigures);
+    setShowNotFound(false);
+    return;
+  }
 
-    // Cập nhật danh sách sản phẩm sau khi tìm kiếm
-    setFigures(filteredFigures);
-    setShowNotFound(filteredFigures.length === 0); // Hiển thị thông báo nếu không có kết quả tìm kiếm
-  };
+  // Chuẩn hóa searchText
+  const normalizedSearchText = removeVietnameseTones(searchText.toLowerCase());
+
+  // Thực hiện tìm kiếm với searchText đã chuẩn hóa
+  const filteredFigures = originalFigures.filter((figure) =>
+    removeVietnameseTones(figure.name.toLowerCase()).includes(normalizedSearchText)
+  );
+
+  // Cập nhật danh sách sản phẩm sau khi tìm kiếm
+  setFigures(filteredFigures);
+  setShowNotFound(filteredFigures.length === 0); // Hiển thị thông báo nếu không có kết quả tìm kiếm
+};
+
 
   // Phân trang
   useEffect(() => {

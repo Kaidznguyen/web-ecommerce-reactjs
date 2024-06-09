@@ -72,14 +72,24 @@ const EditUser = ({ isModalVisible, handleCancel, initialValue }) => {
           <Form.Item
             label="Họ và tên"
             name="name"
-            rules={[{ required: true, message: "Hãy nhập họ và tên bạn!" }]}
+            rules={[{ required: true, message: "Hãy nhập họ và tên bạn!" },
+              {
+                pattern: /^[A-Za-z\s]+$/,
+                message: "Họ và tên chỉ có thể chứa chữ và không có ký tự đặc biệt cũng như số!"
+              }
+            ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Tên hiển thị"
             name="username"
-            rules={[{ required: true, message: "Hãy nhập tên hiển thị!" }]}
+            rules={[{ required: true, message: "Hãy nhập tên hiển thị!" },
+              {
+                pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                message: "Tên hiển thị phải chứa ít nhất một chữ cái và có thể chứa ký tự đặc biệt!"
+              }
+            ]}
           >
             <Input />
           </Form.Item>

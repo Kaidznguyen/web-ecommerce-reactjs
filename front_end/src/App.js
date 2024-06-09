@@ -23,6 +23,7 @@ import BlogCatePage from './Pages/AdminPage/BlogCatePage';
 import CartPage from './Pages/UserPage/CartPage';
 import OrderAdminPage from './Pages/AdminPage/OrderAdminPage';
 import UserAdminPage from './Pages/AdminPage/UserAdminPage';
+import CommentAdminPage from './Pages/AdminPage/CommentAdminPage';
 function UserLayout() {
   return (
     <>
@@ -77,6 +78,8 @@ function AdminLayout() {
         <Route exact path="/BlogCate-Admin" element={<BlogCatePage />} />
         {/* Trang quản lý hóa đơn bán */}
         <Route exact path="/Order-Admin" element={<OrderAdminPage />} />
+        {/* Trang quản lý hóa đơn bán */}
+        <Route exact path="/Comment-Admin" element={<CommentAdminPage/>} />
         {/* Trang lỗi */}
         <Route path="*" element={<ErorrPage />} />
        

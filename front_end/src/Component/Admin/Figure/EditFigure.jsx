@@ -23,6 +23,7 @@ const EditFigure = ({ isModalVisible, handleCancel, initialValue }) => {
   const [figucates, setFiguCates] = useState([]);
   const [brands, setBrands] = useState([]);
   const [currentImage, setCurrentImage] = useState(null);
+  const [img, setImg] = useState("");
 // lấy data figucate
 useEffect(() => {
   async function fetchFiguCates() {
@@ -99,6 +100,12 @@ useEffect(() => {
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
+  useEffect(() => {
+    if (initialValue) {
+      setDescription(initialValue.description || "");
+      setCurrentImage(initialValue.img || "");
+    }
+  }, [initialValue]);
   return (
     <div>
       <Modal
@@ -116,19 +123,31 @@ useEffect(() => {
           <Form.Item
             label="Tên mô hình"
             name="name"
-            rules={[{ required: true, message: "Hãy nhập tên mô hình!" }]}
+            rules={[{ required: true, message: "Hãy nhập tên mô hình!" },
+              {
+                pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                message: "Tên mô hình phải chứa cả chữ và số hoặc chỉ chữ, không thể chỉ chứa số!"
+              }
+            ]}
           >
             <Input />
           </Form.Item>
-          <div className="select_img">
-            <span>Ảnh:</span>
-            <input
-              type="file"
-              name="img"
-              id="img-detail__admin"
-              onChange={handleImageChange}
-            />
-          </div>
+            <div className="select_img">
+              <span>Ảnh:</span>
+                <input
+                  type="file"
+                  name="img"
+                  id="img-detail__admin"
+                  onChange={handleImageChange}
+                />    
+            </div>
+            <div style={{margin: '20px 0', height: '200px', width:'100%'}}>
+                {img ? (
+                  <img src={img} alt="Selected" style={{ width: '100%', height: '100%' }} />
+                ) : (
+                  <img src={`http://localhost:8080/${currentImage}`} alt="Initial" style={{ width: '100%', height: '100%' }} />
+                )}              
+              </div>
           <Form.Item
             label="Mô tả"
             name="description"
@@ -147,7 +166,10 @@ useEffect(() => {
             <Form.Item
               label="Giá"
               name="price"
-            //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[
+                { required: true, message: "Hãy nhập giá!" },
+                { type: 'number', min: 0, max: 1000000, message: "Chỉ có thể nhập số và phải nằm trong khoảng từ 0 đến 1,000,000!" }
+              ]}
               style={{ flex: '0.7', marginRight: '10px' }}
             >
               <Input />
@@ -155,7 +177,10 @@ useEffect(() => {
             <Form.Item
               label="Giá khuyến mại"
               name="promotionprice"
-            //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[
+                { required: true, message: "Hãy nhập giá!" },
+                { type: 'number', min: 0, max: 1000000, message: "Chỉ có thể nhập số và phải nằm trong khoảng từ 0 đến 1,000,000!" }
+              ]}
               style={{ flex: '1' }}
             >
               <Input />
@@ -180,7 +205,7 @@ useEffect(() => {
             <Form.Item
               label="Thương hiệu"
               name="brand_id"
-              rules={[{ required: true, message: "Hãy chọn loại bài viết!" }]}
+              rules={[{ required: true, message: "Hãy chọn thương hiệu!" }]}
               style={{ flex: '1' }}
             >
               <Select>
@@ -197,7 +222,9 @@ useEffect(() => {
             <Form.Item
               label="Số lượng"
               name="quantity"
-            //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[
+                { type: 'number', min: 0, message: "Chỉ có thể nhập số" }
+              ]}
               style={{ flex: '1', marginRight: '10px' }}
             >
               <Input />
@@ -205,7 +232,9 @@ useEffect(() => {
             <Form.Item
               label="Bảo hành"
               name="warranty"
-            //   rules={[{ required: true, message: "Hãy nhập tác giả!" }]}
+              rules={[
+                { type: 'number', min: 0, message: "Chỉ có thể nhập số" }
+              ]}
               style={{ flex: '1' }}
             >
               <Input />

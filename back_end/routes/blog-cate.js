@@ -78,15 +78,30 @@ router.put('/update/:id', (req, res) => {
 router.delete('/delete/:id', (req, res) => {
   const id_cate = req.params.id;
 
-  const query = 'DELETE FROM post_category WHERE id_cate = ?';
-  db.query(query, [id_cate], (error, results) => {
-      if (error) {
-          res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu', error:error,id:id_cate });
+  // Kiểm tra xem có sản phẩm nào trong bảng product có category_id trùng với id_cate không
+  const queryCheck = 'SELECT * FROM post WHERE post_category_id = ?';
+  db.query(queryCheck, [id_cate], (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu', error: error, id: id_cate });
+    } else {
+      if (results.length > 0) {
+        // Nếu có sản phẩm trùng, không cho phép xóa và trả về thông báo
+        res.status(400).json({ error: 'Không thể xóa vì có bài viết đang liên kết với danh mục này' });
       } else {
-          res.status(200).json({ message: 'Xóa thành công' });
+        // Nếu không có sản phẩm nào trùng, tiến hành xóa danh mục
+        const queryDelete = 'DELETE FROM post_category WHERE id_cate = ?';
+        db.query(queryDelete, [id_cate], (error, results) => {
+          if (error) {
+            res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu', error: error, id: id_cate });
+          } else {
+            res.status(200).json({ message: 'Xóa thành công' });
+          }
+        });
       }
+    }
   });
 });
+
 // api lấy sp theo id danh mục
 router.get('/getByidcate/:id', (req, res) => {
   const idcate = req.params.id;

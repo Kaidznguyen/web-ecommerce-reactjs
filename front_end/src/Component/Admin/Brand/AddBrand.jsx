@@ -53,7 +53,13 @@ const AddBrand = ({ isModalVisible, handleCancel }) => {
           <Form.Item
             label="Tên thương hiệu"
             name="name_brand"
-            rules={[{ required: true, message: "Hãy nhập tên thương hiệu!" }]}
+            rules={[
+              { required: true, message: "Hãy nhập tên thương hiệu!" },
+              {
+                pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                message: "Thương hiệu phải chứa ít nhất một chữ cái và có thể chứa ký tự đặc biệt!"
+              }
+            ]}
           >
             <Input />
           </Form.Item>
