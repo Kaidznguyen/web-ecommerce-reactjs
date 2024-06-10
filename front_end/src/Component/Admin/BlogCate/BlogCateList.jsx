@@ -22,6 +22,19 @@ export default function BlogCateList() {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedPostCate, setSelectedPostCate] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [totalData, setTotalData] = useState(0);
+  const [pagination, setPagination] = useState({
+    current: 1, // Trang hiện tại
+    pageSize: 5, // Kích thước trang
+  });
+
+  const handlePageSizeChange = (current, size) => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      current: 1, // Cập nhật trang hiện tại thành 1 khi thay đổi kích thước trang
+      pageSize: size, // Cập nhật kích thước trang mới
+    }));
+  };
 
 
   // lấy data
@@ -30,6 +43,8 @@ export default function BlogCateList() {
       try {
         const data = await PostCateAPI.getAllAdmin();
         setPostCates(data.data);
+        setTotalData(data.data.length);
+
       } catch (error) {
         console.error("Error fetching post categories: ", error);
       }
@@ -92,8 +107,13 @@ export default function BlogCateList() {
     {
       align: "center",
       title: "STT",
-      render: (text, record, index) => index + 1,
-      sorter: (a, b) => a.id_cate - b.id_cate,
+      render: (text, record, index) => {
+        const currentPage = pagination.current;
+        const pageSize = pagination.pageSize;
+        const startIndex = (currentPage - 1) * pageSize;
+        return startIndex + index + 1;
+      },
+      sorter: (a, b) => a.id_comment - b.id_comment,
     },
     {
       align: "center",
@@ -167,9 +187,25 @@ export default function BlogCateList() {
           columns={column}
           dataSource={filteredUsers}
           bordered
-          pagination={{ pageSize: 5 }}
+          pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            total: totalData,
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20", "50"],
+            onShowSizeChange: (current, size) => {
+              handlePageSizeChange(current, size);
+            },
+            onChange: (page) => {
+              setPagination((prevPagination) => ({
+                ...prevPagination,
+                current: page,
+              }));
+            },
+          }}
           size="middle"
         />
+
       </div>
       {/* Hiển thị EditBlogCate khi được bật */}
       {isEditModalVisible && (

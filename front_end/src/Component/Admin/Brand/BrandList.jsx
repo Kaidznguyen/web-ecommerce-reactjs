@@ -16,19 +16,34 @@ import AddBrand from "./AddBrand.jsx";
 import EditBrand from "./EditBrand.jsx";
 import { Table, Button, Modal, Input } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+
 export default function BrandList() {
   const [brands, setBrands] = useState([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedPostCate, setSelectedPostCate] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [totalData, setTotalData] = useState(0);
+  const [pagination, setPagination] = useState({
+    current: 1, // Trang hiện tại
+    pageSize: 5, // Kích thước trang
+  });
 
-  // lấy tất cả sp
+  const handlePageSizeChange = (current, size) => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      current: 1, // Cập nhật trang hiện tại thành 1 khi thay đổi kích thước trang
+      pageSize: size, // Cập nhật kích thước trang mới
+    }));
+  };
+
   useEffect(() => {
     async function fetchBrandes() {
       try {
         const data = await BrandAPI.getAllAdmin();
         setBrands(data.data);
+        setTotalData(data.data.length);
+
       } catch (error) {
         console.error("Error fetching post categories: ", error);
       }
@@ -36,41 +51,37 @@ export default function BrandList() {
 
     fetchBrandes();
   }, []);
-      // Hàm loại bỏ dấu tiếng Việt
-      function removeVietnameseTones(str) {
-        str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
-        return str;
-      }
-    // tìm kiếm theo tên
-    const filteredUsers = brands.filter((user) =>
-    removeVietnameseTones(user.name_brand.toLowerCase()).includes(removeVietnameseTones(searchText.toLowerCase()))
 
-    );
-    // xóa
-    const handleDeleteClick = (categoryId) => {
-      Modal.confirm({
-        title: "Xác nhận xóa",
-        icon: <ExclamationCircleOutlined />,
-        content: "Bạn có chắc muốn xóa loại bài viết này không?",
-        okText: "Xác nhận",
-        cancelText: "Hủy",
-        onOk: async () => {
-          try {
-            // Gọi service để xóa loại bài viết dựa vào categoryId
-            await BrandAPI.delete(categoryId);
-  
-            // Reload trang sau khi xóa thành công
-            window.location.reload();
-          } catch (error) {
-            console.error("Error deleting post category:", error);
-          }
-        },
-        onCancel: () => {
-          console.log("Hủy xác nhận xóa");
-        },
-      });
-    };
+  function removeVietnameseTones(str) {
+    str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+    return str;
+  }
+
+  const filteredUsers = brands.filter((user) =>
+    removeVietnameseTones(user.name_brand.toLowerCase()).includes(removeVietnameseTones(searchText.toLowerCase()))
+  );
+
+  const handleDeleteClick = (categoryId) => {
+    Modal.confirm({
+      title: "Xác nhận xóa",
+      icon: <ExclamationCircleOutlined />,
+      content: "Bạn có chắc muốn xóa loại bài viết này không?",
+      okText: "Xác nhận",
+      cancelText: "Hủy",
+      onOk: async () => {
+        try {
+          await BrandAPI.delete(categoryId);
+          window.location.reload();
+        } catch (error) {
+          console.error("Error deleting post category:", error);
+        }
+      },
+      onCancel: () => {
+        console.log("Hủy xác nhận xóa");
+      },
+    });
+  };
 
   const handleAddClick = () => {
     setIsAddModalVisible(true);
@@ -88,12 +99,18 @@ export default function BrandList() {
     setIsAddModalVisible(false);
     setIsEditModalVisible(false);
   };
+
   const column = [
     {
-      title: "STT",
-      render: (text, record, index) => index + 1,
       align: "center",
-      sorter: (a, b) => a.id_brand - b.id_brand,
+      title: "STT",
+      render: (text, record, index) => {
+        const currentPage = pagination.current;
+        const pageSize = pagination.pageSize;
+        const startIndex = (currentPage - 1) * pageSize;
+        return startIndex + index + 1;
+      },
+      sorter: (a, b) => a.id_comment - b.id_comment,
     },
     {
       title: "Ảnh",
@@ -101,7 +118,7 @@ export default function BrandList() {
       align: "center",
       key: "img_brand",
       render: (text) => <img src={"http://localhost:8080/" + text} alt="Ảnh" style={{ width: 100, height: 100 }} />,
-    },    
+    },
     {
       title: "Tên thương hiệu",
       align: "center",
@@ -149,6 +166,7 @@ export default function BrandList() {
       ),
     },
   ];
+
   return (
     <div className="main__admin custom_margin">
       <h1 className="title-tab_admin2-main">Quản lý thương hiệu mô hình</h1>
@@ -159,24 +177,36 @@ export default function BrandList() {
             Thêm thương hiệu
           </div>
           <Input.Search
-          placeholder="Nhập từ khóa..."
-          allowClear
-          style={{ width: 200, marginBottom: 10,marginLeft:10, marginTop:-50 }}
-          onChange={(e) => setSearchText(e.target.value)} />
+            placeholder="Nhập từ khóa..."
+            allowClear
+            style={{ width: 200, marginBottom: 10, marginLeft: 10, marginTop: -50 }}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
         </div>
-        <AddBrand isModalVisible={isAddModalVisible}
-          handleCancel={handleCancel}/>
-        <EditBrand  isModalVisible={isEditModalVisible}
-          initialValue={selectedPostCate} // Truyền selectedPostCate vào prop initialValue
-          handleCancel={handleCancel}/>
-
+        <AddBrand isModalVisible={isAddModalVisible} handleCancel={handleCancel} />
+        <EditBrand isModalVisible={isEditModalVisible} initialValue={selectedPostCate} handleCancel={handleCancel} />
 
         <Table
-          style={{ margin: "0 10px", align: "center" }}
+          style={{ margin: "0 10px", textAlign: "center" }} // Sửa lại thành textAlign
           columns={column}
           dataSource={filteredUsers}
           bordered
-          pagination={{ pageSize: 5 }}
+          pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            total: totalData,
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20", "50"],
+            onShowSizeChange: (current, size) => {
+              handlePageSizeChange(current, size);
+            },
+            onChange: (page) => {
+              setPagination((prevPagination) => ({
+                ...prevPagination,
+                current: page,
+              }));
+            },
+          }}
           size="middle"
         />
       </div>

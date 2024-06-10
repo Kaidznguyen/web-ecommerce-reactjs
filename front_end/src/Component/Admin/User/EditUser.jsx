@@ -74,9 +74,9 @@ const EditUser = ({ isModalVisible, handleCancel, initialValue }) => {
             name="name"
             rules={[{ required: true, message: "Hãy nhập họ và tên bạn!" },
               {
-                pattern: /^[A-Za-z\s]+$/,
-                message: "Họ và tên chỉ có thể chứa chữ và không có ký tự đặc biệt cũng như số!"
-              }
+                pattern: /^[^0-9"':\/?.><,\[\]{}\\|=_+\-()*!@#$%^&~`]*$/,
+                message: "Họ và tên chỉ có thể chứa chữ, không có ký tự đặc biệt hoặc số!"
+              }              
             ]}
           >
             <Input />
