@@ -27,14 +27,14 @@ const CheckOut = ({ totalPrice, onVerify }) => {
     }
   }, []);
 
-  const validateName = (_, value) => {
-    if (!value || value.length > 50 || /[+\-*/.=_?><,{}[\]]/.test(value)) {
-      return Promise.reject(
-        "Họ và tên không được vượt quá 50 ký tự và không được chứa các kí tự đặc biệt!"
-      );
-    }
-    return Promise.resolve();
-  };
+  // const validateName = (_, value) => {
+  //   if (!value || value.length > 50 || /[+\-*/.=_?><,{}[\]]/.test(value)) {
+  //     return Promise.reject(
+  //       "Họ và tên không được vượt quá 50 ký tự và không được chứa các kí tự đặc biệt!"
+  //     );
+  //   }
+  //   return Promise.resolve();
+  // };
 
   const validatePhone = (_, value) => {
     if (!value || !/^(0\d{9})$/.test(value)) {
@@ -142,7 +142,15 @@ const CheckOut = ({ totalPrice, onVerify }) => {
                 name="name"
                 rules={[
                   { required: true, message: "Vui lòng nhập họ tên của bạn!" },
-                  { validator: validateName },
+                  {
+                    pattern: /^[^0-9"':\/?.><,\[\]{}\\|=_+\-()*!@#$%^&~`]*$/,
+                    message: "Họ và tên không thể chỉ chứa số và ký tự đặc biệt!"
+                  },
+                  { 
+                    max: 50,
+                    message: "Không thể vượt quá 50 ký tự!"
+                  }
+
                 ]}
                 style={{ width: "80%" }}
               >

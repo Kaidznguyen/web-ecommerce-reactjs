@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Checkbox, Select, notification } from "antd";
+import { Modal, Form, Input, Checkbox, Select, notification, InputNumber } from "antd";
 import "../../../assets/user-page/main.css";
 import FigureAPI from "../../../Service/FigureAPI.js";
 import BrandAPI from "../../../Service/BrandAPI.js";
@@ -123,7 +123,7 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
                 { type: 'number', min: 0, max: 1000000, message: "Chỉ có thể nhập số và phải nằm trong khoảng từ 0 đến 1,000,000!" }
               ]}
             >
-              <Input />
+              <InputNumber min={0} max={1000000} />
             </Form.Item>
             <Form.Item
               label="Giá khuyến mại"
@@ -134,7 +134,7 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
               ]}
               style={{ flex: "1" }}
             >
-              <Input />
+                            <InputNumber min={0} max={1000000} />
             </Form.Item>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -184,7 +184,8 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
               ]}
               style={{ flex: "1", marginRight: "10px" }}
             >
-              <Input />
+                           <InputNumber min={0} max={1000000} />
+
             </Form.Item>
             <Form.Item
               label="Bảo hành"
@@ -195,7 +196,8 @@ const AddFigure = ({ isModalVisible, handleCancel }) => {
               ]}
               style={{ flex: "1" }}
             >
-              <Input />
+                            <InputNumber min={0} max={1000000} />
+
             </Form.Item>
           </div>
           <Form.Item name="status" valuePropName="checked">

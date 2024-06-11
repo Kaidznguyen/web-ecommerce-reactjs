@@ -22,7 +22,7 @@ export default function PostByCateId() {
     const [searchText, setSearchText] = useState("");
     const [sortType, setSortType] = useState("");
     const [pageNumber, setPageNumber] = useState(0); // Số trang hiện tại
-    const postsPerPage = 2; // Số bài viết trên mỗi trang
+    const postsPerPage = 3; // Số bài viết trên mỗi trang
     const topRef = useRef(null);
 
     useEffect(() => {

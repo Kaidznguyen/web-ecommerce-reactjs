@@ -108,8 +108,8 @@ const EditBlog = ({ isModalVisible, handleCancel, initialValue }) => {
             name="title"
             rules={[{ required: true, message: "Hãy nhập tiêu đề!" },
               {
-                pattern: /^(?!\d+$)[\dA-Za-z\s]+$/,
-                message: "Tiêu đề không thể chỉ chứa số!"
+                pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
+                message: "Tiêu đề không thể chỉ chứa số hoặc ký tự đặc biệt!"
               }
             ]}
           >

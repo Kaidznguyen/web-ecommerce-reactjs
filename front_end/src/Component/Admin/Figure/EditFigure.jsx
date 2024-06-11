@@ -7,6 +7,7 @@ import {
   Button,
   Select,
   notification,
+  InputNumber
 } from "antd";
 import "../../../assets/user-page/main.css";
 import FigureAPI from "../../../Service/FigureAPI.js";
@@ -172,7 +173,8 @@ useEffect(() => {
               ]}
               style={{ flex: '0.7', marginRight: '10px' }}
             >
-              <Input />
+                           <InputNumber min={0} max={1000000} />
+
             </Form.Item>
             <Form.Item
               label="Giá khuyến mại"
@@ -183,7 +185,8 @@ useEffect(() => {
               ]}
               style={{ flex: '1' }}
             >
-              <Input />
+                            <InputNumber min={0} max={1000000} />
+
             </Form.Item>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -227,7 +230,8 @@ useEffect(() => {
               ]}
               style={{ flex: '1', marginRight: '10px' }}
             >
-              <Input />
+                            <InputNumber min={0} max={1000000} />
+
             </Form.Item>
             <Form.Item
               label="Bảo hành"
@@ -237,7 +241,8 @@ useEffect(() => {
               ]}
               style={{ flex: '1' }}
             >
-              <Input />
+                           <InputNumber min={0} max={1000000} />
+
             </Form.Item>
           </div>
           <Form.Item name="status" valuePropName="checked">

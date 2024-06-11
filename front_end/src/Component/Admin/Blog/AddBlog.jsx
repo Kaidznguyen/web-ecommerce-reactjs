@@ -77,7 +77,7 @@ const AddBlog = ({ isModalVisible, handleCancel }) => {
             name="title"
             rules={[{ required: true, message: "Hãy nhập tiêu đề!" },
               {
-                pattern: /^(?!\d+$)[\dA-Za-z\s]+$/,
+                pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
                 message: "Tiêu đề không thể chỉ chứa số!"
               }
             ]}
@@ -128,7 +128,11 @@ const AddBlog = ({ isModalVisible, handleCancel }) => {
               rules={[{ required: true, message: "Hãy nhập tên tác giả!" },
                 {
                   pattern: /^(?=.*[A-Za-z])[\w\W]+$/,
-                  message: "Tên tác giả không thể chỉ chứa số!"
+                  message: "Tên tác giả không thể chỉ chứa số và ký tự đặc biệt!"
+                },
+                { 
+                  max: 50,
+                  message: "Không thể vượt quá 50 ký tự!"
                 }
               ]}
               style={{ flex: "1", marginRight: "10px" }}

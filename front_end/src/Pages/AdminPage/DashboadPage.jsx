@@ -15,28 +15,28 @@ import QuantityStatistics from "../../Component/Admin/Dashboard/QuantityStatisti
 export default function DashboadPage() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        const role = decodedToken.role;
+  //   if (token) {
+  //     try {
+  //       const decodedToken = jwtDecode(token);
+  //       const role = decodedToken.role;
 
-        if (role !== "admin" && role !== "staff") {
-          alert("Bạn không có quyền truy cập trang web này!!!!");
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Invalid token:", error);
-        alert("Bạn không có quyền truy cập trang web này!!!!");
-        navigate("/");
-      }
-    } else {
-      alert("Bạn không có quyền truy cập trang web này!!!!");
-      navigate("/");
-    }
-  }, [navigate]);
+  //       if (role !== "admin" && role !== "staff") {
+  //         alert("Bạn không có quyền truy cập trang web này!!!!");
+  //         navigate("/");
+  //       }
+  //     } catch (error) {
+  //       console.error("Invalid token:", error);
+  //       alert("Bạn không có quyền truy cập trang web này!!!!");
+  //       navigate("/");
+  //     }
+  //   } else {
+  //     alert("Bạn không có quyền truy cập trang web này!!!!");
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
 
   window.scrollTo({
     top: 0,

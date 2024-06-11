@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Radio, Button,notification } from "antd";
+import { Modal, Radio, Button, notification } from "antd";
 import "../../../assets/user-page/main.css";
 import OrderAPI from "../../../Service/OrderAPI.js";
 import numeral from "numeral";
@@ -11,13 +11,13 @@ const OrderUpdateState = ({ isModalVisible, handleCancel, orderId }) => {
   const [order, setOrder] = useState([]);
   const [cus, setCus] = useState({});
   const [selectedState, setSelectedState] = useState("");
-  const [orderState, setOrderState] = useState("pending"); 
+  const [orderState, setOrderState] = useState("pending");
 
   useEffect(() => {
     OrderAPI.getCus(orderId)
       .then((data) => {
         setCus(data);
-        setOrderState(data.status)
+        setOrderState(data.status);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -41,13 +41,13 @@ const OrderUpdateState = ({ isModalVisible, handleCancel, orderId }) => {
     setSelectedState(value);
   };
 
-const handleUpdateState = () => {
+  const handleUpdateState = () => {
     OrderAPI.update(orderId, { status: selectedState }) // Sửa trạng thái của đơn hàng thành selectedState
       .then(() => {
         console.log("Order state updated successfully.");
         notification.success({
-          message: 'Cập nhật trạng thái đơn hàng',
-          duration: 2
+          message: "Cập nhật trạng thái đơn hàng",
+          duration: 2,
         });
         setTimeout(() => {
           window.location.reload(); // Reload lại trang sau 2 giây
@@ -58,24 +58,41 @@ const handleUpdateState = () => {
       });
   };
 
-  function translateStatus(status) {
+  const translateStatus = (status) => {
     switch (status) {
-      case 'pending':
-        return 'Chờ xác nhận';
-      case 'processing':
-        return 'Đã xác nhận';
-      case 'shipped':
-        return 'Đang giao';
-      case 'delivered':
-        return 'Đã giao';
-      case 'cancelled':
-        return 'Hủy đơn';
-      
-      // Nếu không khớp với bất kỳ trạng thái nào, trả về chính nó
+      case "pending":
+        return "Chờ xác nhận";
+      case "processing":
+        return "Đã xác nhận";
+      case "shipped":
+        return "Đang giao";
+      case "delivered":
+        return "Đã giao";
+      case "cancelled":
+        return "Hủy đơn";
       default:
         return status;
     }
-  }
+  };
+
+  const getDisabledOptions = (status) => {
+    switch (status) {
+      case "cancelled":
+        return ["pending", "processing", "shipped", "delivered", "cancelled"];
+      case "delivered":
+        return ["pending", "processing", "shipped", "cancelled", "delivered"];
+      case "shipped":
+        return ["pending", "processing"];
+      case "processing":
+        return ["pending"];
+      case "pending":
+      default:
+        return [];
+    }
+  };
+
+  const disabledOptions = getDisabledOptions(orderState);
+
   return (
     <Modal
       visible={isModalVisible}
@@ -98,7 +115,10 @@ const handleUpdateState = () => {
               <p className="container_name_p">
                 Phương thức thanh toán: {cus.payment}
               </p>
-              <p className="container_name_p" style={{color:'var(--primary-color'}}>
+              <p
+                className="container_name_p"
+                style={{ color: "var(--primary-color" }}
+              >
                 Trạng thái đơn hàng: {translateStatus(cus.status)}
               </p>
             </div>
@@ -107,7 +127,10 @@ const handleUpdateState = () => {
             <div className="col-lg-12 mx-auto">
               <div className="card rounded2 shadow border-0">
                 <div className="card-body p-5 bg-white rounded2">
-                  <div className="table-responsive" style={{maxHeight:'345px',overflow: 'auto'}}>
+                  <div
+                    className="table-responsive"
+                    style={{ maxHeight: "345px", overflow: "auto" }}
+                  >
                     <table
                       id="example"
                       style={{ width: "100%" }}
@@ -137,7 +160,9 @@ const handleUpdateState = () => {
                               {numeral(orderItem.promotionprice).format("$0,0")}
                             </td>
                             <td>{orderItem.totalquantity}</td>
-                            <td>{numeral(orderItem.totalprice).format("$0,0")}</td>
+                            <td>
+                              {numeral(orderItem.totalprice).format("$0,0")}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -159,21 +184,33 @@ const handleUpdateState = () => {
             </div>
           </div>
           <div className="footer-order-state">
-          <RadioGroup
-  size="large"
-  onChange={(e) => handleStateChange(e.target.value)}
->
-  <RadioButton value="pending">Chờ xác nhận</RadioButton>
-  <RadioButton value="processing">Đã xác nhận</RadioButton>
-  <RadioButton value="shipped">Đang giao</RadioButton>
-  <RadioButton value="delivered">Đã giao</RadioButton>
-  <RadioButton value="cancelled">Hủy đơn</RadioButton>
-</RadioGroup>
-
-
+            <RadioGroup
+              size="large"
+              onChange={(e) => handleStateChange(e.target.value)}
+            >
+              <RadioButton value="pending" disabled={disabledOptions.includes("pending")}>
+                Chờ xác nhận
+              </RadioButton>
+              <RadioButton value="processing" disabled={disabledOptions.includes("processing")}>
+                Đã xác nhận
+              </RadioButton>
+              <RadioButton value="shipped" disabled={disabledOptions.includes("shipped")}>
+                Đang giao
+              </RadioButton>
+              <RadioButton value="delivered" disabled={disabledOptions.includes("delivered")}>
+                Đã giao
+              </RadioButton>
+              <RadioButton value="cancelled" disabled={disabledOptions.includes("cancelled")}>
+                Hủy đơn
+              </RadioButton>
+            </RadioGroup>
           </div>
           <div style={{ margin: "10px" }}>
-            <Button type="primary" onClick={handleUpdateState}>
+            <Button 
+              type="primary" 
+              onClick={handleUpdateState} 
+              disabled={orderState === "cancelled" || orderState === "delivered"}
+            >
               Cập nhật trạng thái
             </Button>
           </div>

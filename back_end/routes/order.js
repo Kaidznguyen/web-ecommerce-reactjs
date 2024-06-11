@@ -80,7 +80,7 @@ router.post('/create-order', async (req, res) => {
       service: 'gmail',
       auth: {
         user: 'kainguyen107@gmail.com',
-        pass: 'rmihvgtjkuhxddzm',
+        pass: 'viwiwzilxbtsdtwb',
       },
     });
     const mailOptions = {

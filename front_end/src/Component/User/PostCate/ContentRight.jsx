@@ -21,7 +21,7 @@ export default function ContentRight() {
   const [searchText, setSearchText] = useState("");
   const [sortType, setSortType] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
-  const postsPerPage = 2; // Số bài viết trên mỗi trang
+  const postsPerPage = 5; // Số bài viết trên mỗi trang
   const topRef = useRef(null);
 
   // lấy tất cả blog
